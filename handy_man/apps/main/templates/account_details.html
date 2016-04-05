@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+    
+     <link rel="stylesheet/less" href="{{ STATIC_URL }}style.less">
+    <link rel="stylesheet" href="{{ STATIC_URL }}thickbox.css" type="text/css" media="screen" />
+    <script src="{{ STATIC_URL }}less.js"></script>
+    <script src="{{ STATIC_URL }}jquery-1.11.3.js"></script>
+    <script src="{{ STATIC_URL }}thickbox.js"></script>
+    <script src="{{ STATIC_URL }}ajax_form.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" type="text/css" media="screen" />
+
+    <!-- MetisMenu CSS -->
+    <link href="{{ STATIC_URL }}css/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="{{ STATIC_URL }}css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ STATIC_URL }}css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="{{ STATIC_URL }}css/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+    <form class="form-inline" action="{% url 'banking_url' user.username%}" method="post">
+        	{% csrf_token %}
+          <div class="panel panel-info">
+          	<table>
+	            <div class="panel-heading">
+	              <h3>Current User:</h3><h3 class="panel-title">{{ user_profile.user }}</h3>
+	            </div>
+            </table>
+            <div class="panel-body">
+              <div class="row"> 
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Account Number:</td>
+                        <td><input type="text" name="account_number" value=""><br></td>
+                      </tr>
+                      <tr>
+                        <td>Bank</td>
+                        <td><input type="text" name="institution" value=""><br></td>
+                      </tr>
+                      <tr>
+                        <td>Account Type:</td>
+                        <td><input type="text" name="account_type" value=""><br></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="form-group">
+                  	<button class="btn btn-primary" type="submit" value="submit" name="account_info" id="account_info">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+         </div>
+{% endblock %}

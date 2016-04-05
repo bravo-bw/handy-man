@@ -1,0 +1,78 @@
+{% extends "goods_owner.html" %}
+{% load admin_urls %}
+{% load url from future %}
+
+{% block controlled_table %}
+<div class="row">
+                <div class="col-lg-8">
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Jobs bids
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+					<!-- <div class="container"> -->         
+					  <table class="table">
+					    <thead>
+					      <tr>
+					        <th>Cargo Type</th>
+					        <th>Starting Point</th>
+					        <th>Destination</th>
+					      </tr>
+					    </thead>
+					    
+					    <tbody>
+						{% for job in my_jobs %}
+								<tr><td>{{job.cargo_type}} </td>
+						        <td>{{job.starting_point}}</td>
+						        <td>{{job.destination}}</td></tr>
+						        <td colspan="3"></td>
+					    {% endfor %}
+					    </tbody>
+					  </table>
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Goods transportation route
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            	<table>
+                            	<tr><td>
+								<div id="googleMap" style="width:600px;height:380px;"></div>
+                            	</td></tr>
+                            	</table>                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                        {% for bidder in biddings %}
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-comment fa-fw"></i> {{bidder.bid_owner.user.first_name}} {{bidder.bid_owner.user.last_name}}
+                                    <span class="pull-right text-muted small"><em>{{bidder.bidding_amount}}</em>
+                                    </span>
+                                </a>
+                              </div>
+                         {% endfor %}
+                            <!-- /.list-group -->
+                            <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+{% endblock %}

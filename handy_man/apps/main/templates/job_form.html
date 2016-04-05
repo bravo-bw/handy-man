@@ -1,0 +1,25 @@
+{% extends "goods_owner.html" %}
+{% load admin_urls %}
+{% load url from future %}
+
+{% block controlled_table %}
+<div class="row">
+               <form action="{% url 'goods_owner_url' add_job_id %}" method="post">
+               {% csrf_token %}
+                <div class="col-lg-8">
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                    <table>
+     
+					  {{ job_form }}
+					</table>
+                <!-- /.col-lg-4 -->
+                </div>
+                <div class="panel panel-default">
+                	 <input type="submit">
+                </div>
+            </div>
+        </form>
+            <!-- /.row -->
+</div>
+{% endblock %}

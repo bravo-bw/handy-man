@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% block content %}
+    
+<script src="{{ STATIC_URL }}ajax_form.js"></script>
+<script>
+	 function initialize() {
+		 var myLatLng = {lat: 0, lng: -180};
+	  
+		 var mapProp = {
+	    center: myLatLng,
+	    zoom:1,
+	    mapTypeId:google.maps.MapTypeId.ROADMAP
+	  };
+	  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	  var contentString =
+      '<h5><b>Current Location</b></h5>'+
+      '<p>Distance travelled: 457km, distaance left to target location: 12km</p>';
+      
+      var infowindow = new google.maps.InfoWindow({
+    	    content: contentString
+    	  });
+      
+	  var marker = new google.maps.Marker({
+		    position: {lat: 37.772, lng: -122.214},
+		    map: map,
+		    title: 'Current location'
+		  });
+	  
+	  marker.addListener('click', function() {
+		    infowindow.open(map, marker);
+		  });
+	  
+	  var flightPlanCoordinates = [
+         {lat: 37.772, lng: -122.214},
+         {lat: 21.291, lng: -157.821},
+         {lat: -18.142, lng: 178.431},
+         {lat: -27.467, lng: 153.027}
+       ];
+       var flightPath = new google.maps.Polyline({
+         path: flightPlanCoordinates,
+         geodesic: true,
+         strokeColor: '#FF0000',
+         strokeOpacity: 1.0,
+         strokeWeight: 2
+       });
+
+       flightPath.setMap(map);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	function submit_bid_jobs(form_id){
+		var form = document.getElementById(form_id);
+		var amount = prompt('Enter bid amount');
+		var form_input = document.getElementById("amount"+form_id);
+		form_input.value = amount;
+		form.submit();
+	}
+	
+	function view_job_bids(form_id){
+		var form = document.getElementById(form_id);
+		form.submit();
+	}
+</script>
+</head>
+
+<body>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Available Jobs</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary" id="my_available_jobs" name="my_available_jobs" onclick="submit_my_jobs()">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-9 text-right">
+                                    <div>My Jobs</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'shipper_url' %}?job_type=my_jobs">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Jobs</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" id="available_jobs" name="available_jobs">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-9 text-right">
+                                    <div>Available Jobs</div>
+                                </div>
+                            </div>
+                        </div>
+                         <a href="{% url 'shipper_url' %}?job_type=available_jobs">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Jobs</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            <!-- /.row -->
+            <div class="row" >
+                <div class="col-lg-8">
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> My Jobs
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+					<!-- <div class="container"> -->         
+					  <table class="table" id="job_table" name="job_table">
+					    <thead>
+					      <tr>
+					        <th>Cargo Details</th>
+					        <th>Starting Point</th>
+					        <th>Destination</th>
+					        <th>Bid</th>
+					        <th>Status</th>
+					        <th>View Bids</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+						{% for job in public_jobs %}
+						       <tr>
+								<form name="form{{forloop.counter0}}" id="form{{forloop.counter0}}" action="{% url 'shipper_url' %}" method="GET">
+						  			<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
+						  			<input type="hidden" name="job_type" id="job_type" value="available_jobs">
+								</form>
+						        <td>{{job.cargo_type}} </td>
+						        <td>{{job.starting_point}}</td>
+						        <td>{{job.destination}}</td>
+						        <form name="form{{forloop.counter0}}" id="bidform{{forloop.counter0}}" action="{% url 'submit_bid_url' %}" method="POST">
+						        	{% csrf_token %}
+						  			<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
+						  			<input type="hidden" name="amount" id="amountbidform{{forloop.counter0}}">
+						  			<input type="hidden" name="job_type" id="job_type" value="available_jobs">
+								</form>
+						        <td><button type="button" class="btn btn-info btn-sm" onclick="submit_bid_jobs('bidform{{forloop.counter0}}')">Bid</button></td>
+						        <td>{{job.job_status}}</td>
+						        <form name="form{{forloop.counter0}}" id="viewbid{{forloop.counter0}}" action="{% url 'view_bids_url' %}" method="POST">
+						        	{% csrf_token %}>
+						        	<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
+						        	<input type="hidden" name="job_type" id="job_type" value="available_jobs">
+								</form>
+								<td><button type="button" class="btn btn-info btn-sm" onclick="view_job_bids('viewbid{{forloop.counter0}}')">View Bids</button></td>
+						{% endfor %}
+					    </tbody>
+					  </table>
+				<!-- </div> -->                  
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Truck Location
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            	<table>
+                            	<tr><td>
+								<div id="googleMap" style="width:600px;height:380px;"></div>
+                            	</td></tr>
+                            	</table>                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Bidding Panel
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group">
+                             {% for bid in job_bids %}
+            
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-comment fa-fw"></i> {{bid.bid_owner.user.username}}
+                                    <span class="pull-right text-muted small"><em>BWP {{bid.bidding_amount}}</em>
+                                    </span>
+                                </a>
+                              {% endfor %}                             
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+{% endblock %}

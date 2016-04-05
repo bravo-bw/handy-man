@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% block content %}
+<script>
+	 function initialize() {
+		 var myLatLng = {lat: -24.025998, lng: 26.317072};
+	  
+		 var mapProp = {
+	    center: myLatLng,
+	    zoom:6,
+	    mapTypeId:google.maps.MapTypeId.ROADMAP
+	  };
+	  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	  var contentString =
+      '<h5><b>Current Location</b></h5>'+
+      '<p>Distance travelled: 457km, distaance left to target location: 12km</p>';
+      
+      var infowindow = new google.maps.InfoWindow({
+    	    content: contentString
+    	  });
+	  var marker = new google.maps.Marker({
+		    position: {lat: {{destination.0}}, lng: {{destination.1}}},
+		    map: map,
+		    title: 'Current location'
+		  });
+	  
+	  marker.addListener('click', function() {
+		    infowindow.open(map, marker);
+		  });
+	  var TruckPlanCoordinates = [
+	        {% for coordinates in truck_plan_coordinates %}
+			{lat: {{coordinates.0}}, lng: {{coordinates.1}}},
+			{% endfor %}
+		];
+
+       var flightPath = new google.maps.Polyline({
+         path: TruckPlanCoordinates,
+         geodesic: true,
+         strokeColor: '#FF0000',
+         strokeOpacity: 1.0,
+         strokeWeight: 2
+       });
+
+       flightPath.setMap(map);
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	$(function() {
+		var index = 0
+		$( "select" ).mouseover(function() {
+	  		index =$(this).parent().parent().index();
+		});
+
+	 	$("select").on( 'click', function () {
+	 		
+	        var name = "#form" + index;
+	        var combo_val ="#job_status" + index;
+	        $(combo_val).val($(this).val());
+	        alert($(combo_val).val());
+	        //var elem_job_status = name +" #job_status"
+	        //alert(elem_job_status);
+	        //alert($(elem_job_status).val());
+	        //change_job_form = $(name);
+	        //alert(change_job_form.job_status);
+	                
+	        $(name).submit();
+	    });
+	});
+
+	
+</script>
+	<!-- <form name="my_available_jobs_form" id="my_available_jobs_form" action="{% url 'shipper_url' %}" method="GET">
+  		<input type="hidden" name="job_type" id="job_type" value="available_jobs">
+	</form> -->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">My Jobs</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <!--  --> <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary" id="my_jobs" name="my_jobs">
+                       
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-9 text-right">
+                                    <div>My Jobs</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="{% url 'shipper_url' %}?job_type=available_jobs">
+                            <div class="panel-footer">
+                            <a class="pull-left" href="{% url 'shipper_url' %}?job_type=available_jobs" >
+                               View Jobs</a>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                        
+                    </div>
+                </div> 
+                <div class="col-lg-3 col-md-6" id="available_jobs" name="available_jobs" onclick="submit_available_jobs()">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-9 text-right">
+                                    <div>Available Jobs</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'shipper_url' %}?job_type=available_jobs">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Jobs</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> My Jobs
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+					<!-- <div class="container"> -->         
+					  <table class="table">
+					    <thead>
+					      <tr>
+					        <th>Cargo Type</th>
+					        <th>Starting Point</th>
+					        <th>Destination</th>
+					        <th>Submit</th>
+					        <th>Action</th>
+					      </tr>
+					    </thead>
+					    <tbody>
+					    	{% for job in my_jobs %}
+						       <tr>
+		<form name="form{{forloop.counter0}}" id="form{{forloop.counter0}}" action="{% url 'shipper_url' %}" method="GET">
+  			<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
+  			<input type="hidden" name="job_status{{forloop.counter0}}" id="job_status{{forloop.counter0}}">
+  			<input type="hidden" name="new_job_status" id="new_job_status">
+  			<input type="hidden" name="change_job" id="change_job" value="change_job">
+		</form>
+						        <td>{{job.cargo_type}} </td>
+						        <td>{{job.starting_point}}</td>
+						        <td>{{job.destination}}</td>
+						        <td>{{job.job_status}}</td>
+						        <td>
+								<select name="select_action1" id="select_action1">
+									{% if job.job_status == 'assigned' %}
+									  <option value="accept">Accept</option>
+									  <option value="reject">Reject</option>									  
+									{% elif job.job_status == 'accepted' %}
+									  <option value="in_progress">In Progress</option>
+									{% elif job.job_status == 'in_progress' %}
+									  <option value="completed">Completed</option>
+									{% else %}
+									  <option value="test1">Test1</option>
+									  <option value="test2">Test2</option>
+									{% endif %}
+								</select>
+								</td>
+							{% endfor %}
+					    </tbody>
+					  </table>
+				<!-- </div> -->                  
+                        </div>
+                        <!-- /.panel-body -->
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Truck Location
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            	<table>
+                            	<tr><td>
+								<div id="googleMap" style="width:600px;height:380px;"></div>
+                            	</td></tr>
+                            	</table>                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-8 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    <!-- /#wrapper -->
+
+{% endblock %}
