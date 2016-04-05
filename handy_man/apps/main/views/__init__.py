@@ -1,8 +1,8 @@
 
 from .shipper import Shipper, create_get
 from .goods_owener import GoodsOwner
-from .home import Home
-from .user_login import user_profile, users, index, login_view, signup, logout_view, verify_account
+from handy_man.apps.user_profile.views.home import Home
+from handy_man.apps.user_profile.views.user_login import user_profile, users, index, login_view, signup, logout_view, verify_account
 from .base_dashboard import BaseDashboard
 from .add_bid import AddBid
 from .view_bids import ViewBids

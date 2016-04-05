@@ -2,7 +2,7 @@ from django.db import models
 
 from ..constants import NEW, UNDER_CONSIDERATION, REJECTED
 from .job import Job
-from .user_profile import UserProfile
+from handy_man.apps.user_profile.models.user_profile import UserProfile
 
 
 class Bid(models.Model):

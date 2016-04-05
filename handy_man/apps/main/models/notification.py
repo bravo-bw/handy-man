@@ -1,6 +1,6 @@
 from django.db import models
 
-from .user_profile import UserProfile
+from handy_man.apps.user_profile.models.user_profile import UserProfile
 
 
 class Notification(models.Model):

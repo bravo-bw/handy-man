@@ -1,4 +1,4 @@
-from .user_profile import UserProfile
+from handy_man.apps.user_profile.models.user_profile import UserProfile
 from .job import Job
 from .company import Company
 from .notification import Notification
