@@ -6,48 +6,72 @@
         <form class="form-inline" action="{% url 'user_profile' user.username%}" method="post">
         	{% csrf_token %}
           <div class="panel panel-info">
-          	<table>
-	            <div class="panel-heading">
-	              <h3 class="panel-title">{{ form.username }}</h3>
-	            </div>
-            </table>
+            <div class="panel-heading">
+              <h3 class="panel-title">User Profile</h3>
+            </div>
             <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/user1.png" class="img-circle img-responsive"> </div>
-                
-                <div class=" col-md-9 col-lg-9 "> 
-                  <table class="table table-user-information">
-                    <tbody>
-                      <tr>
-                        <td>First Name:</td>
-                        <td>{{form.first_name}}</td>
-                      </tr>
-                      <tr>
-                        <td>Last Name:</td>
-                        <td>{{form.last_name}}</td>
-                      </tr>
-                      <tr>
-                        <td>Date of Birth:</td>
-                        <td><input type="date"><br></td>
-                      </tr>
-                      <tr>
-                        <td>Email:</td>
-                        <td><a href=>{{form.email}}</a></td>
-                      </tr>
-                      <tr>
-                        <td>Contact Number:</td>
-                        <td>{{form.mobile}}<br></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td><a href=>Change Password</a><br></td>
-                      </tr>      
-                    </tbody>
-                  </table>
-                  <div class="form-group">
-                  	<button class="btn btn-primary" type="submit" value="submit" name="user" id="user">Submit</button>
-                  </div>
-                </div>
+              	  <!--<div align="center"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/user1.png" class="img-circle img-responsive"> </div>-->
+				  <ul class="nav nav-pills">
+				    <li class="active"><a data-toggle="tab" href="#personal">Personal Data</a></li>
+				    <li><a data-toggle="tab" href="#documents">Documentation</a></li>
+				    <li><a data-toggle="tab" href="#geolocation">GeoLocation</a></li>
+				  </ul>
+				  <div class="tab-content">
+				    <div id="personal" class="tab-pane fade in active">
+				      <div class="row" style="height:25%;">
+				      	  <div align="left"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/user1.png" class="img-circle img-responsive" style="width:150px;height:150px"> </div>
+				      </div>
+				      <div class="row">
+					      <div class=" col-md-12 col-lg-12 "> 
+			                  <table class="table table-user-information">
+			                    <tbody>
+			                      <tr>
+			                        <td>First Name:</td>
+			                        <td>{{form.first_name}}</td>
+			                      </tr>
+			                      <tr>
+			                        <td>Last Name:</td>
+			                        <td>{{form.last_name}}</td>
+			                      </tr>
+			                      <tr>
+			                        <td>Date of Birth:</td>
+			                        <td><input type="date"><br></td>
+			                      </tr>
+			                      <tr>
+			                        <td>Email:</td>
+			                        <td><a href=>{{form.email}}</a></td>
+			                      </tr>
+			                      <tr>
+			                        <td>Contact Number:</td>
+			                        <td>{{form.mobile}}<br></td>
+			                      </tr>
+			                      <tr>
+			                        <td></td>
+			                        <td><a href=>Change Password</a><br></td>
+			                      </tr>      
+			                    </tbody>
+			                  </table>
+			               </div>
+			            </div>
+			            <div class="row">
+			            	<div class=" col-md-6 col-lg-6 " align="left"> 
+			                  <div class="form-group">
+			                  	<button class="btn btn-primary" type="Edit" value="submit" name="user" id="user">Edit</button>
+			                  </div>
+	                		</div>
+			            	<div class=" col-md-6 col-lg-6 " align="right"> 
+			                  <div class="form-group">
+			                  	<button class="btn btn-primary" type="submit" value="submit" name="user" id="user">Submit</button>
+			                  </div>
+	                		</div>
+	                	</div>
+				    </div>
+				    <div id="documents" class="tab-pane fade">
+				      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+				    </div>
+				    <div id="geolocation" class="tab-pane fade">
+				      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+				    </div>
               </div>
             </div>
                  <!-- <div class="panel-footer">
