@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from .base_dashboard import BaseDashboard
-from ..forms import AuthenticateForm, UserCreateForm
+from handy_man.apps.main.views import BaseDashboard
+from handy_man.apps.user_profile.forms import AuthenticateForm, UserCreateForm
 
 
 class Home(BaseDashboard):

@@ -11,7 +11,7 @@ from .base_dashboard import BaseDashboard
 
 from ..models import Job
 from ..constants import NEW, IN_PROGRESS, ACCEPTED, ASSIGNED, COMPLETED
-from code_rumble.apps.main.models.bid import Bid
+from handy_man.apps.main.models.bid import Bid
 
 
 class Shipper(BaseDashboard):

@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     mobile = models.CharField(max_length=10)
     email_validated = models.BooleanField(default=False)
     administrator_validated = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='media')
+    photo = models.ImageField(upload_to='media', null=True, blank=True)
 #     account = models.CharField(max_length=10)
 #     company = models.ForeignKey(Company, null=True)
 
@@ -37,7 +37,7 @@ class UserProfile(models.Model):
     )
 
     def __unicode__(self):
-        return (self.user.username,)
+        return self.user.username
 
     class Meta:
         app_label = 'user_profile'

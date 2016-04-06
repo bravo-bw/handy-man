@@ -1,20 +1,13 @@
 from django.conf.urls import patterns, url, include
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from code_rumble.apps.main.views.user_login import (user_profile, users, login_view, signup, logout_view,
-                                                    verify_account)
 
-from code_rumble.apps.main.views import Shipper, AddBid, ViewBids, create_get, ViewNotifications
-from code_rumble.apps.main.views import Shipper, create_get, GoodsOwner, AccountDetails
-
-
-from .views import Home
-
-admin.autodiscover()
+from handy_man.apps.user_profile.views import Home
+from handy_man.apps.main.views import Shipper, AddBid, ViewBids, create_get, ViewNotifications
+from handy_man.apps.main.views import Shipper, create_get, GoodsOwner, AccountDetails
 
 urlpatterns = patterns(
     '',
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^$', Home.as_view(), name='home_url'),
 #     url(r'^login$', login_view),
 #     url(r'^logout$', logout_view),
@@ -31,9 +24,4 @@ urlpatterns = patterns(
     url(r'^view_notifications', login_required(ViewNotifications.as_view()), name='view_notifications'),
     url(r'^job', create_get, name='job_url'),
     url(r'^account_details/(?P<username>\w{0,30})/$', login_required(AccountDetails.as_view()), name='banking_url')
-)
-
-urlpatterns += patterns(
-    'django.contrib.staticfiles.views',
-    url(r'^static/(?P<path>.*)$', 'serve'),
 )

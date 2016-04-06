@@ -2,7 +2,7 @@ from django.db import models
 
 from ..choices import PAYMENT_MODE, PAYMENT_STATUS, BANK, BANK_ACCOUNT_TYPE
 
-from handy_man.apps.user_profile.models.user_profile import UserProfile
+from handy_man.apps.user_profile.models.profile import UserProfile
 
 
 class AccountDetails(models.Model):

@@ -8,9 +8,9 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.http import Http404
 
-from ..forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
-from ..models import UserProfile
-from ..constants import SHIPPER
+from handy_man.apps.main.constants import SHIPPER
+from handy_man.apps.user_profile.models import UserProfile
+from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
 
 
 def get_latest(user):
@@ -115,14 +115,14 @@ def index(request, auth_form=None, user_form=None):
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticateForm(data=request.POST)
-        user_profile = UserProfile.objects.filter(user__username=request.POST.get('username'), validated=True)
+        user_profile = UserProfile.objects.filter(user__username=request.POST.get('username'), email_validated=True)
         if form.is_valid() and user_profile:
             login(request, form.get_user())
 
-            if user_profile[0].account == SHIPPER:
-                return redirect('/shipper?job_type=my_jobs')
-            else:
-                return redirect('/goods_owner/1')
+#             if user_profile[0].account == SHIPPER:
+#                 return redirect('/shipper?job_type=my_jobs')
+#             else:
+#                 return redirect('/goods_owner/1')
         else:
             return index(request, auth_form=form)
     return redirect('/')

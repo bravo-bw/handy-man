@@ -2,7 +2,7 @@ import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from handy_man.apps.user_profile.models.user_profile import UserProfile
+from handy_man.apps.user_profile.models.profile import UserProfile
 from .account_details import AccountDetails
 from ..constants import NEW, INDIVIDUAL, SHIPPER, ASSIGNED, ON_HOLD, ACCEPTED, PENDING
 from ..choices import JOB_STATUS, CARGO_TYPE

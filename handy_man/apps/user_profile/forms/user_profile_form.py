@@ -1,8 +1,8 @@
 from django.core.files.images import get_image_dimensions
 from django import forms
+from handy_man.apps.user_profile.models import UserProfile
 
 from ...main.custom_form_fields import SubmitButtonField
-from ...user_profile.models import UserProfile
 
 
 class UserProfileForm(forms.ModelForm):

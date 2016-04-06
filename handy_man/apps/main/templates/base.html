@@ -57,18 +57,9 @@
 	                            <li>
 	                                <a href="{% url 'user_profile' user.username%}">Personal Details</a>
 	                            </li>
-	                            <li>
-	                                <a href="{% url 'banking_url' user.username%}">Bank Account details</a>
-	                            </li>
 	                        </ul>
 	                        <!-- /.nav-second-level -->
 	                    </li>
-	                    <li>
-	                       <a href="{% url 'view_notifications' %}"><i class="fa fa-dashboard fa-fw"></i> View Notifications</a>
-	                   </li>
-	                   <li>
-                       		<a href="{% url 'shipper_url' %}?job_type=my_jobs""><i class="fa fa-dashboard fa-fw"></i>Jobs</a>
-                   	   </li>
                     {% endif %}
                     <li>
                        <a href="#"><i class="fa fa-table fa-fw"></i> Contact Us</a>

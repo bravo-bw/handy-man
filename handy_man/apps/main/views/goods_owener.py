@@ -5,8 +5,8 @@ from .base_dashboard import BaseDashboard
 from ..models import Job, Bid
 from ..forms import JobForm
 from ..constants import NEW, IN_PROGRESS, ACCEPTED, ASSIGNED, COMPLETED
-from code_rumble.apps.main.models.user_profile import UserProfile
-from code_rumble.apps.main.choices import ACCOUNT_TYPE
+from handy_man.apps.main.models import UserProfile
+from handy_man.apps.main.choices import ACCOUNT_TYPE
 
 
 class GoodsOwner(BaseDashboard):
