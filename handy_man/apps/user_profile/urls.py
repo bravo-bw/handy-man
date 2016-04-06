@@ -1,14 +1,10 @@
 from django.conf.urls import patterns, url, include
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from code_rumble.apps.main.views.user_login import (user_profile, users, login_view, signup, logout_view,
-                                                    verify_account)
+from handy_man.apps.user_profile.views.user_login import (user_profile, users, login_view, signup, logout_view,
+                                                          verify_account)
 
-from code_rumble.apps.main.views import Shipper, AddBid, ViewBids, create_get, ViewNotifications
-from code_rumble.apps.main.views import Shipper, create_get, GoodsOwner, AccountDetails
-
-
-from .views import Home
+from ..user_profile.views import Home
 
 admin.autodiscover()
 

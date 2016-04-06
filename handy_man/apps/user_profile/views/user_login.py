@@ -13,7 +13,6 @@ from ..models import UserProfile
 from ..constants import SHIPPER
 
 
-
 def get_latest(user):
     try:
         return user.ribbit_set.order_by('-id')[0]
