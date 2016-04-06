@@ -1,20 +1,21 @@
 import os
 import sys
 from unipath import Path
- 
+
 DEBUG = True
- 
+
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOGIN_URL = '/'
 
 BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 GIT_DIR = BASE_DIR.ancestor(1)
 DEBUG = True
-FIELD_MAX_LENGTH='default'
+FIELD_MAX_LENGTH = 'default'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('SirOne', 'your_email@example.com'),
+    ('SirOne', 'your_email@example.com'),
+    ('ckgathi', 'ckgathi@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -31,16 +32,16 @@ if 'test' in sys.argv:
 else:
     DATABASES = {
         'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'OPTIONS': {
-                    'init_command': 'SET storage_engine=INNODB',
-                },
-                'OPTIONS': {
-                    'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
-                },
-                'HOST': '',
-                'PORT': '',
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'init_command': 'SET storage_engine=INNODB',
             },
+            'OPTIONS': {
+                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
+            },
+            'HOST': '',
+            'PORT': '',
+        },
     }
 
 SITE_ID = 1
