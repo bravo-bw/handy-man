@@ -7,7 +7,7 @@ class BaseDashboard(View):
 
     def __init__(self):
         self.context = {}
-        self.title = 'BW Shipping Portal'
+        self.title = 'BW Handy Man'
 
     def get(self, request, *args, **kwargs):
         self.context.update({
