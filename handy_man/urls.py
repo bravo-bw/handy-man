@@ -26,9 +26,10 @@ urlpatterns += patterns(
 #     (r'^main/', include('handy_man.apps.main.urls')),
 )
 
-urlpatterns += patterns(
-    'django.contrib.staticfiles.views',
-    url(r'^static/(?P<path>.*)$', 'serve'),
-)
+
+# urlpatterns += patterns(
+#     'django.contrib.staticfiles.views',
+#     url(r'^static/(?P<path>.*)$', 'serve'),
+# )
 
 urlpatterns += staticfiles_urlpatterns()

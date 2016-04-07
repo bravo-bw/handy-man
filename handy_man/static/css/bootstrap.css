@@ -2525,6 +2525,17 @@ input[type="checkbox"] {
 }
 input[type="file"] {
   display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 25%;
+  min-height: 25%;
+  font-size: 999px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: red;
+  cursor: inherit;
 }
 input[type="range"] {
   display: block;
