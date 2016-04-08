@@ -37,7 +37,8 @@ class UserProfile(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.username
+        return '{} {} ({}), {}, {}'.format(self.user.first_name, self.user.last_name, self.user.username,
+                                           self.user.email, 'location')
 
     class Meta:
         app_label = 'user_profile'

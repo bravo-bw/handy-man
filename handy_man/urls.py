@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView
 from handy_man.apps.user_profile.views import (login_view, signup, logout_view, Home)
+from handy_man.apps.main.views import SearchView
 
 admin.autodiscover()
 
@@ -21,6 +22,7 @@ urlpatterns += patterns(
     url(r'^$', Home.as_view(), name='home_url'),
     url(r'^login$', login_view),
     url(r'^logout$', logout_view),
+    url(r'^search$', SearchView.as_view(), name='search_url_get'),
     url(r'^signup$', signup),
     (r'^profile/', include('handy_man.apps.user_profile.urls')),
 #     (r'^main/', include('handy_man.apps.main.urls')),
