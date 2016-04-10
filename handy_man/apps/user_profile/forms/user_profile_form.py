@@ -6,13 +6,14 @@ from ...main.custom_form_fields import SubmitButtonField
 
 
 class UserProfileForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=forms.widgets.TextInput(attrs={'readonly': 'Email'}))
-    first_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'readonly': 'First Name'}))
-    last_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'readonly': 'Last Name'}))
-    mobile = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'mobile number'}))
-    username = forms.CharField(widget=forms.widgets.TextInput(attrs={'readonly': 'Username'}))
-    dob = forms.CharField(widget=forms.widgets.TextInput(attrs={'placeholder': 'Date Of Birth'}))
-    submit_button = SubmitButtonField(label='Save', initial="Save")
+    email = forms.EmailField(required=True, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Email'}))
+    first_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'First Name'}))
+    last_name = forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Last Name'}))
+    mobile = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'mobile number'}))
+    alter_contact = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Alternative Contact'}))
+    username = forms.CharField(widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Username'}))
+    dob = forms.DateField(widget=forms.DateInput(attrs={'readonly': 'readonly', 'placeholder': 'Date Of Birth'}))
+    submit_button = SubmitButtonField(label='Submit', initial="Submit")
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']

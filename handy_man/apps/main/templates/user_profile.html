@@ -24,7 +24,7 @@
               <h3 class="panel-title">User Profile for <b>{{user.username}}</b></h3>
             </div>
             <div class="panel-body">
-              	  <!--<div align="center"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/user1.png" class="img-circle img-responsive"> </div>-->
+              	  <!--<div align="center"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" class="img-circle img-responsive"> </div>-->
 				  <ul class="nav nav-pills">
 				    <li class="active"><a data-toggle="tab" href="#personal">Personal Data</a></li>
 				    <li><a data-toggle="tab" href="#documents">Documentation</a></li>
@@ -33,12 +33,12 @@
 				  <div class="tab-content">
 				    <div id="personal" class="tab-pane fade in active">
 				      <div class="row" style="height:25%;">
-				      	  <!--<div align="left"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/user1.png" class="img-circle img-responsive" style="width:150px;height:150px"> </div>-->
+				      	  <!--<div align="left"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" class="img-circle img-responsive" style="width:150px;height:150px"> </div>-->
 						  <div class="kv-avatar center-block" style="width:180px">
 							<div class="file-input">
 							<div class="file-preview ">
 							    <div class="file-drop-disabled">
-								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{ STATIC_URL}}gfx/user1.png" alt="Your Avatar" style="width:160px" id="avatar_image"></div></div>
+								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" alt="Your Avatar" style="width:160px" id="avatar_image"></div></div>
 								    <div class="clearfix"></div><div class="file-preview-status text-center text-success"></div>
 								    <div class="kv-fileinput-error"></div>
 							    </div>
@@ -58,27 +58,36 @@
 			                  <table class="table table-user-information">
 			                    <tbody>
 			                      <tr>
-			                        <td>First Name:</td>
-			                        <td>{{form.first_name}}</td>
+			                        <td>
+				                        <label for="first_name">First Name:</label>
+										{{form.last_name}}
+									</td>
+			                        <td>
+			                        	<label for="last_name">Last Name:</label>
+			                      		{{form.last_name}}
+			                      	</td>
 			                      </tr>
 			                      <tr>
-			                        <td>Last Name:</td>
-			                        <td>{{form.last_name}}</td>
+			                        <td>
+			                        	<label for="dob">Date of Birth:</label>
+				                        {{form.dob}}
+				                     </td>
+				                     <td>
+				                        <label for="email">Contact Email:</label>
+				                        {{form.email}}
+			                        </td>
 			                      </tr>
 			                      <tr>
-			                        <td>Date of Birth:</td>
-			                        <td><input type="date"><br></td>
+			                        <td>
+				                        <label for="contact_number">Mobile Number:</label>
+				                        {{form.mobile}}
+			                        </td>
+			                        <td>
+			                        	<label for="alter_contact">Alternative Number:</label>
+				                        {{form.alter_contact}}
+			                        </td>
 			                      </tr>
 			                      <tr>
-			                        <td>Email:</td>
-			                        <td><a href=>{{form.email}}</a></td>
-			                      </tr>
-			                      <tr>
-			                        <td>Contact Number:</td>
-			                        <td>{{form.mobile}}<br></td>
-			                      </tr>
-			                      <tr>
-			                        <td></td>
 			                        <td><a href=>Change Password</a><br></td>
 			                      </tr>      
 			                    </tbody>
@@ -88,12 +97,13 @@
 			            <div class="row">
 			            	<div class=" col-md-6 col-lg-6 " align="left"> 
 			                  <div class="form-group">
-			                  	<button class="btn btn-primary" type="Edit" value="submit" name="user" id="user">Edit</button>
+			                  	<button class="btn btn-primary" type="edit" value="submit" name="user" id="user">Edit</button>
 			                  </div>
 	                		</div>
 			            	<div class=" col-md-6 col-lg-6 " align="right"> 
 			                  <div class="form-group">
 			                  	<button class="btn btn-primary" type="submit" value="submit" name="user" id="user">Submit</button>
+			                  	<!--{{form.submit_button}}-->
 			                  </div>
 	                		</div>
 	                	</div>
