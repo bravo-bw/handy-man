@@ -12,7 +12,7 @@ class UserProfileForm(forms.ModelForm):
     mobile = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'mobile number'}))
     alter_contact = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Alternative Contact'}))
     username = forms.CharField(widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Username'}))
-    dob = forms.DateField(widget=forms.DateInput(attrs={'readonly': 'readonly', 'placeholder': 'Date Of Birth'}))
+    dob = forms.DateField(widget=forms.widgets.DateInput(attrs={'readonly': 'readonly', 'placeholder': 'Date Of Birth'}))
     submit_button = SubmitButtonField(label='Submit', initial="Submit")
 
     def clean_avatar(self):

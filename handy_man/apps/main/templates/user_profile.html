@@ -17,8 +17,8 @@
 {% block content %}
 	<div class="container">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-        <form class="form-inline" action="{% url 'user_profile' user.username%}" method="post">
-        	{% csrf_token %}
+        <!--<form class="form-inline" action="{% url 'user_profile' user.username%}" method="post">
+        	{% csrf_token %}-->
           <div class="panel panel-info">
             <div class="panel-heading">
               <h3 class="panel-title">User Profile for <b>{{user.username}}</b></h3>
@@ -60,7 +60,7 @@
 			                      <tr>
 			                        <td>
 				                        <label for="first_name">First Name:</label>
-										{{form.last_name}}
+										{{form.first_name}}
 									</td>
 			                        <td>
 			                        	<label for="last_name">Last Name:</label>
@@ -97,7 +97,7 @@
 			            <div class="row">
 			            	<div class=" col-md-6 col-lg-6 " align="left"> 
 			                  <div class="form-group">
-			                  	<button class="btn btn-primary" type="edit" value="submit" name="user" id="user">Edit</button>
+			                  	<button class="btn btn-primary" value="submit" name="user" id="edit_profile">Edit</button>
 			                  </div>
 	                		</div>
 			            	<div class=" col-md-6 col-lg-6 " align="right"> 
@@ -174,20 +174,27 @@
                         </span>
                     </div> -->
           </div>
-          </form>
+          <!--</form>-->
         </div>
       </div>
       <script>
-			$( "#avatar" ).change(function(event) {
+			$("#avatar").change(function(event) {
 				var selectedFile = event.target.files[0];
 				var reader = new FileReader();
-				var imgtag = $( "#avatar_image" )
+				var imgtag = $("#avatar_image")
 				imgtag.title = selectedFile.name;
 				reader.onload = function(event) {
 				    imgtag.attr('src', event.target.result);
 				}
 				reader.readAsDataURL(selectedFile);
 				  //$( "#avatar_image" ).attr('src', $( this ).val());
+			});
+			//When Edit button is clicked, make inputs ready to accept data.
+			$("#edit_profile").click(function(event) {
+				$("input[id^=id_]").each(function(index) {
+					$(this).removeAttr("readonly");
+				});
+				return false;
 			});
 	 </script>
 {% endblock %}
