@@ -32,13 +32,15 @@
 				  </ul>
 				  <div class="tab-content">
 				    <div id="personal" class="tab-pane fade in active">
-				      <div class="row" style="height:25%;">
+				     <form action="{% url 'user_profile' user.username%}" method="post">
+				       {% csrf_token %}
+				       <div class="row" style="height:25%;">
 				      	  <!--<div align="left"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" class="img-circle img-responsive" style="width:150px;height:150px"> </div>-->
 						  <div class="kv-avatar center-block" style="width:180px">
 							<div class="file-input">
 							<div class="file-preview ">
 							    <div class="file-drop-disabled">
-								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" alt="Your Avatar" style="width:160px" id="avatar_image"></div></div>
+								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" alt="Your Avatar" style="width:160px" name='avatar_image' id="avatar_image"></div></div>
 								    <div class="clearfix"></div><div class="file-preview-status text-center text-success"></div>
 								    <div class="kv-fileinput-error"></div>
 							    </div>
@@ -103,10 +105,10 @@
 			            	<div class=" col-md-6 col-lg-6 " align="right"> 
 			                  <div class="form-group">
 			                  	<button class="btn btn-primary" type="submit" value="submit" name="user" id="user">Submit</button>
-			                  	<!--{{form.submit_button}}-->
 			                  </div>
 	                		</div>
 	                	</div>
+	                  </form>
 				    </div>
 				    <div id="documents" class="tab-pane fade">
 				    	<div class="row">

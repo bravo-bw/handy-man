@@ -56,21 +56,7 @@ def user_profile(request, username=None):
                 updated_profile_values[fld] = form.cleaned_data.get(fld)
             User.objects.filter(id=request.user.id).update(**updated_user_values)
             UserProfile.objects.filter(user=request.user).update(**updated_profile_values)
-            updated_vehicles = []
-            for key, value in request.POST.iteritems():
-                if key.find('car') != -1:
-                    updated_vehicles.append(value)
-
-            updated_people = []
-            for key, value in request.POST.iteritems():
-                if key.find('per') != -1:
-                    updated_people.append(value)
-            UserProfile.objects.get(user__username=request.user.username).linked_to.clear()
-            for name in updated_people:
-                first_name, surname = name.split('.')
-                named_user = UserProfile.objects.get(user__first_name=first_name, user__last_name=surname)
-                user_profile.linked_to.add(named_user)
-            return HttpResponseRedirect('/user_profile/{}/'.format(form.cleaned_data.get('username')))
+            return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
     else:
         user_profile = UserProfile.objects.get(user=request.user)
         form_values = {}

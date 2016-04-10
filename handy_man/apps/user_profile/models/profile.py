@@ -10,6 +10,7 @@ from ...main.choices import GENDER
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     mobile = models.CharField(max_length=10)
+    alter_contact = models.CharField(max_length=10, null=True, blank=True)
     email_validated = models.BooleanField(default=False)
     administrator_validated = models.BooleanField(default=False)
     photo = models.ImageField(upload_to='media', null=True, blank=True)
