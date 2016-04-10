@@ -1,0 +1,1 @@
+from item_geolocation.models.item_geolocation_mixin import ItemGeolocationMixin

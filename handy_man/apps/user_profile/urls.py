@@ -5,11 +5,10 @@ from handy_man.apps.user_profile.views import (user_profile, users, login_view, 
                                                verify_account, Home)
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^users/$', users),
     url(r'^verify/(?P<username>\w{0,30})$', verify_account),
     url(r'^users/(?P<username>\w{0,30})/$', users),
     url(r'^user_profile/(?P<username>\w{0,30})/$', user_profile, name='user_profile'),
     url(r'^user_profile/$', user_profile),
-)
+]

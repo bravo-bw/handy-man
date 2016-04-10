@@ -4,7 +4,6 @@ from django.utils import html
 
 class SubmitButtonWidget(forms.Widget):
     def render(self, name, value, attrs=None):
-        print '{} {}'.format(name, value)
         return '<input type="submit" name="%s" value="%s">' % (html.escape(name), html.escape(value))
 
 

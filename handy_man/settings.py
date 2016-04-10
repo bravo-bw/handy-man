@@ -130,7 +130,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 )
 
-SECRET_KEY  = os.path.join(PATH, 'handy_man.txt')
+SECRET_KEY = os.path.join(PATH, 'handy_man.txt')
 
 
 # A sample logging configuration. The only tangible logging
