@@ -5,6 +5,11 @@ class Job(models.Model):
 
     """
     This model describes the job and its details.
+         1. Job Posting
+         2. Job Allocation
+         3. Job Quatation
+         4. Job Payment
+         5. Job Report
     """
 
     #user = models.ForeignKey(UserProfile, related_name='profile_sumbittor', editable=False)
@@ -28,28 +33,28 @@ class Job(models.Model):
     )
 
     job_images = models.CharField(
-        verbose_name='Category',
+        verbose_name='Images',
         default=None,
         max_length=36,
         unique=True,
         editable=False
     )
 
-    region = models.CharField(
-        verbose_name='Category',
+    location = models.CharField(
+        verbose_name='Location',
         default=None,
         max_length=36,
         unique=True,
         editable=False
     )
 
-    area = models.CharField(
-        verbose_name='Category',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
+#     area = models.CharField(
+#         verbose_name='Area',
+#         default=None,
+#         max_length=36,
+#         unique=True,
+#         editable=False
+#     )
 
     status = models.CharField(
         verbose_name='Job Status',
@@ -60,15 +65,15 @@ class Job(models.Model):
     )
 
     type = models.CharField(
-        verbose_name='Type of Cargo',
+        verbose_name='Job Type',
         max_length=25,
-        choices=CARGO_TYPE,
+        choices=JOB_TYPE,
         null=True,
         blank=True
     )
 
     description = models.TextField(
-        verbose_name='Detailed description of Cargo',
+        verbose_name='Detailed description of Job',
         max_length=250,
         null=True,
         blank=True

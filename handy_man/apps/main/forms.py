@@ -87,10 +87,3 @@ class UserProfileForm(forms.ModelForm):
         fields = ['email', 'username', 'first_name', 'last_name']
         profile_fields = ['mobile']
         model = UserProfile
-
-
-class JobForm(forms.ModelForm):
-    pass
-
-    class Meta:
-        model = Job
