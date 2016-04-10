@@ -32,7 +32,7 @@
 				  </ul>
 				  <div class="tab-content">
 				    <div id="personal" class="tab-pane fade in active">
-				     <form action="{% url 'user_profile' user.username%}" method="post">
+				     <form action="{% url 'user_profile' user.username%}" method="post" enctype="multipart/form-data" >
 				       {% csrf_token %}
 				       <div class="row" style="height:25%;">
 				      	  <!--<div align="left"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" class="img-circle img-responsive" style="width:150px;height:150px"> </div>-->
@@ -40,7 +40,7 @@
 							<div class="file-input">
 							<div class="file-preview ">
 							    <div class="file-drop-disabled">
-								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" alt="Your Avatar" style="width:160px" name='avatar_image' id="avatar_image"></div></div>
+								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{STATIC_URL}}gfx/{{user_profile.file_name}}" alt="Your Avatar" style="width:160px" id="avatar_display" name='avatar_display' ></div></div>
 								    <div class="clearfix"></div><div class="file-preview-status text-center text-success"></div>
 								    <div class="kv-fileinput-error"></div>
 							    </div>
@@ -49,7 +49,7 @@
 								  <button type="button" class="btn btn-default" title="Add picture tags" onclick="alert('Call your custom code here.')"><i class="glyphicon glyphicon-tag"></i></button>
 								  <button type="button" tabindex="500" title="Cancel or reset changes" class="btn btn-default fileinput-remove fileinput-remove-button"><i class="glyphicon glyphicon-remove"></i></button>
 								  <div tabindex="500" class="btn btn-primary btn-file"><i class="glyphicon glyphicon-folder-open"></i>
-								     <input id="avatar" name="avatar" class="" type="file">
+								     <input id="avatar_image" name="avatar_image" class="" type="file">
 								  </div>
 							  </div>
 							</div>
@@ -62,31 +62,31 @@
 			                      <tr>
 			                        <td>
 				                        <label for="first_name">First Name:</label>
-										{{form.first_name}}
+				                        <input type="text" id="id_first_name" name="first_name" value="{{user.first_name}}" placeholder="First Name" readonly="readonly">
 									</td>
 			                        <td>
 			                        	<label for="last_name">Last Name:</label>
-			                      		{{form.last_name}}
+			                        	<input type="text" id="id_last_name" name="last_name" value="{{user.last_name}}" placeholder="Last Name" readonly="readonly">
 			                      	</td>
 			                      </tr>
 			                      <tr>
 			                        <td>
 			                        	<label for="dob">Date of Birth:</label>
-				                        {{form.dob}}
+			                        	<input type="date" id="id_dob" name="dob" value="{{user_profile.formated_dob}}" placeholder="Date Of Birth" readonly="readonly">
 				                     </td>
 				                     <td>
 				                        <label for="email">Contact Email:</label>
-				                        {{form.email}}
+				                        <input type="text" id="id_email" name="email" value="{{user.email}}" placeholder="Contact Email" readonly="readonly">
 			                        </td>
 			                      </tr>
 			                      <tr>
 			                        <td>
 				                        <label for="contact_number">Mobile Number:</label>
-				                        {{form.mobile}}
+				                        <input type="text" id="id_mobile" name="mobile" value="{{user_profile.mobile}}" placeholder="Mobile Number" readonly="readonly">
 			                        </td>
 			                        <td>
 			                        	<label for="alter_contact">Alternative Number:</label>
-				                        {{form.alter_contact}}
+			                        	<input type="text" id="id_alter_contact" name="alter_contact" value="{{user_profile.alter_contact}}" placeholder="Alternative Number" readonly="readonly">
 			                        </td>
 			                      </tr>
 			                      <tr>
@@ -180,10 +180,10 @@
         </div>
       </div>
       <script>
-			$("#avatar").change(function(event) {
+			$("#avatar_image").change(function(event) {
 				var selectedFile = event.target.files[0];
 				var reader = new FileReader();
-				var imgtag = $("#avatar_image")
+				var imgtag = $("#avatar_display")
 				imgtag.title = selectedFile.name;
 				reader.onload = function(event) {
 				    imgtag.attr('src', event.target.result);

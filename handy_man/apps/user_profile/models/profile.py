@@ -1,5 +1,6 @@
 import hashlib
 from datetime import datetime
+from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -13,7 +14,10 @@ class UserProfile(models.Model):
     alter_contact = models.CharField(max_length=10, null=True, blank=True)
     email_validated = models.BooleanField(default=False)
     administrator_validated = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='media', null=True, blank=True)
+    avatar_image = models.ImageField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                     default=settings.STATIC_ROOT + '/gfx/default_avatar_male.jpg',
+                                     null=True,
+                                     blank=True)
 #     account = models.CharField(max_length=10)
 #     company = models.ForeignKey(Company, null=True)
 
@@ -36,6 +40,13 @@ class UserProfile(models.Model):
         null=True,
         blank=True,
     )
+
+    def formated_dob(self):
+        return self.dob.isoformat()
+
+    def file_name(self):
+        # Last element in the list is the file name
+        return self.avatar_image.name.split('/')[-1:][0]
 
     def __unicode__(self):
         return '{} {} ({}), {}, {}'.format(self.user.first_name, self.user.last_name, self.user.username,
