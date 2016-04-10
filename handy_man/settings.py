@@ -121,7 +121,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    #'south',
     'handy_man.apps.main',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
@@ -130,7 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 )
 
-SECRET_KEY  = os.path.join(PATH, 'handy_man.txt')
+SECRET_KEY = os.path.join(PATH, 'handy_man.txt')
 
 
 # A sample logging configuration. The only tangible logging
