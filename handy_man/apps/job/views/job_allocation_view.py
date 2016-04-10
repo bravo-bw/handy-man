@@ -12,6 +12,7 @@ class JobAllocationView(View):
         super(JobAllocationView, self).__init__()
 
     def get(self, request, *args, **kwargs):
+        print "def get(self, request, *args, **kwargs):"
         self.context.update({
             'name': 'Setsiba',
         })
