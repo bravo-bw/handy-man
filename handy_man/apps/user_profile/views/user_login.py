@@ -7,11 +7,11 @@ from django.db.models import Count, Q
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.http import Http404
+from django.utils.datastructures import MultiValueDictKeyError
 
-from ..forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
-from ..models import UserProfile
-from ..constants import SHIPPER
-
+from handy_man.apps.main.constants import SHIPPER
+from handy_man.apps.user_profile.models import UserProfile
+from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
 
 
 def get_latest(user):
@@ -46,9 +46,18 @@ def users(request, username="", ribbit_form=None):
 @login_required
 def user_profile(request, username=None):
     user_profile = UserProfile.objects.get(user=request.user)
+    user = user_profile.user
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
+            try:
+                avatar_image = request.FILES['avatar_image']
+                user_profile.avatar_image = avatar_image
+                user_profile.save()
+            except MultiValueDictKeyError:
+                pass
+            except Exception as e:
+                raise e
             updated_user_values = {}
             updated_profile_values = {}
             for fld in UserProfileForm.Meta.fields:
@@ -56,34 +65,25 @@ def user_profile(request, username=None):
             for fld in UserProfileForm.Meta.profile_fields:
                 updated_profile_values[fld] = form.cleaned_data.get(fld)
             User.objects.filter(id=request.user.id).update(**updated_user_values)
+            #updated_profile_values['avatar_image'] = avatar_image
             UserProfile.objects.filter(user=request.user).update(**updated_profile_values)
-            updated_vehicles = []
-            for key, value in request.POST.iteritems():
-                if key.find('car') != -1:
-                    updated_vehicles.append(value)
-
-            updated_people = []
-            for key, value in request.POST.iteritems():
-                if key.find('per') != -1:
-                    updated_people.append(value)
-            UserProfile.objects.get(user__username=request.user.username).linked_to.clear()
-            for name in updated_people:
-                first_name, surname = name.split('.')
-                named_user = UserProfile.objects.get(user__first_name=first_name, user__last_name=surname)
-                user_profile.linked_to.add(named_user)
-            return HttpResponseRedirect('/user_profile/{}/'.format(form.cleaned_data.get('username')))
+            return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
     else:
-        user_profile = UserProfile.objects.get(user=request.user)
-        form_values = {}
-        for fld in UserProfileForm.Meta.fields:
-            form_values[fld] = user_profile.user.__dict__[fld]
-        for fld in UserProfileForm.Meta.profile_fields:
-            form_values[fld] = user_profile.__dict__[fld]
-        form = UserProfileForm(form_values)
+        # If requet is a get, then do just display profile values.
+        pass
+#         form_values = {}
+#         for fld in UserProfileForm.Meta.fields:
+#             form_values[fld] = user_profile.user.__dict__[fld]
+#         for fld in UserProfileForm.Meta.profile_fields:
+#             print user_profile.__dict__[fld]
+#             form_values[fld] = user_profile.__dict__[fld]
+#         form = UserProfileForm(form_values)
+#         print form.instance.__dict__
 
     return render(request,
                   'user_profile.html',
-                  {'form': form, })
+                  {'user_profile': user_profile,
+                   'user': user})
 
 
 def index(request, auth_form=None, user_form=None):
@@ -116,14 +116,14 @@ def index(request, auth_form=None, user_form=None):
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticateForm(data=request.POST)
-        user_profile = UserProfile.objects.filter(user__username=request.POST.get('username'), validated=True)
+        user_profile = UserProfile.objects.filter(user__username=request.POST.get('username'), email_validated=True)
         if form.is_valid() and user_profile:
             login(request, form.get_user())
 
-            if user_profile[0].account == SHIPPER:
-                return redirect('/shipper?job_type=my_jobs')
-            else:
-                return redirect('/goods_owner/1')
+#             if user_profile[0].account == SHIPPER:
+#                 return redirect('/shipper?job_type=my_jobs')
+#             else:
+#                 return redirect('/goods_owner/1')
         else:
             return index(request, auth_form=form)
     return redirect('/')

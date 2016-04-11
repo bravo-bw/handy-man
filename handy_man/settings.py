@@ -1,20 +1,21 @@
 import os
 import sys
 from unipath import Path
- 
+
 DEBUG = True
- 
+
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
 LOGIN_URL = '/'
 
 BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 GIT_DIR = BASE_DIR.ancestor(1)
 DEBUG = True
-FIELD_MAX_LENGTH='default'
+FIELD_MAX_LENGTH = 'default'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('SirOne', 'your_email@example.com'),
+    ('SirOne', 'your_email@example.com'),
+    ('ckgathi', 'ckgathi@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -31,16 +32,16 @@ if 'test' in sys.argv:
 else:
     DATABASES = {
         'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'OPTIONS': {
-                    'init_command': 'SET storage_engine=INNODB',
-                },
-                'OPTIONS': {
-                    'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
-                },
-                'HOST': '',
-                'PORT': '',
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'init_command': 'SET storage_engine=INNODB',
             },
+            'OPTIONS': {
+                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
+            },
+            'HOST': '',
+            'PORT': '',
+        },
     }
 
 SITE_ID = 1
@@ -69,8 +70,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_PATH, 'static')
-
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'apps/main/static')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
@@ -100,7 +100,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'handy_man.apps.main.urls'
+ROOT_URLCONF = 'handy_man.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'handy_man.wsgi.application'
@@ -120,15 +120,16 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    #'south',
+    'south',
     'handy_man.apps.main',
+    'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
 )
 
-SECRET_KEY  = os.path.join(PATH, 'handy_man.txt')
+SECRET_KEY = os.path.join(PATH, 'handy_man.txt')
 
 
 # A sample logging configuration. The only tangible logging

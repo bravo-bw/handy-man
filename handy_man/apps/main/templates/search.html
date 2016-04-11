@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+ 
+{% block content %}
+	<div class="container">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+			<div class="panel panel-info">
+	            <div class="panel-heading">
+	              <h3 class="panel-title">Search</h3>
+	            </div>
+	            <div class="panel-body">  
+		        	<div class="row">
+		        		<form class="form-inline" action="{% url 'search_url_get' %}" method="post">
+			        		{% csrf_token %}
+							<div class="form-group">
+								<label for="search_val">value:</label>
+								<input id="search_val" name="search_val" class="" type="text">
+							</div>
+							<div class="form-group">
+								<label for="select1">type:</label>
+								<select name="select1" class="form-control" id="select1">
+									<option>-------</option>
+								    <option>profiles</option>
+								    <option>jobs</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<input id="submit1" name="submit1" class="btn btn-info" type="submit">
+							</div>
+						</form>
+					</div>
+					{% for item in user_profiles %}
+						<div class="row" style="background-color: #F5ECCE""; padding: "15px">
+							<a href="{% url 'user_profile' item.user.username %}">{{item}}</a>
+						</div>
+					{% endfor %}
+			   </div>
+			</div>
+		</div>
+    </div>
+{% endblock %}
