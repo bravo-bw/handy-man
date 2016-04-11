@@ -120,7 +120,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'south',
     'handy_man.apps.main',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
