@@ -85,6 +85,34 @@ def user_profile(request, username=None):
                   {'user_profile': user_profile,
                    'user': user})
 
+@login_required
+def user_profile_documents(request, username=None):
+    user_profile = UserProfile.objects.get(user=request.user)
+    user = user_profile.user
+    if request.method == 'POST':
+#         form = UserProfileDocumentsForm(request.POST)
+#         if form.is_valid():
+        count = 0
+        try:
+            pass
+#             for value in request.FILES.values():
+#                 if 
+#                 setattr(user_profile, 'document_{}'.format(count), value)
+#             user_profile.save()
+        except MultiValueDictKeyError:
+            pass
+        except Exception as e:
+            raise e
+        return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
+    else:
+        # If requet is a get, then do just display profile values.
+        pass
+
+    return render(request,
+                  'user_profile.html',
+                  {'user_profile': user_profile,
+                   'user': user})
+
 
 def index(request, auth_form=None, user_form=None):
 
