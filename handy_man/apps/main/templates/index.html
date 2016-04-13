@@ -37,7 +37,8 @@
     <link href="{{ STATIC_URL }}css/sb-admin-2.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-default sidebar" role="navigation">
+{% block navigation %}
+<nav class="navbar navbar-default sidebar" style="background-color:red" role="navigation">
     <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
@@ -50,28 +51,27 @@
     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home<span style="font-size:16px;"></span></a></li>
-        <li>
-          <a href="#">Usuarios<span style="font-size:16px;"></span></a>
-        </li>          
-        <li ><a href="#">Libros<span style="font-size:16px;"></span></a></li>        
-        <li ><a href="#">Tags<span style="font-size:16px;"></span></a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'user_profile' user.username %}">My Profile<span style="font-size:16px;"></span></a></li>
+        {% endif %}          
+        <li ><a href="#">Contact Us<span style="font-size:16px;"></span></a></li>        
+        <li ><a href="#">About Us<span style="font-size:16px;"></span></a></li>
+        <li ><a href="{% url 'search_url_get' %}">Search<span style="font-size:16px;"></span></a></li>
       </ul>
     </div>
   </div>
 </nav>
+{% endblock %}
+<div class="login">
+	{% block login %}
+		{% if user.is_authenticated %}
+	       <form action="/logout"><input type="submit" id="btnLogOut" value="Log Out"></form>
+		{% endif %}
+	{% endblock %}
+</div>
 <script type="text/javascript">
 
 </script>
-<div class="login">
-       {% block login %}
-       		{% if user.is_authenticated %}
-		       <form action="/logout">
-		           <input type="submit" id="btnLogOut" value="Log Out">
-		       </form>
-		    {% endif %}
-       {% endblock %}
-       </div>
-
 {% block content %}
 {% endblock %}
    

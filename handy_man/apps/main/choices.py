@@ -3,8 +3,9 @@ SENDING_METHODS = (
     ('email', 'email'),
 )
 
-ACCOUNT_TYPE = (('shipper', 'Shipper'),
-                ('individual', 'Individual'))
+ACCOUNT_TYPE = (('Artisan', 'Artisan'),
+                ('SME', 'SME'),
+                ('Customer', 'Customer'))
 
 JOB_STATUS = (('new', 'new'),
               ('in_progess', 'In Progress'),

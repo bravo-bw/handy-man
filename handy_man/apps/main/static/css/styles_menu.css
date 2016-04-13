@@ -58,17 +58,13 @@
     nav.sidebar{
       width: 200px;
       height: 100%;
-      margin-left: -160px;
+      margin-left: 0px;
       float: left;
       margin-bottom: 0px;
     }
 
     nav.sidebar li {
       width: 100%;
-    }
-
-    nav.sidebar:hover{
-      margin-left: 0px;
     }
 
     .forAnimate{
