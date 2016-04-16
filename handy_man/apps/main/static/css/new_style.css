@@ -14,3 +14,8 @@
    background:#6cf;
    text-align:center;
 }
+
+.rounded {
+  border-radius: 10px;
+  background: #000; // without a background or border applied you won't be able to see if its rounded
+}
