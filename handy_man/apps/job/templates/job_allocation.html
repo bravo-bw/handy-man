@@ -1,106 +1,106 @@
 {% extends "base_job.html" %}
 {% block controlled_table %}
 <div class="row">
-                <div class="col-lg-9">
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Jobs
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-					<!-- <div class="container"> -->         
-					  <table class="table" style="background-color:blue; width:100%;">
-					    <thead>
-					      <tr>
-					        <th></th>
-					        <th></th>
-					        <th></th>
-					        <th></th>
-					        <th></th>
-					        <th>Status</th>
-					      </tr>
-					    </thead>
-					    <tbody>
-						       <tr>
-		<form name="form1" id="form{{forloop.counter0}}" action="#" method="GET">
-  			<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
-  			<input type="hidden" name="username" id="username">
-		</form>
-						        <td></td>
-						        <td></td>
-						        <td></td>
-						        <td></td>
-						        <td>
-								</td>
-								<td><button type="submit" class="btn btn-primary">Assign</button></td>
-					    </tbody>
-					  </table>
-				<!-- </div> -->                  
-                        </div>
-                        <!-- /.panel-body -->
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Locations
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            	<table>
-                            	<tr><td>
-								<div id="googleMap" style="width:600px;height:380px;"></div>
-                            	</td></tr>
-                            	</table>                            
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-8 -->
-                <div class="col-lg-3">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Best Artisan
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                        {% for bidder in biddings %}
-                            <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> {{bidder.bid_owner.user.first_name}} {{bidder.bid_owner.user.last_name}}
-                                    <span class="pull-right text-muted small"><em>{{bidder.bidding_amount}}</em>
-                                    </span>
-                                </a>
-                              </div>
-                         {% endfor %}
-                            <!-- /.list-group -->
-                            <!--  <a href="#" class="btn btn-default btn-block">V</a> -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    
-                 <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bell fa-fw"></i> Job Requests
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                        {% for bidder in biddings %}
-                            <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> {{bidder.bid_owner.user.first_name}} {{bidder.bid_owner.user.last_name}}
-                                    <span class="pull-right text-muted small"><em>{{bidder.bidding_amount}}</em>
-                                    </span>
-                                </a>
-                              </div>
-                         {% endfor %}
-                            <!-- /.list-group -->
-                            <a href="#" class="btn btn-default btn-block">View All Requests</a>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-4 -->
-            </div>
-            <script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/datatableview.js"></script>
-            <!-- /.row -->
+<div class="col-lg-9">
+    <!-- /.panel -->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Jobs
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+<!-- <div class="container"> -->         
+<table class="table" style="background-color:blue; width:100%;">
+			    <thead>
+			      <tr>
+			        <th></th>
+			        <th></th>
+			        <th></th>
+			        <th></th>
+			        <th></th>
+			        <th>Status</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			    <tr>
+<form name="form1" id="form{{forloop.counter0}}" action="#" method="GET">
+	<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
+	<input type="hidden" name="username" id="username">
+</form>
+				        <td></td>
+				        <td></td>
+				        <td></td>
+				        <td></td>
+				        <td>
+						</td>
+						<td><button type="submit" class="btn btn-primary">Assign</button></td>
+			    </tbody>
+			  </table>
+		<!-- </div> -->                  
+        </div>
+        <!-- /.panel-body -->
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Locations
+        </div>
+        <!-- /.panel-heading -->
+                <div class="panel-body">
+                    	<table>
+                    	<tr><td>
+<div id="googleMap" style="width:600px;height:380px;"></div>
+            	</td></tr>
+            	</table>                            
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-8 -->
+<div class="col-lg-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Best Artisan
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+        {% for bidder in biddings %}
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-comment fa-fw"></i> {{bidder.bid_owner.user.first_name}} {{bidder.bid_owner.user.last_name}}
+                    <span class="pull-right text-muted small"><em>{{bidder.bidding_amount}}</em>
+                    </span>
+                </a>
+              </div>
+         {% endfor %}
+            <!-- /.list-group -->
+            <!--  <a href="#" class="btn btn-default btn-block">V</a> -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    
+ <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Job Requests
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+        {% for bidder in biddings %}
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <i class="fa fa-comment fa-fw"></i> {{bidder.bid_owner.user.first_name}} {{bidder.bid_owner.user.last_name}}
+                    <span class="pull-right text-muted small"><em>{{bidder.bidding_amount}}</em>
+                    </span>
+                </a>
+              </div>
+         {% endfor %}
+            <!-- /.list-group -->
+            <a href="#" class="btn btn-default btn-block">View All Requests</a>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<!-- /.col-lg-4 -->
+</div>
+<script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/datatableview.js"></script>
+<!-- /.row -->
 {% endblock %}
