@@ -1,6 +1,5 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
 from handy_man.apps.user_profile.views import Home
 
 admin.autodiscover()

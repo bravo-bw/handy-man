@@ -16,6 +16,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('SirOne', 'your_email@example.com'),
     ('ckgathi', 'ckgathi@gmail.com'),
+    ('tsetsiba', 'tshpssetsiba@hotmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -80,14 +81,14 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,6 +122,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'handy_man.apps.main',
+    'handy_man.apps.job',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',

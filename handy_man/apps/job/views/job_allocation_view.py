@@ -1,11 +1,12 @@
-from django.views.generic import View
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from handy_man.apps.main.views.base_dashboard import BaseDashboard
 
-class JobAllocationView(View):
 
-    template_name = 'job_allocation.html'
+class JobAllocationView(BaseDashboard):
+
+    template_name = 'datatable.html'
 
     def __init__(self):
         self.context = {}
