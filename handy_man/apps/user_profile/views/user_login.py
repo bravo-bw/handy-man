@@ -85,20 +85,22 @@ def user_profile(request, username=None):
                   {'user_profile': user_profile,
                    'user': user})
 
+
 @login_required
 def user_profile_documents(request, username=None):
     user_profile = UserProfile.objects.get(user=request.user)
     user = user_profile.user
     if request.method == 'POST':
-#         form = UserProfileDocumentsForm(request.POST)
-#         if form.is_valid():
-        count = 0
+        count = 1
+        user_profile.document_1 = None
+        user_profile.document_2 = None
+        user_profile.document_3 = None
         try:
-            pass
-#             for value in request.FILES.values():
-#                 if 
-#                 setattr(user_profile, 'document_{}'.format(count), value)
-#             user_profile.save()
+            for value in request.FILES.getlist('input-24'):
+                print str(value)
+                setattr(user_profile, 'document_{}'.format(count), value)
+                count += 1
+            user_profile.save()
         except MultiValueDictKeyError:
             pass
         except Exception as e:
