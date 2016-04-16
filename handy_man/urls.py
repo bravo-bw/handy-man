@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^signup$', signup),
     url(r'^profile/', include('handy_man.apps.user_profile.urls')),
     #(r'^main/', include('handy_man.apps.main.urls')),
-    url(r'^jobs/', include('handy_man.apps.job.urls', namespace='jobs')),
+    url(r'^jobs/', include('handy_man.apps.job.urls')),
 ]
 
 
