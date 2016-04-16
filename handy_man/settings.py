@@ -16,6 +16,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('SirOne', 'your_email@example.com'),
     ('ckgathi', 'ckgathi@gmail.com'),
+    ('tsetsiba', 'tshpssetsiba@hotmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -34,10 +35,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'OPTIONS': {
-                'init_command': 'SET storage_engine=INNODB',
-            },
-            'OPTIONS': {
-                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
+                'read_default_file': os.path.join(BASE_DIR, 'handy_man.conf'),
             },
             'HOST': '',
             'PORT': '',
@@ -80,14 +78,14 @@ STATIC_URL = '/static/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,6 +120,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'handy_man.apps.main',
     'handy_man.apps.user_profile',
+    'handy_man.apps.job',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
