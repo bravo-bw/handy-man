@@ -3,13 +3,12 @@ from django.core.mail import send_mail
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Count, Q
+from django.db.models import Count
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 
-from handy_man.apps.main.constants import SHIPPER
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
 
@@ -97,7 +96,6 @@ def user_profile_documents(request, username=None):
         user_profile.document_3 = None
         try:
             for value in request.FILES.getlist('input-24'):
-                print str(value)
                 setattr(user_profile, 'document_{}'.format(count), value)
                 count += 1
             user_profile.save()

@@ -64,3 +64,5 @@ BANK_ACCOUNT_TYPE = (
     ('business', 'Business'),
     ('loan', 'Loan'),
 )
+
+JOB_TYPE = ()
