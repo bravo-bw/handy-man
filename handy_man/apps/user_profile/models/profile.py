@@ -18,6 +18,18 @@ class UserProfile(models.Model):
                                      default=settings.STATIC_ROOT + '/gfx/default_avatar_male.jpg',
                                      null=True,
                                      blank=True)
+    document_1 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
+    document_2 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
+    document_3 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
 #     account = models.CharField(max_length=10)
 #     company = models.ForeignKey(Company, null=True)
 
@@ -42,11 +54,23 @@ class UserProfile(models.Model):
     )
 
     def formated_dob(self):
-        return self.dob.isoformat()
+        if self.dob:
+            return self.dob.isoformat()
+        return None
 
-    def file_name(self):
+    def avatar_name(self):
         # Last element in the list is the file name
-        return self.avatar_image.name.split('/')[-1:][0]
+        if self.document(self.avatar_image) == '':
+            return '{}gfx/{}'.format(settings.STATIC_URL, 'default_avatar_male.jpg')
+        return self.document(self.avatar_image)
+
+    def document_urls(self):
+        return (self.document(self.document_1), self.document(self.document_2), self.document(self.document_3))
+
+    def document(self, document):
+        if document:
+            return '{}gfx/{}'.format(settings.STATIC_URL, document.name.split('/')[-1:][0])
+        return ''
 
     def __unicode__(self):
         return '{} {} ({}), {}, {}'.format(self.user.first_name, self.user.last_name, self.user.username,

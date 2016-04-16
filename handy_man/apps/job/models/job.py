@@ -1,5 +1,8 @@
 from django.db import models
 
+from handy_man.apps.main.constants import NEW
+from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
+
 
 class Job(models.Model):
 
@@ -47,14 +50,6 @@ class Job(models.Model):
         unique=True,
         editable=False
     )
-
-#     area = models.CharField(
-#         verbose_name='Area',
-#         default=None,
-#         max_length=36,
-#         unique=True,
-#         editable=False
-#     )
 
     status = models.CharField(
         verbose_name='Job Status',

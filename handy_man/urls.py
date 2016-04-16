@@ -4,7 +4,8 @@ from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import RedirectView
-from handy_man.apps.user_profile.views import (login_view, signup, logout_view, Home)
+from handy_man.apps.user_profile.views import (login_view, signup, logout_view)
+from handy_man.apps.main.views import Home 
 from handy_man.apps.main.views import SearchView
 
 admin.autodiscover()

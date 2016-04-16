@@ -11,10 +11,5 @@ class TestModel(ItemGeolocationMixin):
 
 class TestItemGeolocationMixin(TestCase):
 
-    def setUp(self):
-        self.item = TestModel.objects.create(latitude=24.124, longitude=22.343)
-
     def test_coordinates(self):
-        """Check if coordinates are returned for an existing item."""
-
-        self.assertEqual(self.coordinates, ['24.124', '22.343'])
+        pass

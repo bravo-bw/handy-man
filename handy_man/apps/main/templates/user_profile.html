@@ -42,7 +42,7 @@
 							<div class="file-input">
 							<div class="file-preview ">
 							    <div class="file-drop-disabled">
-								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{STATIC_URL}}gfx/{{user_profile.file_name}}" alt="Your Avatar" style="width:160px" id="avatar_display" name='avatar_display' ></div></div>
+								    <div class="file-preview-thumbnails"><div class="file-default-preview"><img src="{{user_profile.avatar_name}}" alt="Your Avatar" style="width:160px" id="avatar_display" name='avatar_display' ></div></div>
 								    <div class="clearfix"></div><div class="file-preview-status text-center text-success"></div>
 								    <div class="kv-fileinput-error"></div>
 							    </div>
@@ -124,13 +124,16 @@
 									    <div class="file-drop-disabled">
 									    	<div class="file-preview-thumbnails">
 									    		<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_0" data-fileindex="init_0">
-											   		<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_0'> 
+									    			<iframe src="{{user_profile.document_urls.0}}" style="width:124px; height:174px" frameborder="0" id='document_display_0'></iframe>
+											   		<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_0'>--> 
 												</div>
 												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_1" data-fileindex="init_1">
-													<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_1'> 
+													<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_1'>-->
+													<iframe src="{{user_profile.document_urls.1}}" style="width:124px; height:174px" frameborder="0" id='document_display_1'></iframe> 
 												</div>
 												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_2" data-fileindex="init_2">
-													<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_2'> 
+													<iframe src="{{user_profile.document_urls.2}}" style="width:124px; height:174px" frameborder="0" id='document_display_2'></iframe>
+													<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_2'>--> 
 												</div>
 											    <div class="clearfix"></div>
 												<div class="file-preview-status text-center text-success"></div>
@@ -156,7 +159,7 @@
 									</div>
 								
 								   <div class="input-group-btn">
-								       <button type="button" tabindex="500" title="Clear selected files" class="btn btn-default fileinput-remove fileinput-remove-button"><i class="glyphicon glyphicon-trash"></i> <span class="hidden-xs">Remove</span></button>
+								       <button type="button" tabindex="500" title="Clear selected files" class="btn btn-default fileinput-remove fileinput-remove-button" id="remove_document"><i class="glyphicon glyphicon-trash"></i> <span class="hidden-xs">Remove</span></button>
 								       <button type="button" tabindex="500" title="Abort ongoing upload" class="btn btn-default hide fileinput-cancel fileinput-cancel-button"><i class="glyphicon glyphicon-ban-circle"></i> <span class="hidden-xs">Cancel</span></button>
 								       <button type="submit" tabindex="500" title="Upload selected files" class="btn btn-default fileinput-upload fileinput-upload-button"><i class="glyphicon glyphicon-upload"></i> <span class="hidden-xs">Upload</span></button>
 								       <div tabindex="500" class="btn btn-primary btn-file">
@@ -210,10 +213,9 @@
 				var selectedFiles = event.target.files;
 				var reader = new FileReader();
 				var count = 0;
-				$("img[id^=document_display]").each(function(index) {
+				$("iframe[id^=document_display]").each(function(index) {
 					if ($(this).attr('src') == ''){
 						var imgtag = $(this);
-						alert(count);
 						if(count < selectedFiles.length){
 							imgtag.title = selectedFiles[count].name;
 							reader.onload = function(event) {
@@ -221,6 +223,7 @@
 							}
 							reader.readAsDataURL(selectedFiles[count]);
 							count++;
+							reader = new FileReader();
 						}
 					}
 				});
@@ -235,6 +238,14 @@
 				});
 				return false;
 			});
+			//Remove all uploaded documents
+			$("#remove_document").click(function(event) {
+				$("iframe[id^=document_display]").each(function(index) {
+					$(this).attr('src', '');
+				});
+				return false;
+			});
+			
 	 </script>
 {% endblock %}
 

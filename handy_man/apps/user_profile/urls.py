@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url, include
 # from django.contrib import admin
 # from django.contrib.auth.decorators import login_required
 from handy_man.apps.user_profile.views import (user_profile, users, login_view, signup, logout_view,
-                                               verify_account, Home, user_profile_documents)
+                                               verify_account, user_profile_documents)
 
 
 urlpatterns = [
