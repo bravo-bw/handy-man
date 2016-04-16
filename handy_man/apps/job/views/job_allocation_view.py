@@ -6,7 +6,7 @@ from handy_man.apps.main.views.base_dashboard import BaseDashboard
 
 class JobAllocationView(BaseDashboard):
 
-    template_name = 'datatable.html'
+    template_name = 'job_allocation.html'
 
     def __init__(self):
         self.context = {}

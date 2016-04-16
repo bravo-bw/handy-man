@@ -72,7 +72,7 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="#">Home</a></li>
               <li><a href="{% url 'user_profile' user.username %}">My Profile</a></li>
-              <li><a href="#">Jobs</a></li>
+              <li><a href="{% url 'jobs_url' %}">Jobs</a></li>
               <li><a href="{% url 'search_url_get' %}">Search</a></li>
               </li>
             </ul>

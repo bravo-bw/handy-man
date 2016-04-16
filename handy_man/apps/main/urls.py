@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.contrib import admin
-from handy_man.apps.user_profile.views import Home
+from .views import Home
 
 admin.autodiscover()
 
