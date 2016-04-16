@@ -35,7 +35,10 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'OPTIONS': {
-                'read_default_file': os.path.join(BASE_DIR, 'handy_man.conf'),
+                'init_command': 'SET storage_engine=INNODB',
+            },
+            'OPTIONS': {
+                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
             },
             'HOST': '',
             'PORT': '',
@@ -119,8 +122,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'handy_man.apps.main',
-    'handy_man.apps.user_profile',
     'handy_man.apps.job',
+    'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
