@@ -6,9 +6,9 @@ from .job import Job
 
 class JobRequest(models.Model):
 
-    artisan = models.ForeignKey(verbose_name='Artisan', User)
+    artisan = models.ForeignKey(User, verbose_name='Artisan')
 
-    job = models.ForeignKey(verbose_name='Job', Job)
+    job = models.ForeignKey(Job, verbose_name='Job')
 
     class Meta:
         app_label = 'job'

@@ -75,15 +75,16 @@
               <li><a href="#">Jobs</a></li>
               <li><a href="{% url 'search_url_get' %}">Search</a></li>
               </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
               <li><a href="./">About Us</a></li>
               <li><a href="./">Contact Us</a></li>
-              {% if user.is_authenticated %}
-			    <li><form action="/logout">
-			        <input type="submit" id="btnLogOut" value="Log Out">
-			    </form></li>
-			    {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            	<li><a href="./">Logged in as {{user.username}}</a></li>
+			   <li>
+			       <form action="/logout">
+			       		<input type="submit" id="btnLogOut" value="Log Out" class="btn btn-primary">
+			   	   </form>
+			   </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
