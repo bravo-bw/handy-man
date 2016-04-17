@@ -1,5 +1,53 @@
 {% extends "base_job.html" %}
 {% block controlled_table %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Job Allocation</title>
+   
+   
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
+    <!-- <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" type="text/css" media="screen" /> -->
+    
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css" type="text/css" media="screen" />
+    
+    <!-- datatable javascript 
+	<script src="{{ STATIC_URL }}js/jquery-1.12.0.min.js"></script>
+	<script src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>-->
+	
+	<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
+	</script>
+
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
+	</script>
+	<script>
+		$(document).ready(function() {
+		    $('#job_allocate_tb').DataTable({
+		    	select: true
+		    });
+		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
+		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
+		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function () {
+		    	$(this).closest("tr").siblings().removeClass("selected");
+		        $(this).toggleClass('selected');
+		        
+		        $('button[type="submit"]').attr('disabled','disabled');
+		        $(this).find('button').removeAttr( "disabled");
+		        $(this).find('button').click(function() {
+		        $(this).find('form').submit();
+		        });
+		    } );
+		    
+		} );
+		
+		
+	</script>
+</head>
 <div class="row">
 <div class="col-lg-9">
     <!-- /.panel -->
@@ -9,38 +57,47 @@
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-<!-- <div class="container"> -->         
-<table class="table" style="background-color:blue; width:100%;">
+<!-- <div class="container"> -->     
+<table class="table" style=" width:100%;" id="job_allocate_tb" >
 			    <thead>
 			      <tr>
 			        <th></th>
+			        <th>Description</th>
 			        <th></th>
-			        <th></th>
-			        <th></th>
-			        <th></th>
-			        <th>Status</th>
+			        <th>Action</th>
 			      </tr>
 			    </thead>
 			    <tbody>
 			    <tr>
-<form name="form1" id="form{{forloop.counter0}}" action="#" method="GET">
-	<input type="hidden" name="job_identifier" id="job_identifier" value="{{job.job_identifier}}">
-	<input type="hidden" name="username" id="username">
-</form>
-				        <td></td>
-				        <td></td>
-				        <td></td>
-				        <td></td>
+				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
 				        <td>
-						</td>
+2
+ Baellerry Genuine Leather Men's Long Wallet
+Baellerry Genuine Leather Men's Long Wallet</td>
+				        <td>Gaborone West</td>
 						<td><button type="submit" class="btn btn-primary">Assign</button></td>
+						</tr>
+			    <tr>
+				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
+				        <td>
+2
+ Baellerry Genuine Leather Men's Long Wallet
+Baellerry Genuine Leather Men's Long Wallet</td>
+				        <td>Gaborone North</td>
+						<td>
+               <form action="{% url 'jobs_url' %}" method="post">
+               		{% csrf_token %}
+               	 	<div></div>
+        		</form>
+				<button type="submit" class="btn btn-primary">Assign</button></td>
+				</tr>
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  
         </div>
         <!-- /.panel-body -->
         <div class="panel-heading">
-            <i class="fa fa-bar-chart-o fa-fw"></i> Locations
+            <i class="fa fa-bar-chart-o fa-fw"></i> Geo Location
         </div>
         <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -79,7 +136,7 @@
     
  <div class="panel panel-default">
         <div class="panel-heading">
-            <i class="fa fa-bell fa-fw"></i> Job Requests
+            <i class="fa fa-bell fa-fw"></i> Artisans
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
@@ -93,7 +150,32 @@
               </div>
          {% endfor %}
             <!-- /.list-group -->
-            <a href="#" class="btn btn-default btn-block">View All Requests</a>
+            <table>
+            	<thead>
+			      <tr>
+			        <th></th>
+			      </tr>
+			    </thead>
+			    <tbody>
+			    <tr style="margin-buttom:2px;">
+			    <div style="background:#eee;" width:100%; height:60px>
+			    	<div class="radio" style="padding:10px; display:inline;">
+  						<label><input type="radio" name="optradio"><a title="Kagiso Thebe">kthebe</a></label>
+  						<img style="margin-right:0px" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">
+					</div>
+				</div>
+			    </tr>
+			    <tr>
+			    <div style="background:#eee;" width:100%; height:60px>
+			    	<div class="radio" style="padding:10px; display:inline;">
+  						<label><input type="radio" name="optradio"><a> ttiroyamodimo</a></label>
+  						<img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">
+					</div>
+				</div>
+			    </tr>
+			    </tbody>
+            </table>
+            <!--  <a href="#" class="btn btn-default btn-block">View All Requests</a>-->
         </div>
         <!-- /.panel-body -->
     </div>
