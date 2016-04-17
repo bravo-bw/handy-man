@@ -12,10 +12,22 @@ class Command(BaseCommand):
     help = 'Create user_profile test data on a fresh DB.'
 
     def handle(self, *args, **options):
-        user1 = UserFactory(username='user1')
-        user2 = UserFactory(username='user2')
-        user3 = UserFactory(username='user3')
-        user4 = UserFactory(username='user4')
+        user1 = User.objects.create_user('user1', 'user1@thebeatles.com', 'user1')
+        user1.first_name = 'user1'
+        user1.last_name = 'user1'
+        user1.save()
+        user2 = User.objects.create_user('user2', 'user2@thebeatles.com', 'user2')
+        user2.first_name = 'user2'
+        user2.last_name = 'user2'
+        user2.save()
+        user3 = User.objects.create_user('user3', 'user3@thebeatles.com', 'user3')
+        user3.first_name = 'user3'
+        user3.last_name = 'user3'
+        user3.save()
+        user4 = User.objects.create_user('user4', 'user4@thebeatles.com', 'user4')
+        user4.first_name = 'user4'
+        user4.last_name = 'user4'
+        user4.save()
         individual1 = UserProfileFactory(user=user1)
         individual2 = UserProfileFactory(user=user2)
         shipper1 = UserProfileFactory(user=user3)
