@@ -2,9 +2,10 @@ from django.db import models
 
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
+from handy_man.apps.geo_location.models import ItemGeolocationMixin
 
 
-class Job(models.Model):
+class Job(ItemGeolocationMixin):
 
     """
     This model describes the job and its details.

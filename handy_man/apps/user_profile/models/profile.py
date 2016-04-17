@@ -6,9 +6,10 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 from ...main.choices import GENDER
+from handy_man.apps.geo_location.models import ItemGeolocationMixin
 
 
-class UserProfile(models.Model):
+class UserProfile(ItemGeolocationMixin):
     user = models.OneToOneField(User)
     mobile = models.CharField(max_length=10)
     alter_contact = models.CharField(max_length=10, null=True, blank=True)
