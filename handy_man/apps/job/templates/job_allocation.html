@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Datatable View Example</title>
+    <title>Job Allocation</title>
    
    
     <!-- Bootstrap Core CSS -->
@@ -25,13 +25,27 @@
 
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
 	</script>
-
 	<script>
 		$(document).ready(function() {
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
+		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
+		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
+		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function () {
+		    	$(this).closest("tr").siblings().removeClass("selected");
+		        $(this).toggleClass('selected');
+		        
+		        $('button[type="submit"]').attr('disabled','disabled');
+		        $(this).find('button').removeAttr( "disabled");
+		        $(this).find('button').click(function() {
+		        $(this).find('form').submit();
+		        });
+		    } );
+		    
 		} );
+		
+		
 	</script>
 </head>
 <div class="row">
@@ -70,15 +84,20 @@ Baellerry Genuine Leather Men's Long Wallet</td>
  Baellerry Genuine Leather Men's Long Wallet
 Baellerry Genuine Leather Men's Long Wallet</td>
 				        <td>Gaborone North</td>
-						<td><button type="submit" class="btn btn-primary">Assign</button></td>
-						</tr>
+						<td>
+               <form action="{% url 'jobs_url' %}" method="post">
+               		{% csrf_token %}
+               	 	<div></div>
+        		</form>
+				<button type="submit" class="btn btn-primary">Assign</button></td>
+				</tr>
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  
         </div>
         <!-- /.panel-body -->
         <div class="panel-heading">
-            <i class="fa fa-bar-chart-o fa-fw"></i> Locations
+            <i class="fa fa-bar-chart-o fa-fw"></i> Geo Location
         </div>
         <!-- /.panel-heading -->
                 <div class="panel-body">
