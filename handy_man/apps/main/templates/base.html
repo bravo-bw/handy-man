@@ -42,6 +42,8 @@
     <!-- Morris Charts CSS -->
     <!--<link href="{{ STATIC_URL }}css/morris.css" rel="stylesheet">-->
     <link href="{{ STATIC_URL }}css/new_style.css" rel="stylesheet">
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <!--  <script src="{{ STATIC_URL }}js/geolocation_map.js"></script> -->
 
     <!-- Custom Fonts -->
     <!-- <link href="{{ STATIC_URL }}css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
@@ -52,6 +54,27 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+
+    function initialize() {
+   	 var myLatLng = {lat: -24.658143, lng: 25.923074};
+     
+   	 var mapProp = {
+       center: myLatLng,
+       zoom:6,
+       mapTypeId:google.maps.MapTypeId.ROADMAP
+     };
+     var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+     var marker = new google.maps.Marker({
+   	    position: {lat: -24.658143, lng: 25.923074},
+   	    map: map,
+   	    title: 'Current location'
+   	  });
+
+   }
+   google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
 </head>
 <body>
 	{% block navigation %}
@@ -125,12 +148,17 @@
 
 {% block content %}
 {% endblock %}
-
+</div>
 </body>
 
 {% block footer %}
 <footer>
-<div id="footer" style="padding:10px; margin-top:10px;"> &copy Copyright 2016 handy man &copy 2016. All Rights Reserved.
+<div id="footer1" class="navbar navbar-fixed-bottom" style="background-color:#AAAEAE" role="navigation">
+	<div class="container">
+		<div class="navbar-text pull-left">
+	 		<p>&copy Copyright 2016 handy man &copy 2016. All Rights Reserved.</p>
+	 	</div>
+	 </div>
 </div>
 </footer>
 {% endblock footer %}

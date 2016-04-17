@@ -1,10 +1,13 @@
 from django.db import models
+from django.conf import settings
 
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
+from handy_man.apps.geo_location.models import ItemGeolocationMixin
+from handy_man.apps.user_profile.models import UserProfile
 
 
-class Job(models.Model):
+class Job(ItemGeolocationMixin):
 
     """
     This model describes the job and its details.
@@ -15,9 +18,7 @@ class Job(models.Model):
          5. Job Report
     """
 
-    #user = models.ForeignKey(UserProfile, related_name='profile_sumbittor', editable=False)
-
-    #exercutor = models.ForeignKey(UserProfile, null=True, editable=False)
+    user = models.ForeignKey(UserProfile, related_name='profile_sumbittor', editable=False)
 
     identifier = models.CharField(
         verbose_name='Job Identifier',
@@ -29,22 +30,6 @@ class Job(models.Model):
 
     category = models.CharField(
         verbose_name='Category',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
-
-    job_images = models.CharField(
-        verbose_name='Images',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
-
-    location = models.CharField(
-        verbose_name='Location',
         default=None,
         max_length=36,
         unique=True,
@@ -73,6 +58,19 @@ class Job(models.Model):
         null=True,
         blank=True
     )
+
+    job_image_1 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
+    job_image_2 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
+    job_image_3 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
 
     class Meta:
         app_label = 'job'
