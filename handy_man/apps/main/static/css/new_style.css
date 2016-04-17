@@ -14,3 +14,7 @@
    background:#6cf;
    text-align:center;
 }
+
+.rounded {
+  border-radius: 10px;
+}

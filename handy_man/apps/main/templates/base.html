@@ -18,6 +18,8 @@
     <script src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
 	<link href="https://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 	<link href="https://getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
 	
@@ -96,7 +98,7 @@
               <li class="active"><a href="{% url 'home_url' %}">Home</a></li>
               <li><a href="{% url 'user_profile' user.username %}">My Profile</a></li>
               <li><a href="{% url 'jobs_url' %}">Jobs</a></li>
-              <li><a href="{% url 'search_url_get' %}">Search</a></li>
+              <li><a href="{% url 'registered_users_url' %}">Registered Users</a></li>
               </li>
               <li><a href="./">About Us</a></li>
               <li><a href="./">Contact Us</a></li>
@@ -146,11 +148,13 @@
 
 {% block content %}
 {% endblock %}
-   
- {% block footer %}
-<div id="footer" style="margin:10px;"> &copy Copyright 2016 handy man &copy 2016. All Rights Reserved.
-</div>
-{% endblock footer %}
 
 </body>
+
+{% block footer %}
+<footer>
+<div id="footer" style="padding:10px; margin-top:10px;"> &copy Copyright 2016 handy man &copy 2016. All Rights Reserved.
+</div>
+</footer>
+{% endblock footer %}
 </html>
