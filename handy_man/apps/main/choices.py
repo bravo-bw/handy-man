@@ -65,4 +65,8 @@ BANK_ACCOUNT_TYPE = (
     ('loan', 'Loan'),
 )
 
-JOB_TYPE = ()
+JOB_TYPE = (
+    ('carpentry', 'Carpentry'),
+    ('plumbing', 'Plumbing'),
+    ('brick_laying', 'Brick Laying'),
+    ('tile_laying', 'Tile Laying'))
