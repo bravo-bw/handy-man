@@ -43,8 +43,8 @@ def users(request, username="", ribbit_form=None):
 
 
 @login_required
-def user_profile(request, username=None):
-    user_profile = UserProfile.objects.get(user=request.user)
+def user_profile(request, username):
+    user_profile = UserProfile.objects.get(user__username=username)
     user = user_profile.user
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
@@ -82,13 +82,12 @@ def user_profile(request, username=None):
     return render(request,
                   'user_profile.html',
                   {'user_profile': user_profile,
-                   'user': user})
+                   'logged_in_user': request.user})
 
 
 @login_required
-def user_profile_documents(request, username=None):
-    user_profile = UserProfile.objects.get(user=request.user)
-    user = user_profile.user
+def user_profile_documents(request, username):
+    user_profile = UserProfile.objects.get(user__username=username)
     if request.method == 'POST':
         count = 1
         user_profile.document_1 = None
@@ -111,7 +110,7 @@ def user_profile_documents(request, username=None):
     return render(request,
                   'user_profile.html',
                   {'user_profile': user_profile,
-                   'user': user})
+                   'logged_in_user': request.user})
 
 
 def index(request, auth_form=None, user_form=None):
