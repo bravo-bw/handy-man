@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from handy_man.apps.user_profile.models import UserProfile
 from ....main.choices import ACCOUNT_TYPE
+from datetime import date
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -12,8 +13,8 @@ class UserFactory(factory.DjangoModelFactory):
 
     email = 'admin@gmail.com'
     first_name = factory.Sequence(lambda n: 'user{0}'.format(n))
-    last_name = factory.Sequence(lambda n: 'user{0}'.format(n))
-    username = factory.Sequence(lambda n: 'django{0}'.format(n))
+    last_name = factory.Sequence(lambda n: 'user'.format(n))
+    username = factory.Sequence(lambda n: 'user{0}'.format(n))
 #     password1 = '1'
 #     password2 = '1'
 
@@ -28,3 +29,4 @@ class UserProfileFactory(factory.DjangoModelFactory):
     email_validated = True
     administrator_validated = True
     gender = 'F'
+    dob = date(1990, 12, 1)

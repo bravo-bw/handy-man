@@ -58,12 +58,14 @@ class UserProfile(models.Model):
             return self.dob.isoformat()
         return None
 
+    @property
     def avatar_name(self):
         # Last element in the list is the file name
         if self.document(self.avatar_image) == '':
             return '{}gfx/{}'.format(settings.STATIC_URL, 'default_avatar_male.jpg')
         return self.document(self.avatar_image)
 
+    @property
     def document_urls(self):
         return (self.document(self.document_1), self.document(self.document_2), self.document(self.document_3))
 

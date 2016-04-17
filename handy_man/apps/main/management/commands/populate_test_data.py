@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
-from handy_man.apps.user_profile.tests.factories import UserProfileFactory
+from handy_man.apps.user_profile.tests.factories import UserProfileFactory, UserFactory
 from ...constants import SHIPPER, INDIVIDUAL, NEW
 from ...choices import CARGO_TYPE
 
@@ -12,10 +12,10 @@ class Command(BaseCommand):
     help = 'Create user_profile test data on a fresh DB.'
 
     def handle(self, *args, **options):
-        user1 = User.objects.create_user('user1', 'user1@thebeatles.com', 'user1')
-        user2 = User.objects.create_user('user2', 'user2@thebeatles.com', 'user2')
-        user3 = User.objects.create_user('user3', 'user3@thebeatles.com', 'user3')
-        user4 = User.objects.create_user('user4', 'user4@thebeatles.com', 'user4')
+        user1 = UserFactory(username='user1')
+        user2 = UserFactory(username='user2')
+        user3 = UserFactory(username='user3')
+        user4 = UserFactory(username='user4')
         individual1 = UserProfileFactory(user=user1)
         individual2 = UserProfileFactory(user=user2)
         shipper1 = UserProfileFactory(user=user3)
