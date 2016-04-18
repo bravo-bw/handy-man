@@ -54,6 +54,10 @@ class UserProfile(ItemGeolocationMixin):
         blank=True,
     )
 
+    @property
+    def get_user(self):
+        return self.users
+
     def formated_dob(self):
         if self.dob:
             return self.dob.isoformat()

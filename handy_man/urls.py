@@ -18,7 +18,8 @@ urlpatterns = [
 
     url(r'^$', Home.as_view(), name='home_url'),
     url(r'^login$', login_view),
-    url(r'^logout$', logout_view),
+    url(r'^logout/$', logout_view),
+    url(r'^handy_man/logout/$', logout_view),
     url(r'^search$', SearchView.as_view(), name='search_url_get'),
     url(r'^signup$', signup),
     url(r'^profile/', include('handy_man.apps.user_profile.urls')),
