@@ -19,7 +19,9 @@ class Job(ItemGeolocationMixin):
          5. Job Report
     """
 
-    user = models.ForeignKey(User, related_name='profile_sumbittor', editable=False)
+    posted_by = models.OneToOneField(UserProfile, related_name='profile_sumbittor', editable=False)
+
+    allocated_to = models.OneToOneField(UserProfile, related_name='allocated', editable=False)
 
     identifier = models.CharField(
         verbose_name='Job Identifier',
@@ -53,8 +55,10 @@ class Job(ItemGeolocationMixin):
         blank=True
     )
 
-    allocation = models.ManyToManyField(
+    artisans_interested = models.ManyToManyField(
         UserProfile,
+        null=True,
+        blank=True
     )
 
     description = models.TextField(
