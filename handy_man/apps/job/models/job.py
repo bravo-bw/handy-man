@@ -3,6 +3,8 @@ from django.db import models
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
 from handy_man.apps.geo_location.models import ItemGeolocationMixin
+from handy_man.apps.user_profile.models import UserProfile
+from django.contrib.auth.models import User
 
 
 class Job(ItemGeolocationMixin):
@@ -16,9 +18,7 @@ class Job(ItemGeolocationMixin):
          5. Job Report
     """
 
-    #user = models.ForeignKey(UserProfile, related_name='profile_sumbittor', editable=False)
-
-    #exercutor = models.ForeignKey(UserProfile, null=True, editable=False)
+    job_owner = models.ForeignKey(User)
 
     identifier = models.CharField(
         verbose_name='Job Identifier',
@@ -66,6 +66,10 @@ class Job(ItemGeolocationMixin):
         choices=JOB_TYPE,
         null=True,
         blank=True
+    )
+
+    allocation = models.ManyToManyField(
+        UserProfile,
     )
 
     description = models.TextField(
