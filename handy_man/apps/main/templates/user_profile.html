@@ -92,12 +92,34 @@
 			                        	<label for="alter_contact">Alternative Number:</label>
 			                        	<input type="text" id="id_alter_contact" name="alter_contact" value="{{user_profile.alter_contact}}" placeholder="Alternative Number" readonly="readonly" style="background-color: #D8D8D8">
 			                        </td>
-			                      </tr>
-			                      {% if logged_in_user.username == user_profile.user.username %}
-				                      <tr>
-				                        <td><a href=>Change Password</a><br></td>
-				                      </tr> 
-				                  {% endif %}
+			                      </tr>			                      
+			                      <tr>
+			                      	<td>
+			                      		<label for="account_type">Account Type:</label>
+			                      		<select name="account_type"  id="account_type" disabled style="background-color: #D8D8D8" >
+			                      		  <option value="-------">-------</option>
+			                      		  {% if user_profile.account_type == "ARTISAN" %}
+			                      		  	<option value="ARTISAN" selected>Artisan</option>
+			                      		  {% else %}
+										  	<option value="ARTISAN">Artisan</option>
+										  {% endif %}
+										  {% if user_profile.account_type == "SME" %}
+										  	<option value="SME" selected>SME</option>
+										  {% else %}
+										  	<option value="SME">SME</option>
+										  {% endif %}
+										  {% if user_profile.account_type == "SME" %}
+										  	<option value="CUSTOMER" selected>Customer</option>
+										  {% else %}
+										  	<option value="CUSTOMER">Customer</option>
+										  {% endif %}
+										</select> 
+			                      	</td>
+			                      	{% if logged_in_user.username == user_profile.user.username %}
+			                        	<td><a href=>Change Password</a><br></td>
+			                        {% endif %}
+			                      </tr> 
+				                  
 			                    </tbody>
 			                  </table>
 			               </div>
@@ -244,6 +266,9 @@
 						$(this).removeAttr("readonly");
 						$(this).removeAttr("style");
 					});
+					account_type = $("#account_type")
+					account_type.removeAttr("disabled");
+					account_type.removeAttr("style");
 					return false;
 				});
 				//Remove all uploaded documents

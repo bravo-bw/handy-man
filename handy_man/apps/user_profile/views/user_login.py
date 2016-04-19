@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth import login, logout
@@ -18,28 +19,6 @@ def get_latest(user):
         return user.ribbit_set.order_by('-id')[0]
     except IndexError:
         return ""
-
-
-@login_required
-def users(request, username="", ribbit_form=None):
-    if username:
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            raise Http404
-        ribbits = Ribbit.objects.filter(user=user.id)
-        if username == request.user.username or request.user.profile.follows.filter(user__username=username):
-            return render(request, 'user.html', {'user': user, 'ribbits': ribbits, })
-        return render(request, 'user.html', {'user': user, 'ribbits': ribbits, 'follow': True, })
-    users = User.objects.all().annotate(ribbit_count=Count('ribbit'))
-    ribbits = map(get_latest, users)
-    obj = zip(users, ribbits)
-    ribbit_form = ribbit_form or LeoForm()
-    return render(request,
-                  'profiles.html',
-                  {'obj': obj, 'next_url': '/users/',
-                   'ribbit_form': ribbit_form,
-                   'username': request.user.username, })
 
 
 @login_required
@@ -164,9 +143,9 @@ def logout_view(request):
 def verify_account(request, username):
     try:
         user_profile = UserProfile.objects.get(user__username=username)
-        user_profile.validated = True
+        user_profile.email_validated = True
         user_profile.save()
-        message = "Congratulations '{}', your account has been verified.".format(user_profile.user.first_name)
+        message = "Congratulations '{}', your EMAIL has been verified.".format(user_profile.user.first_name)
     except UserProfile.DoesNotExist:
         message = "The username '{}' does not exist in the system. Please register first.".format(username)
     return render(request,
@@ -179,7 +158,7 @@ def signup(request):
     user_form = UserCreateForm(data=request.POST)
     if request.method == 'POST':
         if user_form.is_valid():
-            username = user_form.clean_username()
+            username = user_form.cleaned_data.get("username")
             password = user_form.clean_password2()
             with transaction.atomic():
                 user_form.save()
@@ -191,11 +170,11 @@ def signup(request):
                     form_values[fld] = user_form.cleaned_data[fld]
                 form_values['user'] = user
                 UserProfile.objects.create(**form_values)
-                subject = "verify account (BW shipping portal)"
-                body = 'Thank you for registering with BW shipping portal ' \
-                        'click the following link to verify your email.' \
-                        'http://localhost:8000/verify/{}'.format(user.username)
-                email_sender = "coderumble2016@gmail.com"
+                subject = "verify account (BW Handy Man portal)"
+                body = 'Thank you for registering with BW Handy Man ' \
+                        'click the following link to verify your EMAIL.' \
+                        ' http://localhost:8000/profile/verify/{}'.format(user.username)
+                email_sender = settings.EMAIL
                 recipient_list = [user.email, ]
                 send_mail(subject, body, email_sender, recipient_list, fail_silently=False)
                 return redirect('/')

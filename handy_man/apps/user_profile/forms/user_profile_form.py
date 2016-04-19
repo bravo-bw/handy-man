@@ -3,6 +3,7 @@ from django import forms
 from handy_man.apps.user_profile.models import UserProfile
 
 from ...main.custom_form_fields import SubmitButtonField
+from ...main.choices import ACCOUNT_TYPE
 
 
 class UserProfileForm(forms.ModelForm):
@@ -14,6 +15,7 @@ class UserProfileForm(forms.ModelForm):
     alter_contact = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Alternative Contact'}))
     username = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Username'}))
     dob = forms.DateField(required=True, widget=forms.widgets.DateInput(attrs={'readonly': 'readonly', 'placeholder': 'Date Of Birth'}))
+    account_type = forms.ChoiceField(required=False, widget=forms.Select, choices=ACCOUNT_TYPE)
 #     submit_button = SubmitButtonField(label='Submit', initial="Submit")
 
 #     def clean_avatar(self):
@@ -48,5 +50,5 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         fields = ['email', 'first_name', 'last_name']
-        profile_fields = ['mobile', 'dob', 'alter_contact']
+        profile_fields = ['account_type', 'mobile', 'dob', 'alter_contact']
         model = UserProfile
