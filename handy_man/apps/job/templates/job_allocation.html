@@ -35,11 +35,14 @@
 		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function () {
 		    	$(this).closest("tr").siblings().removeClass("selected");
 		        $(this).toggleClass('selected');
-		        
+
 		        $('button[type="submit"]').attr('disabled','disabled');
 		        $(this).find('button').removeAttr( "disabled");
 		        $(this).find('button').click(function() {
-		        $(this).find('form').submit();
+			        var $job_item = $(this).closest("tr").find('input[name="job_id"]');
+			        var $checked_radio_val = $("input[type='radio']:checked").val();
+			        $job_item.val($checked_radio_val);
+			        return False;
 		        });
 		    } );
 		    
@@ -51,13 +54,23 @@
 <div class="row">
 <div class="col-lg-9">
     <!-- /.panel -->
+    
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <i class="fa fa-bar-chart-o fa-fw"></i> Jobs
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-<!-- <div class="container"> -->     
+<!-- <div class="container"> -->  
+   
 <table class="table" style=" width:100%;" id="job_allocate_tb" >
 			    <thead>
 			      <tr>
@@ -75,7 +88,12 @@
  Baellerry Genuine Leather Men's Long Wallet
 Baellerry Genuine Leather Men's Long Wallet</td>
 				        <td>Gaborone West</td>
-						<td><button type="submit" class="btn btn-primary">Assign</button></td>
+						<td><form action="{% url 'jobs_url' %}" method="post">
+               		{% csrf_token %}
+               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
+               	 		<input name="job_id" type="hidden" value="10101010100xxxx">
+               	 		<button type="submit" class="btn btn-primary">Assign</button>
+        		</form></td>
 						</tr>
 			    <tr>
 				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
@@ -87,9 +105,12 @@ Baellerry Genuine Leather Men's Long Wallet</td>
 						<td>
                <form action="{% url 'jobs_url' %}" method="post">
                		{% csrf_token %}
-               	 	<div></div>
+               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
+               	 		<input name="job_id" type="hidden" value="10101010100yyyyyyy">
+               	 		<button type="submit" class="btn btn-primary">Assign</button>
         		</form>
-				<button type="submit" class="btn btn-primary">Assign</button></td>
+				<!-- <button type="submit" class="btn btn-primary">Assign</button>-->
+				</td>
 				</tr>
 			    </tbody>
 			  </table>
@@ -134,7 +155,7 @@ Baellerry Genuine Leather Men's Long Wallet</td>
         <!-- /.panel-body -->
     </div>
     
- <div class="panel panel-default">
+ <div class="panel panel-default" style="width:100%"">
         <div class="panel-heading">
             <i class="fa fa-bell fa-fw"></i> Artisans
         </div>
@@ -149,32 +170,46 @@ Baellerry Genuine Leather Men's Long Wallet</td>
                 </a>
               </div>
          {% endfor %}
-            <!-- /.list-group -->
-            <table>
-            	<thead>
-			      <tr>
-			        <th></th>
-			      </tr>
-			    </thead>
-			    <tbody>
-			    <tr style="margin-buttom:2px;">
-			    <div style="background:#eee;" width:100%; height:60px>
-			    	<div class="radio" style="padding:10px; display:inline;">
-  						<label><input type="radio" name="optradio"><a title="Kagiso Thebe">kthebe</a></label>
-  						<img style="margin-right:0px" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">
+			    <div style="background:#eee;" width:100%; height:60px" class="row">
+			    	<div class="radio" style="padding:10px; display:inline;" class="container">
+  						<label>
+  						<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
+  						<input type="radio" name="optradio" value="tshepiso"><a title="Kagiso Thebe">kthebe</a></label>
+  						<!-- <img style="margin-right:0px" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
 					</div>
 				</div>
-			    </tr>
-			    <tr>
-			    <div style="background:#eee;" width:100%; height:60px>
-			    	<div class="radio" style="padding:10px; display:inline;">
-  						<label><input type="radio" name="optradio"><a> ttiroyamodimo</a></label>
-  						<img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">
+				<hr>
+			    <div style="background:#eee;" width:100%; height:60px" class="row">
+			    	<div class="radio" style="padding:10px; display:inline;" class="containers">
+			    		<label>
+			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
+  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
+  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
+  						</label>
 					</div>
 				</div>
-			    </tr>
-			    </tbody>
-            </table>
+				
+				<hr>
+			    <div style="background:#eee;" width:100%; height:60px" class="row">
+			    	<div class="radio" style="padding:10px; display:inline;" class="containers">
+			    		<label>
+			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
+  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
+  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
+  						</label>
+					</div>
+				</div>
+				<hr>
+			    <div style="background:#eee;" width:100%; height:60px" class="row">
+			    	<div class="radio" style="padding:10px; display:inline;" class="containers">
+			    		<label>
+			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
+  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
+  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
+  						</label>
+					</div>
+				</div>
+				<hr>
             <!--  <a href="#" class="btn btn-default btn-block">View All Requests</a>-->
         </div>
         <!-- /.panel-body -->
@@ -182,6 +217,12 @@ Baellerry Genuine Leather Men's Long Wallet</td>
     <!-- /.panel -->
 </div>
 <!-- /.col-lg-4 -->
+</div>
+<hr>
+<div class="row">
+<div>
+
+</div>
 </div>
 <script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/datatableview.js"></script>
 <!-- /.row -->
