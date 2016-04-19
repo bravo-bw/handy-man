@@ -1,10 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.conf import settings
 
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
 from handy_man.apps.geo_location.models import ItemGeolocationMixin
 from handy_man.apps.user_profile.models import UserProfile
-from django.contrib.auth.models import User
 
 
 class Job(ItemGeolocationMixin):
@@ -18,7 +19,7 @@ class Job(ItemGeolocationMixin):
          5. Job Report
     """
 
-    job_owner = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='profile_sumbittor', editable=False)
 
     identifier = models.CharField(
         verbose_name='Job Identifier',
@@ -30,22 +31,6 @@ class Job(ItemGeolocationMixin):
 
     category = models.CharField(
         verbose_name='Category',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
-
-    job_images = models.CharField(
-        verbose_name='Images',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
-
-    location = models.CharField(
-        verbose_name='Location',
         default=None,
         max_length=36,
         unique=True,
@@ -78,6 +63,19 @@ class Job(ItemGeolocationMixin):
         null=True,
         blank=True
     )
+
+    job_image_1 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
+    job_image_2 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
+    job_image_3 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+                                  default=None,
+                                  null=True,
+                                  blank=True)
 
     class Meta:
         app_label = 'job'

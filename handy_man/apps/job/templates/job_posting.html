@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+<style>
+.kv-avatar .file-preview-frame,.kv-avatar .file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+.kv-avatar .file-input {
+    display: table-cell;
+    max-width: 220px;
+}
+</style>
+
+{% block content %}
+
+<form class="form-inline" action="{% url 'job_posting_url' %}" method="post">
+        	{% csrf_token %}
+          <div class="panel panel-info">
+          	<table>
+	            <div class="panel-heading">
+	              <h3>Add a new Job</h3><h3 class="panel-title"></h3>
+	            </div>
+            </table>
+            <div class="panel-body">
+              <div class="row"> 
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                    	<tr>
+	                       <td>Latitude</td>
+	                       <td><input type="text" name="latitude" value=""><br></td>
+                      	</tr>
+                      	<tr>
+	                       <td>Longitude</td>
+	                       <td><input type="text" name="longitude" value=""><br></td>
+                      	</tr>
+                      	<tr>
+	                       <td>Street</td>
+	                       <td><input type="text" name="street" value=""><br></td>
+                      	</tr>
+                    	<tr>
+	                       <td>Job Identifier</td>
+	                       <td><input type="text" name="identifier" value=""><br></td>
+                      	</tr>
+                      	<tr>
+	                       <td>Town/Village</td>
+	                       <td><input type="text" name="town_village" value=""><br></td>
+                      	</tr>
+                      	<tr>
+	                       <td>District</td>
+	                       <td><input type="text" name="district" value=""><br></td>
+                      	</tr>
+                    	<tr>
+	                       <td>Category</td>
+	                       <td><input type="text" name="category" value=""><br></td>
+                      	</tr>
+                      <tr>
+                        <td>Job Status</td>
+                        <td><input type="text" name="type" value=""><br></td>
+                      </tr>
+                      <tr>
+                        <td>Type:</td>
+                        <td><input type="text" name="type" value=""><br></td>
+                      </tr>
+                      <tr>
+                        <td>Description</td>
+                        <td><input type="text" name="description" value=""><br></td>
+                      </tr>
+                      <div id="documents" class="tab-pane fade">
+				    	<div class="row">
+				    		<div class=" col-md-12 col-lg-12 ">
+								<label class="control-label">Documents</label>
+								<div class="file-input">
+									<div class="file-preview">
+									    <div class="close fileinput-remove">��</div>
+									    <div class="file-drop-disabled">
+									    	<div class="file-preview-thumbnails">
+									    		<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_0" data-fileindex="init_0">
+									    			<iframe src="{{user_profile.document_urls.0}}" style="width:124px; height:174px" frameborder="0" id='document_display_0'></iframe>
+											   		<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_0'>--> 
+												</div>
+												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_1" data-fileindex="init_1">
+													<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_1'>-->
+													<iframe src="{{user_profile.document_urls.1}}" style="width:124px; height:174px" frameborder="0" id='document_display_1'></iframe> 
+												</div>
+												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_2" data-fileindex="init_2">
+													<iframe src="{{user_profile.document_urls.2}}" style="width:124px; height:174px" frameborder="0" id='document_display_2'></iframe>
+													<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_2'>--> 
+												</div>
+											    <div class="clearfix"></div>
+												<div class="file-preview-status text-center text-success"></div>
+												<div style="display: none;" class="kv-fileinput-error file-error-message"></div>
+									    	</div>
+										</div>
+										<div class="kv-upload-progress hide">
+											<div class="progress">
+											    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+											        0%
+											     </div>
+											</div>
+										</div>
+								</div>
+							</div>
+						</div>
+					  </div>
+						  <div class="row">
+								<div class=" col-md-12 col-lg-12 ">
+									<div class="input-group ">
+									   <div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+									   		<div title="upload documents" class="file-caption-name"><span class="glyphicon glyphicon-file kv-caption-icon"></span>upload documents</div>
+										</div>
+									   <div class="input-group-btn">
+									       <button type="button" tabindex="500" title="Clear selected files" class="btn btn-default fileinput-remove fileinput-remove-button" id="remove_document"><i class="glyphicon glyphicon-trash"></i> <span class="hidden-xs">Remove</span></button>
+									       <button type="button" tabindex="500" title="Abort ongoing upload" class="btn btn-default hide fileinput-cancel fileinput-cancel-button"><i class="glyphicon glyphicon-ban-circle"></i> <span class="hidden-xs">Cancel</span></button>
+									       <button type="submit" tabindex="500" title="Upload selected files" class="btn btn-default fileinput-upload fileinput-upload-button"><i class="glyphicon glyphicon-upload"></i> <span class="hidden-xs">Upload</span></button>
+									       <div tabindex="500" class="btn btn-primary btn-file">
+									       		<i class="glyphicon glyphicon-folder-open"></i>&nbsp;
+									       		 <span class="hidden-xs">Browse ���</span>
+									       		<input id="input-24" name="input-24" multiple class="file-loading" type="file"	>
+									       </div>
+									   </div>
+									</div>
+								</div>
+						    </div>
+				  </div>
+                    </tbody>
+                  </table>
+                  <div class="form-group">
+                  	<button class="btn btn-primary" type="submit" value="submit" name="job" id="job">Submit Job</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+         </div>
+         <script>
+      		//Changes user profile photo
+      		$(document).ready( function() {
+				$("#avatar_image").change(function(event) {
+					var selectedFile = event.target.files[0];
+					var reader = new FileReader();
+					var imgtag = $("#avatar_display")
+					imgtag.title = selectedFile.name;
+					reader.onload = function(event) {
+					    imgtag.attr('src', event.target.result);
+					}
+					reader.readAsDataURL(selectedFile);
+					  //$( "#avatar_image" ).attr('src', $( this ).val());
+				});
+	      		//Uploads supporting documents agains user profile
+				$("#input-24").change(function(event) {
+					var selectedFiles = event.target.files;
+					var reader = new FileReader();
+					var count = 0;
+					$("iframe[id^=document_display]").each(function(index) {
+						if ($(this).attr('src') == ''){
+							var imgtag = $(this);
+							if(count < selectedFiles.length){
+								imgtag.title = selectedFiles[count].name;
+								reader.onload = function(event) {
+									imgtag.attr('src', event.target.result);
+								}
+								reader.readAsDataURL(selectedFiles[count]);
+								count++;
+								reader = new FileReader();
+							}
+						}
+					});
+					count = 0;
+					return false;		
+				});
+				//When Edit button is clicked, make inputs ready to accept data.
+				$("#edit_profile").click(function(event) {
+					$("input[id^=id_]").each(function(index) {
+						$(this).removeAttr("readonly");
+						$(this).removeAttr("style");
+					});
+					return false;
+				});
+				//Remove all uploaded documents
+				$("#remove_document").click(function(event) {
+					$("iframe[id^=document_display]").each(function(index) {
+						$(this).attr('src', '');
+					});
+					return false;
+				});
+				//Open document in new tab on click
+				$("div[id^=preview-]").each(function(index) {
+					$(this).click(function() {
+						alert('INSIDE');
+						//window.open("http://www.google.com", "_blank");
+					});
+					//return false;
+				});	
+      		});
+	 </script>
+{% endblock %}
+</div>
