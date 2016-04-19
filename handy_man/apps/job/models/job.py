@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.conf import settings
 
 from handy_man.apps.main.constants import NEW
@@ -18,7 +19,7 @@ class Job(ItemGeolocationMixin):
          5. Job Report
     """
 
-    user = models.ForeignKey(UserProfile, related_name='profile_sumbittor', editable=False)
+    user = models.ForeignKey(User, related_name='profile_sumbittor', editable=False)
 
     identifier = models.CharField(
         verbose_name='Job Identifier',
@@ -50,6 +51,10 @@ class Job(ItemGeolocationMixin):
         choices=JOB_TYPE,
         null=True,
         blank=True
+    )
+
+    allocation = models.ManyToManyField(
+        UserProfile,
     )
 
     description = models.TextField(
