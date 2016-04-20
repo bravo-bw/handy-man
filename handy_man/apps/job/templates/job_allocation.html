@@ -9,7 +9,7 @@
 
     <title>Job Allocation</title>
    
-   
+    <!-- <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">  -->
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
     <!-- <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" type="text/css" media="screen" /> -->
@@ -30,12 +30,14 @@
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
+		    //$("input[type='radio']:checked").css("background","red");
+		    
 		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
 		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
 		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function () {
 		    	$(this).closest("tr").siblings().removeClass("selected");
 		        $(this).toggleClass('selected');
-
+		
 		        $('button[type="submit"]').attr('disabled','disabled');
 		        $(this).find('button').removeAttr( "disabled");
 		        $(this).find('button').click(function() {
@@ -45,11 +47,19 @@
 			        return False;
 		        });
 		    } );
-		    
+		    $("input[type='radio']").on( 'checked', function () {
+		    	$('div[class="side_nav"]').css( "background-color", "yellow" );
+		    });s 
 		} );
 		
 		
 	</script>
+	<style type="text/css">
+		label[name='side_nav']:hover, label[name='side_nav']:active, input:hover+label[name='side_nav'], input[type='radio']:active+label[name='side_nav']{
+			background:#6495ED;
+			color: #F2F3F7;
+		}
+	</style>
 </head>
 <div class="row">
 <div class="col-lg-9">
@@ -170,39 +180,39 @@ Baellerry Genuine Leather Men's Long Wallet</td>
                 </a>
               </div>
          {% endfor %}
-			    <div style="background:#eee;" width:100%; height:60px" class="row">
-			    	<div class="radio" style="padding:10px; display:inline;" class="container">
-  						<label>
+			    <div style="background:#eee;" width:100%; height:60px" class="row" name='side_nav'>
+			    	<div class="radio" style="display:inline;" class="container">
+  						<label name="side_nav" style="width:100%">
   						<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
   						<input type="radio" name="optradio" value="tshepiso"><a title="Kagiso Thebe">kthebe</a></label>
   						<!-- <img style="margin-right:0px" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
 					</div>
 				</div>
 				<hr>
-			    <div style="background:#eee;" width:100%; height:60px" class="row">
-			    	<div class="radio" style="padding:10px; display:inline;" class="containers">
-			    		<label>
-			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
+			    <div style="background:#eee;margin-top:5px;" class="row">
+			    	<div class="radio" style="display:inline;" class="containers">
+			    		<label name="side_nav" style="width:100%">
+			    		<img src="{{ STATIC_URL }}img/team.jpg" class="img-circle" alt="Cinque Terre" width="50" height="50">
+  						<input type="radio" name="optradio" value="setsiba"><a> bravo</a>
   						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
   						</label>
 					</div>
 				</div>
 				
 				<hr>
-			    <div style="background:#eee;" width:100%; height:60px" class="row">
-			    	<div class="radio" style="padding:10px; display:inline;" class="containers">
-			    		<label>
-			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
+			    <div style="background:#eee; margin-top:5px;" class="row side_nav">
+			    	<div class="radio" style="display:inline;" class="containers">
+			    		<label name="side_nav" style="width:100%">
+			    		<img src="{{ STATIC_URL }}img/juju.jpeg" class="img-circle" alt="Cinque Terre" width="50" height="50">
+  						<input type="radio" name="optradio" value="setsiba"><a> juju</a>
   						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
   						</label>
 					</div>
 				</div>
 				<hr>
-			    <div style="background:#eee;" width:100%; height:60px" class="row">
-			    	<div class="radio" style="padding:10px; display:inline;" class="containers">
-			    		<label>
+			    <div style="background:#eee; margin-top:5px;" class="row side_nav">
+			    	<div class="radio" style="display:inline;" class="containers side_nav">
+			    		<label name="side_nav" style="width:100%">
 			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
   						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
   						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
