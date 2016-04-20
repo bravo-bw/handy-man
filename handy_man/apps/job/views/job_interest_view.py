@@ -7,14 +7,14 @@ from handy_man.apps.job.models.job import Job
 from handy_man.apps.user_profile.models.profile import UserProfile
 
 
-class JobAllocationView(BaseDashboard):
+class JobIntestView(BaseDashboard):
 
-    template_name = 'job_allocation.html'
+    template_name = 'job_interest.html'
 
     def __init__(self):
         self.context = {}
         self._job_identifier = None
-        super(JobAllocationView, self).__init__()
+        super(JobIntestView, self).__init__()
 
     def get(self, request, *args, **kwargs):
         self.context.update({
@@ -24,9 +24,8 @@ class JobAllocationView(BaseDashboard):
 
     def post(self, request, *args, **kwargs):
         self._job_identifier = request.POST.get('job_id')
-        self._user_id = request.POST.get('artisan')
         messages.success(request, "Job {} has been allocated to {}")
-        if self.assign_job():
+        if self.add_job_interest():
             messages.success(request, "Job {} has been allocated to {}".format(self.job, self.user_profile))
         else:
             messages.success(request, "Failed to allocate job to artisan.")
@@ -51,7 +50,7 @@ class JobAllocationView(BaseDashboard):
             pass
         return user_profile
 
-    def assign_job(self):
+    def add_job_interest(self):
         if self.job:
             job = self.job
             job.allocated_to = self.user_profile
@@ -59,5 +58,5 @@ class JobAllocationView(BaseDashboard):
             return True
         return False
 
-    def job_cancel(self):
+    def cancel_job_interests(self):
         pass
