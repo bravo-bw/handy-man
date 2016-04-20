@@ -166,5 +166,15 @@ LOGGING = {
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+
+try:
+    f = open(os.path.join(PATH, 'handyman_email_params.txt'), 'r')
+    EMAIL, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD = f.readline().split(',')
+#     print('***************{} {} {}'.format(EMAIL, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD))
+except:
+    print('To use email features, please ensure you provide email parameters file.')
+    EMAIL_HOST_USER = ''
+    EMAIL_HOST_PASSWORD = ''
+    EMAIL = ''
+# handyman_email_params.txt Example
+# user@gmail.com,user,password

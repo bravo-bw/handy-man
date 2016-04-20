@@ -3,13 +3,13 @@ SENDING_METHODS = (
     ('email', 'email'),
 )
 
-ACCOUNT_TYPE = (('Artisan', 'Artisan'),
-                ('SME', 'SME'),
-                ('Customer', 'Customer'))
+ACCOUNT_TYPE = (('artisan', 'Artisan'),
+                ('sme', 'SME'),
+                ('customer', 'Customer'))
 
-JOB_STATUS = (('new', 'new'),
+JOB_STATUS = (('new', 'New'),
               ('in_progess', 'In Progress'),
-              ('delivered', 'delivered'))
+              ('completed', 'Completed'))
 
 PAYMENT_MODE = (
     ('bank_deposit', 'Bank Deposit'),
@@ -70,3 +70,16 @@ JOB_TYPE = (
     ('plumbing', 'Plumbing'),
     ('brick_laying', 'Brick Laying'),
     ('tile_laying', 'Tile Laying'))
+
+ARTISAN_PROFESSION = (
+    ('carpenter', 'Carpenter'),
+    ('plumber', 'Plumber'),
+    ('electrician', 'Electrician'),
+    ('brick_layer', 'Brick Layer'),
+    ('tiler', 'Tiler'),
+    ('roofer', 'Roofer'),
+    ('gardener', 'Gardener'),
+    ('mechanic', 'Mechanic'),
+    ('auto_electrician', 'Auto Electrician'),
+    ('panel_beater', 'Panel Beater'),
+)

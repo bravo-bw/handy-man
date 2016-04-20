@@ -5,7 +5,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
-from ...main.choices import GENDER
+from ...main.choices import GENDER, ACCOUNT_TYPE, ARTISAN_PROFESSION
 from handy_man.apps.geo_location.models import ItemGeolocationMixin
 
 
@@ -31,7 +31,16 @@ class UserProfile(ItemGeolocationMixin):
                                   default=None,
                                   null=True,
                                   blank=True)
-#     account = models.CharField(max_length=10)
+
+    account_type = models.CharField(max_length=15,
+                                    choices=ACCOUNT_TYPE,
+                                    null=True,
+                                    blank=True)
+
+    profession = models.CharField(max_length=20,
+                                  choices=ARTISAN_PROFESSION,
+                                  null=True,
+                                  blank=True)
 #     company = models.ForeignKey(Company, null=True)
 
     gender = models.CharField(
