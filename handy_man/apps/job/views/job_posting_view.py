@@ -4,7 +4,7 @@ from django.contrib import messages
 
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.user_profile.models import UserProfile
-from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
+from handy_man.apps.main.choices import JOB_TYPE
 from handy_man.apps.main.constants import NEW
 from ..forms import JobForm
 from ..models import Job
@@ -15,14 +15,13 @@ class JobPostingView(BaseDashboard):
     template_name = 'job_posting.html'
 
     def __init__(self):
-        self.context = {
-            'job_type': JOB_TYPE,
-        }
+        self.context = {}
         super(JobPostingView, self).__init__()
 
     def get(self, request, *args, **kwargs):
         self.context.update({
-            'name': 'Job Posting View',
+            'name': 'Job Posting',
+            'job_types': self.job_types,
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
@@ -46,8 +45,10 @@ class JobPostingView(BaseDashboard):
                         town_village=town_village, status=NEW, description=description,
                         job_image_1=job_image_1, job_image_2=job_image_2, job_image_3=job_image_3)
                     job.save()
+                    messages.success(request, "Job has been saved successfully")
                 except Exception as err:
                     print(err)
+        self.context.update({'title': self.title})
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def get_current_user(self, username):
@@ -56,3 +57,12 @@ class JobPostingView(BaseDashboard):
         except UserProfile.DoesNotExist:
             return None
         return user
+
+    @property
+    def job_types(self):
+        job = []
+        for x in JOB_TYPE:
+            temp = str(x).split(",")
+            temp = temp[1].replace(")", "")
+            job.append(temp.strip().replace('\'', ''))
+        return job

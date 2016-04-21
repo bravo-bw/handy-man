@@ -55,7 +55,12 @@
 	                       </td>
                            <td>
 	                           	<label for="job_type">Job Type:</label>
-	                           	<input id="job_type" type="text" name="job_type" value="">
+	                           	<select>
+	                           		<option value="None">---------</option>
+	                           		{% for job in job_types %}
+	                           			<option value={{ job }}>{{ job }}</option>
+	                           		{% endfor %}
+	                           	</select>
                            </td>
                        </tr>
                       <tr>
