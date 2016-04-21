@@ -1,7 +1,9 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
+from handy_man.apps.job.tests.factories import JobFactory
 from handy_man.apps.user_profile.tests.factories import UserProfileFactory, UserFactory
+
 from ...constants import SHIPPER, INDIVIDUAL, NEW
 from ...choices import CARGO_TYPE
 
@@ -28,10 +30,13 @@ class Command(BaseCommand):
         user4.first_name = 'user4'
         user4.last_name = 'user4'
         user4.save()
-        individual1 = UserProfileFactory(user=user1)
-        individual2 = UserProfileFactory(user=user2)
-        shipper1 = UserProfileFactory(user=user3)
-        shipper2 = UserProfileFactory(user=user4)
+        profile1 = UserProfileFactory(user=user1)
+        profile2 = UserProfileFactory(user=user2)
+        profile3 = UserProfileFactory(user=user3)
+        profile4 = UserProfileFactory(user=user4)
+        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='in_progress')
+        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='completed')
+        job3 = JobFactory(posted_by=profile3, allocated_to=profile1, status='completed')
 #         individual1.create_job({'job_status': NEW, 'starting_point': 'Lobatse', 'destination': 'Gaborone',
 #                                 'cargo_type': CARGO_TYPE[0][0], 'description': 'Its just a job'})
 #         individual1.create_job({'job_status': NEW, 'starting_point': 'Kanye', 'destination': 'Gaborone',

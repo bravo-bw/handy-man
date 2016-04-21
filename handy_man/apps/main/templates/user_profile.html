@@ -269,6 +269,7 @@
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
+				                <th>Status</th>
 				                <th>description</th>
 				            </tr>
 				        </thead>
@@ -277,15 +278,17 @@
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
+				                <th>Status</th>
 				                <th>description</th>
 				            </tr>
 				        </tfoot>
 				        <tbody>
 				        	{% for job in user_current_jobs %}
 					            <tr>
-					                <td><a href="{% url 'user_profile' job.user.posted_by.user.username %}">{{job.user.posted_by.user.username}}</a></td>
+					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
 					                <td><a href="{% url 'job_posting_url' %}">{{job.user.identifier}}</a></td>
 					                <td>{{job.type}}</td>
+					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
 					            </tr>
 				            {% endfor %}
@@ -299,6 +302,7 @@
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
+				                <th>Status</th>
 				                <th>description</th>
 				            </tr>
 				        </thead>
@@ -307,15 +311,17 @@
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
+				                <th>Status</th>
 				                <th>description</th>
 				            </tr>
 				        </tfoot>
 				        <tbody>
 				        	{% for job in user_completed_jobs %}
 					            <tr>
-					                <td><a href="{% url 'user_profile' job.user.posted_by.user.username %}">{{job.user.posted_by.user.username}}</a></td>
+					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
 					                <td><a href="{% url 'job_posting_url' %}">{{job.user.identifier}}</a></td>
 					                <td>{{job.type}}</td>
+					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
 					            </tr>
 				            {% endfor %}
