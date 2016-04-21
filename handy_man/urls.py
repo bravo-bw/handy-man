@@ -1,4 +1,5 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.staticfiles.views import serve
 from django.conf import settings
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
@@ -15,7 +16,6 @@ urlpatterns = [
     url(r'^admin/logout/$', RedirectView.as_view(url='/{app_name}/logout/'.format(app_name='handy_man'))),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-
     url(r'^$', Home.as_view(), name='home_url'),
     url(r'^login$', login_view),
     url(r'^logout/$', logout_view),
@@ -28,9 +28,6 @@ urlpatterns = [
 ]
 
 
-# urlpatterns += patterns(
-#     'django.contrib.staticfiles.views',
-#     url(r'^static/(?P<path>.*)$', 'serve'),
-# )
-
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns += patterns(
+    url(r'^static/(?P<path>.*)$', serve),
+)

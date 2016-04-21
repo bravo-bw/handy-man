@@ -15,19 +15,19 @@ class UserProfile(ItemGeolocationMixin):
     alter_contact = models.CharField(max_length=10, null=True, blank=True)
     email_validated = models.BooleanField(default=False)
     administrator_validated = models.BooleanField(default=False)
-    avatar_image = models.ImageField(upload_to=settings.STATIC_ROOT + '/gfx/',
-                                     default=settings.STATIC_ROOT + '/gfx/default_avatar_male.jpg',
+    avatar_image = models.ImageField(upload_to=settings.MEDIA_ROOT,
+                                     default=settings.MEDIA_ROOT + 'default_avatar_male.jpg',
                                      null=True,
                                      blank=True)
-    document_1 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+    document_1 = models.FileField(upload_to=settings.MEDIA_ROOT,
                                   default=None,
                                   null=True,
                                   blank=True)
-    document_2 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+    document_2 = models.FileField(upload_to=settings.MEDIA_ROOT,
                                   default=None,
                                   null=True,
                                   blank=True)
-    document_3 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
+    document_3 = models.FileField(upload_to=settings.MEDIA_ROOT,
                                   default=None,
                                   null=True,
                                   blank=True)
