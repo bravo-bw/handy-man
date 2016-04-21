@@ -31,17 +31,6 @@ class Job(ItemGeolocationMixin):
         editable=False
     )
 
-<<<<<<< HEAD
-    category = models.CharField(
-        verbose_name='Category',
-        default=None,
-        max_length=36,
-        null=True,
-        blank=True
-    )
-
-=======
->>>>>>> 8984013f3cc63018503043483025cf94f7f0630d
     status = models.CharField(
         verbose_name='Job Status',
         max_length=10,
