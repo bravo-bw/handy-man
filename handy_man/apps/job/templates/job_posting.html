@@ -25,36 +25,44 @@
             </table>
             <div class="panel-body">
               <div class="row"> 
-                <div class=" col-md-9 col-lg-9 "> 
+                <div class=" col-md-12 col-lg-12 "> 
                   <table class="table table-user-information">
                     <tbody>
                     	<tr>
-	                       <td>Latitude</td>
-	                       <td><input type="number" name="latitude" value=""><br></td>
+                    		<td>
+		                       <label for="street">Latitude:</label>
+		                       <input id="latitude" type="number" name="latitude" value="">
+		                    </td>
+		                    <td>
+		                       <label for="longitude">Longitude:</label>
+		                       <input id="longitude" type="number" name="longitude" value="">
+		                    </td>
                       	</tr>
                       	<tr>
-	                       <td>Longitude</td>
-	                       <td><input type="number" name="longitude" value=""><br></td>
+                      		<td>
+		                       <label for="street">Street:</label>
+		                       <input id="street" type="text" name="street" value="">
+		                    </td>
+		                    <td>
+		                       <label for="town_village">Town/Village:</label>
+		                       <input id="town_village" type="text" name="town_village" value="">
+		                    </td>
                       	</tr>
                       	<tr>
-	                       <td>Street</td>
-	                       <td><input type="text" name="street" value=""><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>Town/Village</td>
-	                       <td><input type="text" name="town_village" value=""><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>District</td>
-	                       <td><input type="text" name="district" value=""><br></td>
-                      	</tr>
+                      		<td>
+		                       <label for="district">District:</label>
+		                       <input id="district" type="text" name="district" value="">
+	                       </td>
+                           <td>
+	                           	<label for="job_type">Job Type:</label>
+	                           	<input id="job_type" type="text" name="job_type" value="">
+                           </td>
+                       </tr>
                       <tr>
-                        <td>Type:</td>
-                        <td><input type="text" name="job_type" value=""><br></td>
-                      </tr>
-                      <tr>
-                        <td>Description</td>
-                        <td><input type="text" name="description" value=""><br></td>
+                      		<td>
+		                        <label for="description">Description:</label><br>
+		                        <textarea rows="4" cols="50" id="description" name="description" value=""></textarea>
+                        	</td>
                       </tr>
                       <tr>
                       <!-- <div id="documents" class="tab-pane fade">
@@ -116,8 +124,7 @@
 				  </div> -->
 				  </tr>
 				  <tr>
-				  	<td>Location</td>
-				  	<td>
+				  	<td colspan=2>
 				  		<div id="googleMap" style="width:600px;height:380px;"></div>
 				  	</td>
 				  </tr>
