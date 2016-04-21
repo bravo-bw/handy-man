@@ -21,18 +21,11 @@ class Job(ItemGeolocationMixin):
 
     posted_by = models.OneToOneField(UserProfile, related_name='profile_sumbittor', editable=False)
 
-    allocated_to = models.OneToOneField(UserProfile, related_name='allocated', editable=False)
+    allocated_to = models.OneToOneField(UserProfile, related_name='allocated', null=True, blank=True, editable=False)
 
-    identifier = models.CharField(
+    identifier = models.AutoField(
+        primary_key=True,
         verbose_name='Job Identifier',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
-
-    category = models.CharField(
-        verbose_name='Category',
         default=None,
         max_length=36,
         unique=True,
@@ -47,7 +40,7 @@ class Job(ItemGeolocationMixin):
         editable=False
     )
 
-    type = models.CharField(
+    job_type = models.CharField(
         verbose_name='Job Type',
         max_length=25,
         choices=JOB_TYPE,
