@@ -55,9 +55,9 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script>
-
     function initialize() {
    	 var myLatLng = {lat: -24.658143, lng: 25.923074};
+   	getLocation();
      
    	 var mapProp = {
        center: myLatLng,
@@ -67,10 +67,23 @@
      var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
      var marker = new google.maps.Marker({
-   	    position: {lat: -24.658143, lng: 25.923074},
+   	    position: myLatLng,
    	    map: map,
    	    title: 'Current location'
    	  });
+     
+     function getLocation(position) {
+         if (navigator.geolocation) {
+             navigator.geolocation.getCurrentPosition(showPosition);
+         } else { 
+             x.innerHTML = "Geolocation is not supported by this browser.";
+         }
+     }
+
+     function showPosition(position) {
+     	document.getElementById("lat").value=position.coords.latitude;
+     	document.getElementById("lon").value=position.coords.longitude;
+     }
 
    }
    google.maps.event.addDomListener(window, 'load', initialize);
@@ -98,6 +111,7 @@
               <li class="active"><a href="{% url 'home_url' %}">Home</a></li>
               <li><a href="{% url 'user_profile' user.username %}">My Profile</a></li>
               <li><a href="{% url 'jobs_url' %}">Jobs</a></li>
+              <li><a href="{% url 'job_posting_url' %}">Allocate Jobs</a></li>
               <li><a href="{% url 'registered_users_url' %}">Registered Users</a></li>
               </li>
             </ul>
