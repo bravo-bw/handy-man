@@ -16,7 +16,7 @@ class UserProfile(ItemGeolocationMixin):
     email_validated = models.BooleanField(default=False)
     administrator_validated = models.BooleanField(default=False)
     avatar_image = models.ImageField(upload_to=settings.MEDIA_ROOT,
-                                     default=settings.MEDIA_ROOT + 'default_avatar_male.jpg',
+                                     default=settings.MEDIA_ROOT + '/default_avatar_male.jpg',
                                      null=True,
                                      blank=True)
     document_1 = models.FileField(upload_to=settings.MEDIA_ROOT,
@@ -76,7 +76,7 @@ class UserProfile(ItemGeolocationMixin):
     def avatar_name(self):
         # Last element in the list is the file name
         if self.document(self.avatar_image) == '':
-            return '{}gfx/{}'.format(settings.STATIC_URL, 'default_avatar_male.jpg')
+            return '{}{}'.format(settings.STATIC_URL, 'default_avatar_male.jpg')
         return self.document(self.avatar_image)
 
     @property
@@ -85,7 +85,7 @@ class UserProfile(ItemGeolocationMixin):
 
     def document(self, document):
         if document:
-            return '{}gfx/{}'.format(settings.STATIC_URL, document.name.split('/')[-1:][0])
+            return '{}{}'.format(settings.STATIC_URL, document.name.split('/')[-1:][0])
         return ''
 
     def __unicode__(self):
