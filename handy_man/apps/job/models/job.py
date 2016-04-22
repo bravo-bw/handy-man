@@ -21,21 +21,13 @@ class Job(ItemGeolocationMixin, TimeStampedModel):
          5. Job Report
     """
 
-    posted_by = models.OneToOneField(UserProfile, related_name='profile_sumbittor', editable=False)
+    posted_by = models.ForeignKey(UserProfile, related_name='profile_sumbittor')
 
-    allocated_to = models.OneToOneField(UserProfile, related_name='allocated', editable=False)
+    allocated_to = models.ForeignKey(UserProfile, related_name='allocated', null=True, blank=True)
 
-    identifier = models.CharField(
+    identifier = models.AutoField(
+        primary_key=True,
         verbose_name='Job Identifier',
-        default=None,
-        max_length=36,
-        unique=True,
-        editable=False
-    )
-
-    category = models.CharField(
-        verbose_name='Category',
-        default=None,
         max_length=36,
         unique=True,
         editable=False
@@ -49,7 +41,7 @@ class Job(ItemGeolocationMixin, TimeStampedModel):
         editable=False
     )
 
-    type = models.CharField(
+    job_type = models.CharField(
         verbose_name='Job Type',
         max_length=25,
         choices=JOB_TYPE,

@@ -6,6 +6,5 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     'django.contrib.staticfiles.views',
-    url(r'^static/(?P<path>.*)$', 'serve'),
     url(r'^home/', Home.as_view(), name='home_url'),
 )

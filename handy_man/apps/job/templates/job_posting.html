@@ -25,50 +25,52 @@
             </table>
             <div class="panel-body">
               <div class="row"> 
-                <div class=" col-md-9 col-lg-9 "> 
+                <div class=" col-md-12 col-lg-12 "> 
                   <table class="table table-user-information">
                     <tbody>
                     	<tr>
-	                       <td>Latitude</td>
-	                       <td><input type="text" name="latitude" value=""><br></td>
+                    		<td>
+		                       <label for="street">Latitude:</label>
+		                       <input id="latitude" type="number" name="latitude" value="">
+		                    </td>
+		                    <td>
+		                       <label for="longitude">Longitude:</label>
+		                       <input id="longitude" type="number" name="longitude" value="">
+		                    </td>
                       	</tr>
                       	<tr>
-	                       <td>Longitude</td>
-	                       <td><input type="text" name="longitude" value=""><br></td>
+                      		<td>
+		                       <label for="street">Street:</label>
+		                       <input id="street" type="text" name="street" value="">
+		                    </td>
+		                    <td>
+		                       <label for="town_village">Town/Village:</label>
+		                       <input id="town_village" type="text" name="town_village" value="">
+		                    </td>
                       	</tr>
                       	<tr>
-	                       <td>Street</td>
-	                       <td><input type="text" name="street" value=""><br></td>
-                      	</tr>
-                    	<tr>
-	                       <td>Job Identifier</td>
-	                       <td><input type="text" name="identifier" value=""><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>Town/Village</td>
-	                       <td><input type="text" name="town_village" value=""><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>District</td>
-	                       <td><input type="text" name="district" value=""><br></td>
-                      	</tr>
-                    	<tr>
-	                       <td>Category</td>
-	                       <td><input type="text" name="category" value=""><br></td>
-                      	</tr>
+                      		<td>
+		                       <label for="district">District:</label>
+		                       <input id="district" type="text" name="district" value="">
+	                       </td>
+                           <td>
+	                           	<label for="job_type">Job Type:</label>
+	                           	<select>
+	                           		<option value="None">---------</option>
+	                           		{% for job in job_types %}
+	                           			<option value={{ job }}>{{ job }}</option>
+	                           		{% endfor %}
+	                           	</select>
+                           </td>
+                       </tr>
                       <tr>
-                        <td>Job Status</td>
-                        <td><input type="text" name="type" value=""><br></td>
+                      		<td>
+		                        <label for="description">Description:</label><br>
+		                        <textarea rows="4" cols="50" id="description" name="description" value=""></textarea>
+                        	</td>
                       </tr>
                       <tr>
-                        <td>Type:</td>
-                        <td><input type="text" name="type" value=""><br></td>
-                      </tr>
-                      <tr>
-                        <td>Description</td>
-                        <td><input type="text" name="description" value=""><br></td>
-                      </tr>
-                      <div id="documents" class="tab-pane fade">
+                      <!-- <div id="documents" class="tab-pane fade">
 				    	<div class="row">
 				    		<div class=" col-md-12 col-lg-12 ">
 								<label class="control-label">Documents</label>
@@ -79,15 +81,15 @@
 									    	<div class="file-preview-thumbnails">
 									    		<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_0" data-fileindex="init_0">
 									    			<iframe src="{{user_profile.document_urls.0}}" style="width:124px; height:174px" frameborder="0" id='document_display_0'></iframe>
-											   		<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_0'>--> 
+											   		<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_0'> 
 												</div>
 												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_1" data-fileindex="init_1">
-													<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_1'>-->
+													<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_1'>
 													<iframe src="{{user_profile.document_urls.1}}" style="width:124px; height:174px" frameborder="0" id='document_display_1'></iframe> 
 												</div>
 												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_2" data-fileindex="init_2">
 													<iframe src="{{user_profile.document_urls.2}}" style="width:124px; height:174px" frameborder="0" id='document_display_2'></iframe>
-													<!--<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_2'>--> 
+													<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_2'> 
 												</div>
 											    <div class="clearfix"></div>
 												<div class="file-preview-status text-center text-success"></div>
@@ -124,7 +126,13 @@
 									</div>
 								</div>
 						    </div>
-				  </div>
+				  </div> -->
+				  </tr>
+				  <tr>
+				  	<td colspan=2>
+				  		<div id="googleMap" style="width:600px;height:380px;"></div>
+				  	</td>
+				  </tr>
                     </tbody>
                   </table>
                   <div class="form-group">
@@ -136,7 +144,7 @@
           </div>
           </form>
          </div>
-         <script>
+         <!-- <script>
       		//Changes user profile photo
       		$(document).ready( function() {
 				$("#avatar_image").change(function(event) {
@@ -196,6 +204,5 @@
 					//return false;
 				});	
       		});
-	 </script>
+	 </script> -->
 {% endblock %}
-</div>
