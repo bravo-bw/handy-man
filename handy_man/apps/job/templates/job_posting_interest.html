@@ -1,5 +1,5 @@
-{% extends "base_job.html" %}
-{% block controlled_table %}
+{% extends "base.html" %}
+{% block content %}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Job Allocation</title>
+    <title>Available Jobs</title>
    
     <!-- <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">  -->
     <!-- Bootstrap Core CSS -->
@@ -27,18 +27,6 @@
 	</script>
 	<script>
 		$(document).ready(function() {
-			var job_artisans = [];
-			function addJob(job_identifier, artisan_icon, artisan_username, artisan_fullname){
-				
-				var job_artisan = {
-						identifier : job_identifier,
-					    icon  : artisan_icon,
-					    username : artisan_username,
-					    fullname : artisan_fullname
-					};
-				job_artisans.push(job_artisan);
-			};
-
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
@@ -56,6 +44,7 @@
 			        var $job_item = $(this).closest("tr").find('input[name="job_id"]');
 			        var $checked_radio_val = $("input[type='radio']:checked").val();
 			        $job_item.val($checked_radio_val);
+			        return False;
 		        });
 		    } );
 		    $("input[type='radio']").on( 'checked', function () {
@@ -72,6 +61,35 @@
 		}
 	</style>
 </head>
+
+<div class="row" style="padding:10px; width:99%; background:#ccf2ff; margin-left:5px; margin-bottom:20px;border-radius: 10px; min-height: 100px;" class="container">
+<div class="container-fluid">
+  <div class="row">
+  
+  <div class="dropdown col-lg-4" style="margin-top:20px;">
+  <button style="width:300px;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    All Categories
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">Household</a></li>
+    <li><a href="#">Constructions</a></li>
+    <li><a href="#">Cars</a></li>
+    <li role="separator" class="divider"></li>
+  </ul>
+</div>
+
+    <div class="input-group col-lg-2" style="float:left; margin-top:20px;">
+      <input type="text" class="form-control" placeholder="Search for..." style="width:300px;">
+      <span class="input-group-btn" style="width:200px;">
+        <button class="btn btn-secondary" type="button">Go!</button>
+      </span>
+    </div>
+    <div class="input-group col-lg-6" style="float:left;">
+    </div>
+</div>
+ </div>
+</div>
 <div class="row">
 <div class="col-lg-9">
     <!-- /.panel -->
@@ -102,24 +120,28 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    {% for job in job_interests %}
-				    <tr>
-				    <script>
-				    	{% for artisan in job.artisans_interested %}
-				    		addJob('{{job.identifier}}', {{artisan.avatar_image}}, {{artisan.user.username}}, {{artisan.user.first_name}}+' '+{{artisan.user.last_name}}+' '+{{artisan.profession}});
-				    	{% endfor %}
-				    </script>
-					        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-					        <td>{{job.description}}</td>
-					        <td>{{job.street}}</td>
-							<td><form action="{% url 'jobs_url' %}" method="post">
-	               		{% csrf_token %}
-	               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-	               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-	               	 		<button type="submit" class="btn btn-primary">Assign</button>
-	        		</form></td>
-					</tr>
-				{% endfor %}
+		{% for jobs, job_interest_status in new_jobs %}
+			    <tr>
+			        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
+			        <td>{{job.description}}</td>
+			        <td>{{job.street}}</td>
+					<td>
+				<form action="{% url 'jobs_url' %}" method="post">
+               		{% csrf_token %}
+               		     <input name="artisan" id="artisan" type="hidden" value="sets">
+               	 		<input name="job_id" type="hidden" value="{{job.identifier}}">
+               	 		<div class="list-inline">
+               	 		{% if job_interest_status %}
+               	 			<input name="action" id="action" type="hidden" value="interested">
+               	 			<input style="float:right;" id="action" type="image" src="{{ STATIC_URL }}img/cancel.png" alt="Submit" width="30" height="30">               	 		
+               	 		{% else %}
+               	 			<input name="action" id="action" type="hidden" value="notinterested">
+               	 			<input style="float:right;" id="action" type="image" src="{{ STATIC_URL }}img/tick.png" alt="Submit" width="30" height="30">
+               	 		{% endif %}
+               	 		</div>
+        		</form></td>
+			</tr>
+		{% endfor %}
 			    <tr>
 				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
 				        <td>
@@ -132,7 +154,10 @@ Baellerry Genuine Leather Men's Long Wallet</td>
                		{% csrf_token %}
                		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
                	 		<input name="job_id" type="hidden" value="10101010100yyyyyyy">
-               	 		<button type="submit" class="btn btn-primary">Assign</button>
+               	 		<div class="list-inline">
+               	 		<input style="float:right;" type="image" src="{{ STATIC_URL }}img/tick.png" alt="Submit" width="30" height="30">
+               	 		<!--<input type="image" style="background:red;" src="{{ STATIC_URL }}img/cancel.png" alt="Submit" width="30" height="30">-->
+               	 		</div>
         		</form>
 				<!-- <button type="submit" class="btn btn-primary">Assign</button>-->
 				</td>
@@ -141,83 +166,32 @@ Baellerry Genuine Leather Men's Long Wallet</td>
 			  </table>
 		<!-- </div> -->                  
         </div>
-        <!-- /.panel-body -->
+        <!-- /.panel-body 
         <div class="panel-heading">
             <i class="fa fa-bar-chart-o fa-fw"></i> Geo Location
         </div>
-        <!-- /.panel-heading -->
+        <!-- /.panel-heading 
                 <div class="panel-body">
                     	<table>
                     	<tr><td>
-                <div id="mapCanvas" style="width:680px;height:380px;"></div>
+<div id="googleMap" style="width:600px;height:380px;"></div>
             	</td></tr>
-            	</table>                            
+            	</table>   --.                         
         </div>
         <!-- /.panel-body -->
     </div>
     <!-- /.panel -->
 </div>
 <!-- /.col-lg-8 -->
-<div class="col-lg-3">
-    <div class="panel panel-default">
+<div class="col-lg-3">    
+ <div class="panel panel-default" style="width:100%">
         <div class="panel-heading">
-            <i class="fa fa-bell fa-fw"></i> Best Artisan
+            <i class="fa fa-bell fa-fw"></i> Latest Jobs
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-            <!-- /.list-group -->
-            <!--  <a href="#" class="btn btn-default btn-block">V</a> -->
-        </div>
-        <!-- /.panel-body -->
-    </div>
-    
- <div class="panel panel-default" style="width:100%"">
-        <div class="panel-heading">
-            <i class="fa fa-bell fa-fw"></i> Artisans
-        </div>
-        <!-- /.panel-heading -->
-        <div class="panel-body">
-			    <div style="background:#eee;" class="row" name='side_nav'>
-			    	<div class="radio" style="display:inline;" class="container">
-  						<label name="side_nav" style="width:100%">
-  						<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="tshepiso"><a title="Kagiso Thebe">kthebe</a></label>
-  						<!-- <img style="margin-right:0px" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-					</div>
-				</div>
-				<hr>
-			    <div style="background:#eee;" class="row">
-			    	<div class="radio" style="display:inline;" class="containers">
-			    		<label name="side_nav" style="width:100%">
-			    		<img src="{{ STATIC_URL }}img/team.jpg" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> bravo</a>
-  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-  						</label>
-					</div>
-				</div>
-				
-				<hr>
-			    <div style="background:#eee;" class="row side_nav">
-			    	<div class="radio" style="display:inline;" class="containers">
-			    		<label name="side_nav" style="width:100%">
-			    		<img src="{{ STATIC_URL }}img/juju.jpeg" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> juju</a>
-  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-  						</label>
-					</div>
-				</div>
-				<hr>
-			    <div style="background:#eee;" class="row side_nav">
-			    	<div class="radio" style="display:inline;" class="containers side_nav">
-			    		<label name="side_nav" style="width:100%">
-			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
-  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-  						</label>
-					</div>
-				</div>
-				<hr>
-            <!--  <a href="#" class="btn btn-default btn-block">View All Requests</a>-->
+			<hr>
+            <a href="#" class="btn btn-default btn-block">View All</a>
         </div>
         <!-- /.panel-body -->
     </div>

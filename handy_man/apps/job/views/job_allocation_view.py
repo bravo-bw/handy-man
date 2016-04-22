@@ -18,7 +18,7 @@ class JobAllocationView(BaseDashboard):
 
     def get(self, request, *args, **kwargs):
         self.context.update({
-            'name': 'Setsiba',
+            'job_interests': self.new_jobs_with_job_interest,
             'task': "job_allocate"
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
@@ -62,3 +62,12 @@ class JobAllocationView(BaseDashboard):
 
     def job_cancel(self):
         pass
+
+    @property
+    def new_jobs_with_job_interest(self):
+        new_jobs_with_job_interest = []
+        for job in Job.objects.filter(status='new'):
+            if job.artisans_interested.all():
+                new_jobs_with_job_interest.append(job)
+        return new_jobs_with_job_interest
+

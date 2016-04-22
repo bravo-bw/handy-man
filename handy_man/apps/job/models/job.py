@@ -1,14 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_extensions.db.models import TimeStampedModel
 from django.conf import settings
 
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
 from handy_man.apps.geo_location.models import ItemGeolocationMixin
 from handy_man.apps.user_profile.models import UserProfile
+from handy_man.apps.job.managers import JobManager
 
 
-class Job(ItemGeolocationMixin):
+class Job(ItemGeolocationMixin, TimeStampedModel):
 
     """
     This model describes the job and its details.
@@ -60,18 +62,27 @@ class Job(ItemGeolocationMixin):
         blank=True
     )
 
-    job_image_1 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
-                                  default=None,
-                                  null=True,
-                                  blank=True)
-    job_image_2 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
-                                  default=None,
-                                  null=True,
-                                  blank=True)
-    job_image_3 = models.FileField(upload_to=settings.STATIC_ROOT + '/gfx/',
-                                  default=None,
-                                  null=True,
-                                  blank=True)
+    job_image_1 = models.FileField(
+        upload_to=settings.STATIC_ROOT + '/gfx/',
+        default=None,
+        null=True,
+        blank=True
+    )
+
+    job_image_2 = models.FileField(
+        upload_to=settings.STATIC_ROOT + '/gfx/',
+        default=None,
+        null=True,
+        blank=True
+    )
+    job_image_3 = models.FileField(
+        upload_to=settings.STATIC_ROOT + '/gfx/',
+        default=None,
+        null=True,
+        blank=True
+    )
+
+    objects = JobManager()
 
     class Meta:
         app_label = 'job'
