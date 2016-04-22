@@ -19,6 +19,7 @@ class JobAllocationView(BaseDashboard):
     def get(self, request, *args, **kwargs):
         self.context.update({
             'name': 'Setsiba',
+            'task': "job_allocate"
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
