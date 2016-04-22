@@ -13,6 +13,8 @@
 }
 </style>
 
+
+
 {% block content %}
 
 <form class="form-inline" action="{% url 'job_posting_url' %}" method="post">
@@ -25,19 +27,11 @@
             </table>
             <div class="panel-body">
               <div class="row"> 
-                <div class=" col-md-12 col-lg-12 "> 
+                <div class=" col-md-9 col-lg-9 ">
+                <div id="markerStatus"><i>Click and drag the marker.</i></div>
+                <input type="hidden" name="lat" id="latitude"><br> <input type="hidden" name="lon" id="longitude"> 
                   <table class="table table-user-information">
                     <tbody>
-                    	<tr>
-                    		<td>
-		                       <label for="street">Latitude:</label>
-		                       <input id="latitude" type="number" name="latitude" value="">
-		                    </td>
-		                    <td>
-		                       <label for="longitude">Longitude:</label>
-		                       <input id="longitude" type="number" name="longitude" value="">
-		                    </td>
-                      	</tr>
                       	<tr>
                       		<td>
 		                       <label for="street">Street:</label>
@@ -128,11 +122,15 @@
 						    </div>
 				  </div> -->
 				  </tr>
+				  <tr><td>Location</td></td></tr>
 				  <tr>
-				  	<td colspan=2>
-				  		<div id="googleMap" style="width:600px;height:380px;"></div>
+				  	<td>
+				  		<div id="mapCanvas" style="width:680px;height:380px;"></div>
 				  	</td>
 				  </tr>
+    <div id="info"></div>
+    <b>Closest matching address:</b>
+    <div id="address"></div><br></td></tr>
                     </tbody>
                   </table>
                   <div class="form-group">

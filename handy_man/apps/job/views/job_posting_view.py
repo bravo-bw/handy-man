@@ -22,6 +22,7 @@ class JobPostingView(BaseDashboard):
         self.context.update({
             'name': 'Job Posting',
             'job_types': self.job_types,
+            'task': "job_post"
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
