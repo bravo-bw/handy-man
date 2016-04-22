@@ -28,36 +28,40 @@
             <div class="panel-body">
               <div class="row"> 
                 <div class=" col-md-9 col-lg-9 ">
-                <div id="markerStatus"><i>Click and drag the marker.</i></div> 
+                <div id="markerStatus"><i>Click and drag the marker.</i></div>
+                <input type="hidden" name="lat" id="latitude"><br> <input type="hidden" name="lon" id="longitude"> 
                   <table class="table table-user-information">
                     <tbody>
-                    	<tr>
-	                       <td>Latitude</td>
-	                       <td><input type="text" name="lat" id="lat"><br></td>
+                      	<tr>
+                      		<td>
+		                       <label for="street">Street:</label>
+		                       <input id="street" type="text" name="street" value="">
+		                    </td>
+		                    <td>
+		                       <label for="town_village">Town/Village:</label>
+		                       <input id="town_village" type="text" name="town_village" value="">
+		                    </td>
                       	</tr>
                       	<tr>
-	                       <td>Longitude</td>
-	                       <td><input type="text" name="lon" id="lon"><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>Street</td>
-	                       <td><input type="text" name="street" value=""><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>Town/Village</td>
-	                       <td><input type="text" name="town_village" value=""><br></td>
-                      	</tr>
-                      	<tr>
-	                       <td>District</td>
-	                       <td><input type="text" name="district" value=""><br></td>
-                      	</tr>
+                      		<td>
+		                       <label for="district">District:</label>
+		                       <input id="district" type="text" name="district" value="">
+	                       </td>
+                           <td>
+	                           	<label for="job_type">Job Type:</label>
+	                           	<select>
+	                           		<option value="None">---------</option>
+	                           		{% for job in job_types %}
+	                           			<option value={{ job }}>{{ job }}</option>
+	                           		{% endfor %}
+	                           	</select>
+                           </td>
+                       </tr>
                       <tr>
-                        <td>Type:</td>
-                        <td><input type="text" name="job_type" value=""><br></td>
-                      </tr>
-                      <tr>
-                        <td>Description</td>
-                        <td><input type="text" name="description" value=""><br></td>
+                      		<td>
+		                        <label for="description">Description:</label><br>
+		                        <textarea rows="4" cols="50" id="description" name="description" value=""></textarea>
+                        	</td>
                       </tr>
                       <tr>
                       <!-- <div id="documents" class="tab-pane fade">
@@ -118,8 +122,8 @@
 						    </div>
 				  </div> -->
 				  </tr>
+				  <tr><td>Location</td></td></tr>
 				  <tr>
-				  	<td>Location</td>
 				  	<td>
 				  		<div id="mapCanvas" style="width:680px;height:380px;"></div>
 				  	</td>
