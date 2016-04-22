@@ -22,6 +22,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 PATH = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(2).child('etc')
+print(PATH)
 
 if 'test' in sys.argv:
     DATABASES = {
