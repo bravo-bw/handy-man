@@ -33,7 +33,7 @@ class Job(ItemGeolocationMixin):
 
     status = models.CharField(
         verbose_name='Job Status',
-        max_length=10,
+        max_length=50,
         default=NEW,
         choices=JOB_STATUS,
         editable=False

@@ -1,0 +1,20 @@
+.login {
+	position: absolute;
+    font-size: 18px;
+    top: 8px;
+    right: 16px;
+    margin-top: 45px;
+}
+
+#footer {
+   padding:5px;	
+   bottom:0;
+   width:100%;
+   height:60px;   /* Height of the footer */
+   background:#6cf;
+   text-align:center;
+}
+
+.rounded {
+  border-radius: 10px;
+}
