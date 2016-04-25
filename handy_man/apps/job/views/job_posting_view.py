@@ -6,6 +6,8 @@ from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.main.choices import JOB_TYPE
 from handy_man.apps.main.constants import NEW
+from handy_man.apps.user_profile.classes import MenuConfiguration
+
 from ..forms import JobForm
 from ..models import Job
 
@@ -19,14 +21,17 @@ class JobPostingView(BaseDashboard):
         super(JobPostingView, self).__init__()
 
     def get(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self.context.update({
             'name': 'Job Posting',
             'job_types': self.job_types,
-            'task': "job_post"
+            'task': "job_post",
+            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         posted_by = self.get_current_user(request.user.username)
         job_posting_form = JobForm(request.POST)
         if request.method == 'POST':
@@ -49,7 +54,8 @@ class JobPostingView(BaseDashboard):
                     messages.success(request, "Job has been saved successfully")
                 except Exception as err:
                     print(err)
-        self.context.update({'title': self.title})
+        self.context.update({'title': self.title,
+                             'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def get_current_user(self, username):
