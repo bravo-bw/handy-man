@@ -1,5 +1,7 @@
 from django.db import models
 
+from .location_divisions import Street, TownVillage, District
+
 
 class ItemGeolocationMixin(models.Model):
 
@@ -15,23 +17,11 @@ class ItemGeolocationMixin(models.Model):
         null=True,
         blank=True,)
 
-    street = models.CharField(
-        verbose_name='Street name',
-        max_length=50,
-        null=True,
-        blank=True,)
+    street = models.ForeignKey(Street, on_delete=models.CASCADE)
 
-    town_village = models.CharField(
-        verbose_name='Town or village name',
-        max_length=50,
-        null=True,
-        blank=True,)
+    town_village = models.ForeignKey(TownVillage, on_delete=models.CASCADE)
 
-    district = models.CharField(
-        verbose_name='District',
-        max_length=50,
-        null=True,
-        blank=True,)
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
