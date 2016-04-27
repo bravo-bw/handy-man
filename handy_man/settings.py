@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'handy_man.apps.main',
     'handy_man.apps.job',
+    'handy_man.apps.geo_location',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',

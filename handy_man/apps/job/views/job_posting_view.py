@@ -1,12 +1,13 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib import messages 
+from django.contrib import messages
 
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.main.choices import JOB_TYPE
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.user_profile.classes import MenuConfiguration
+from handy_man.apps.geo_location.models import TownVillage, District, Street
 
 from ..forms import JobForm
 from ..models import Job
@@ -26,6 +27,7 @@ class JobPostingView(BaseDashboard):
             'name': 'Job Posting',
             'job_types': self.job_types,
             'task': "job_post",
+            'districts': self.district,
             'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
@@ -73,3 +75,22 @@ class JobPostingView(BaseDashboard):
             temp = temp[1].replace(")", "")
             job.append(temp.strip().replace('\'', ''))
         return job
+
+    def streets(self, town_village=None):
+        """Return all streets for a town/village."""
+        streets = []
+#         town_village = TownVillage.objects.all()
+        return streets
+
+    def town_village(self, district=None):
+        """Return a list of towns."""
+        town_village = []
+        return town_village
+
+    @property
+    def district(self):
+        dist = []
+        districts = District.objects.all()
+        for district in districts:
+            dist.append(district.district_name)
+        return dist

@@ -1,8 +1,8 @@
 from django.db import models
 
 
-class Street(models.Model):
-    street_name = models.CharField(max_length=200)
+class District(models.Model):
+    district_name = models.CharField(max_length=200)
     center_latitude = models.FloatField(
         verbose_name='Center Latitude',
         max_length=50,
@@ -15,9 +15,12 @@ class Street(models.Model):
         null=True,
         blank=True,)
 
+    class Meta:
+        app_label = 'geo_location'
+
 
 class TownVillage(models.Model):
-    street = models.ForeignKey(Street, on_delete=models.CASCADE)
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
     town_village_name = models.CharField(max_length=200)
     center_latitude = models.FloatField(
         verbose_name='Center Latitude',
@@ -31,10 +34,13 @@ class TownVillage(models.Model):
         null=True,
         blank=True,)
 
+    class Meta:
+        app_label = 'geo_location'
 
-class District(models.Model):
+
+class Street(models.Model):
     town_village = models.ForeignKey(TownVillage, on_delete=models.CASCADE)
-    district_name = models.CharField(max_length=200)
+    street_name = models.CharField(max_length=200)
     center_latitude = models.FloatField(
         verbose_name='Center Latitude',
         max_length=50,
@@ -46,3 +52,6 @@ class District(models.Model):
         max_length=50,
         null=True,
         blank=True,)
+
+    class Meta:
+        app_label = 'geo_location'
