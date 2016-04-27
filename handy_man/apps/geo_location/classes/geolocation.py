@@ -1,6 +1,8 @@
 from geopy import Point
 from geopy import distance
 
+street_centers = []
+
 
 class Geolocation:
 
@@ -28,3 +30,7 @@ class Geolocation:
         pt2 = Point(float(lat_2), float(lon_2))
         dist = distance.distance(pt1, pt2).km
         return dist
+
+    def street_center(self, street_name):
+        """Return the street center coordinates."""
+        return center
