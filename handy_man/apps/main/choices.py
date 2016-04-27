@@ -5,7 +5,8 @@ SENDING_METHODS = (
 
 ACCOUNT_TYPE = (('artisan', 'Artisan'),
                 ('sme', 'SME'),
-                ('customer', 'Customer'))
+                ('customer', 'Customer'),
+                ('handyman_admin', 'Handy Man Admin'))
 
 JOB_STATUS = (('new', 'New'),
               ('in_progess', 'In Progress'),
@@ -83,3 +84,7 @@ ARTISAN_PROFESSION = (
     ('auto_electrician', 'Auto Electrician'),
     ('panel_beater', 'Panel Beater'),
 )
+
+CURRENCY = (('BWP', 'pula'),
+            ('ZAR', 's.a rands'),
+            ('USD', 'u.s dollar'))

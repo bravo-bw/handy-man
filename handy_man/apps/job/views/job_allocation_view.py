@@ -71,8 +71,9 @@ class JobAllocationView(BaseDashboard):
     @property
     def new_jobs_with_job_interest(self):
         new_jobs_with_job_interest = []
-        for job in Job.objects.filter(status='new'):
-            if job.artisans_interested.all():
-                new_jobs_with_job_interest.append(job)
-        return new_jobs_with_job_interest
+#         for job in Job.objects.filter(status='new'):
+#             if job.artisans_interested.all():
+#                 new_jobs_with_job_interest.append(job)
+#         return new_jobs_with_job_interest
+        return Job.objects.filter(status='new')
 

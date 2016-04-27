@@ -34,8 +34,8 @@ class Command(BaseCommand):
         profile2 = UserProfileFactory(user=user2)
         profile3 = UserProfileFactory(user=user3)
         profile4 = UserProfileFactory(user=user4)
-        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='in_progress')
-        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='completed')
+        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='new')
+        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='new')
         job3 = JobFactory(posted_by=profile3, allocated_to=profile1, status='completed')
 #         individual1.create_job({'job_status': NEW, 'starting_point': 'Lobatse', 'destination': 'Gaborone',
 #                                 'cargo_type': CARGO_TYPE[0][0], 'description': 'Its just a job'})

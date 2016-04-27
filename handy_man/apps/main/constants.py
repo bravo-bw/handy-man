@@ -17,4 +17,5 @@ POST_JOB = ('Post Job', 'job_posting_url')
 USERS = ('Registered Users', 'registered_users_url')
 ARTISAN = 'artisan'
 CUSTOMER = 'customer'
+HANDYMAN_ADMIN = 'handyman_admin'
 SME = 'sme'

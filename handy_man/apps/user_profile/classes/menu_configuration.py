@@ -1,4 +1,4 @@
-from ...main.constants import MY_PROFILE, HOME, ARTISAN, CUSTOMER, SME, JOBS, POST_JOB, USERS
+from ...main.constants import MY_PROFILE, HOME, ARTISAN, CUSTOMER, SME, JOBS, POST_JOB, USERS, HANDYMAN_ADMIN
 
 
 class MenuConfiguration:
@@ -13,4 +13,6 @@ class MenuConfiguration:
         elif user_profile.account_type == CUSTOMER:
             return [HOME, MY_PROFILE, USERS, POST_JOB]
         elif user_profile.account_type == SME:
-            [HOME, MY_PROFILE, JOBS, USERS, POST_JOB]
+            return [HOME, MY_PROFILE, JOBS, USERS, POST_JOB]
+        elif user_profile.account_type == HANDYMAN_ADMIN:
+            return [HOME, MY_PROFILE, JOBS, USERS]

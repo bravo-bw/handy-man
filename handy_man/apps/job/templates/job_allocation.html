@@ -99,44 +99,39 @@
 			        <th>Description</th>
 			        <th></th>
 			        <th>Action</th>
+			        <th>Quote</th>
 			      </tr>
 			    </thead>
 			    <tbody>
 			    {% for job in job_interests %}
 				    <tr>
 				    <script>
-				    	{% for artisan in job.artisans_interested %}
+				    	{% for artisan in job.fake_artisans_interested %}
 				    		addJob('{{job.identifier}}', {{artisan.avatar_image}}, {{artisan.user.username}}, {{artisan.user.first_name}}+' '+{{artisan.user.last_name}}+' '+{{artisan.profession}});
 				    	{% endfor %}
 				    </script>
-					        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-					        <td>{{job.description}}</td>
-					        <td>{{job.street}}</td>
-							<td><form action="{% url 'jobs_url' %}" method="post">
-	               		{% csrf_token %}
-	               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-	               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-	               	 		<button type="submit" class="btn btn-primary">Assign</button>
-	        		</form></td>
+				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
+				        <td>{{job.description}}</td>
+				        <td>{{job.street}}</td>
+						<td><form action="{% url 'jobs_url' %}" method="post">
+               					{% csrf_token %}
+		               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
+		               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
+		               	 		<button type="submit" class="btn btn-primary">Assign</button>
+		        			</form>
+		        		</td>
+		        		<td>
+		        			<form action="{% url 'quote_url' job.pk %}" method="get">
+		        				{% csrf_token %}
+		        				{% if job.has_quote %}
+		        					<button type="submit" class="btn btn-primary">View Quote</button>
+		        				{% else %}
+		        					<button type="submit" class="btn btn-primary">Generate Quote</button>
+		        				{% endif %}
+		        			</form>
+		        		</td>
 					</tr>
 				{% endfor %}
-			    <tr>
-				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-				        <td>
-2
- Baellerry Genuine Leather Men's Long Wallet
-Baellerry Genuine Leather Men's Long Wallet</td>
-				        <td>Gaborone North</td>
-						<td>
-               <form action="{% url 'jobs_url' %}" method="post">
-               		{% csrf_token %}
-               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-               	 		<input name="job_id" type="hidden" value="10101010100yyyyyyy">
-               	 		<button type="submit" class="btn btn-primary">Assign</button>
-        		</form>
-				<!-- <button type="submit" class="btn btn-primary">Assign</button>-->
-				</td>
-				</tr>
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  

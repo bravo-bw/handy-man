@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 
-from handy_man.apps.main.constants import IN_PROGRESS, COMPLETED
+from handy_man.apps.main.constants import IN_PROGRESS, COMPLETED, NEW
 from handy_man.apps.job.models import Job
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
@@ -30,7 +30,7 @@ def user_profile(request, username):
     loggedin_user_profile = UserProfile.objects.get(user=request.user)
     user_profile = UserProfile.objects.get(user__username=username)
     user_jobs = Job.objects.filter(allocated_to=user_profile)
-    user_current_jobs = user_jobs.filter(status=IN_PROGRESS)
+    user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
     user_completed_jobs = user_jobs.filter(status=COMPLETED)
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
