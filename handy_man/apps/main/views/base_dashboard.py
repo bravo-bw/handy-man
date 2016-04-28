@@ -8,6 +8,7 @@ class BaseDashboard(View):
     def __init__(self):
         self.context = {}
         self.title = 'BW Handy Man'
+        self.coordinates = [-22.323764, 23.793962]
 
     def get(self, request, *args, **kwargs):
         self.context.update({

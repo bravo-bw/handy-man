@@ -23,11 +23,20 @@ class JobPostingView(BaseDashboard):
 
     def get(self, request, *args, **kwargs):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
+        district_name = request.GET.get('district_name', '')
+        town_village_name = request.GET.get('town_village_name', '')
+        street_name = request.GET.get('street_name', '')
         self.context.update({
             'name': 'Job Posting',
             'job_types': self.job_types,
             'task': "job_post",
-            'districts': self.district,
+            'districts': self.districts,
+            'town_villages': self.town_villages(district_name),
+            'district_name': district_name,
+            'town_village_name': town_village_name,
+            'street_name': street_name,
+            'coordinates': self.cernter_coordinates(district_name, town_village_name, street_name),
+            'streets': self.streets(town_village_name),
             'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
@@ -41,15 +50,32 @@ class JobPostingView(BaseDashboard):
                 try:
                     latitude = request.POST.get('latitude')
                     longitude = request.POST.get('longitude')
-                    street = request.POST.get('street')
-                    town_village = request.POST.get('town_village')
+                    district_name = request.POST.get('district_name')
+                    street_name = request.POST.get('street_name')
+                    town_village_name = request.POST.get('town_village_name')
                     description = request.POST.get('description')
                     job_type = request.POST.get('job_type')
                     job_image_1 = request.POST.get('job_image_1', '')
                     job_image_2 = request.POST.get('job_image_2', '')
                     job_image_3 = request.POST.get('job_image_3', '')
+                    street = None
+                    district = None
+                    town_village = None
+                    try:
+                        district = District.objects.get(district_name=district_name)
+                    except District.DoesNotExist:
+                        pass
+                    try:
+                        town_village = TownVillage.objects.get(town_village_name=town_village_name)
+                    except TownVillage.DoesNotExist:
+                        pass
+                    try:
+                        street = Street.objects.get(street_name=street_name)
+                    except Street.DoesNotExist:
+                        pass
+                    town_village = TownVillage
                     job = Job.objects.create(
-                        posted_by=posted_by, latitude=latitude, longitude=longitude, street=street, job_type=job_type,
+                        posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
                         town_village=town_village, status=NEW, description=description,
                         job_image_1=job_image_1, job_image_2=job_image_2, job_image_3=job_image_3)
                     job.save()
@@ -76,21 +102,65 @@ class JobPostingView(BaseDashboard):
             job.append(temp.strip().replace('\'', ''))
         return job
 
-    def streets(self, town_village=None):
-        """Return all streets for a town/village."""
+    def town_villages(self, district_name=None):
+        """Return a list of towns."""
+        town_villages = []
+        district = None
+        try:
+            district = District.objects.get(district_name=district_name)
+        except District.DoesNotExist:
+            pass
+        if district:
+            town_village_qs = TownVillage.objects.filter(district=district)
+        else:
+            town_village_qs = TownVillage.objects.all()
+        for tv in town_village_qs:
+            town_villages.append(tv.town_village_name)
+        return town_villages
+
+    def streets(self, town_village_name=None):
+        """Return a list of streets."""
         streets = []
-#         town_village = TownVillage.objects.all()
+        town_village = None
+        try:
+            town_village = TownVillage.objects.get(town_village_name=town_village_name)
+        except TownVillage.DoesNotExist:
+            pass
+        if town_village:
+            streets_qs = Street.objects.filter(town_village=town_village)
+        else:
+            streets_qs = Street.objects.all()
+        for street in streets_qs:
+            streets.append(street.street_name)
         return streets
 
-    def town_village(self, district=None):
-        """Return a list of towns."""
-        town_village = []
-        return town_village
-
     @property
-    def district(self):
+    def districts(self):
         dist = []
         districts = District.objects.all()
         for district in districts:
             dist.append(district.district_name)
         return dist
+
+    def cernter_coordinates(self, district_name=None, town_village_name=None, street_name=None):
+        """Return the coordinates to center the map with."""
+        coordinates = []
+        if district_name and not town_village_name and not street_name:
+            try:
+                district = District.objects.get(district_name=district_name)
+                coordinates = [district.center_latitude, district.center_longitude]
+            except District.DoesNotExist:
+                pass
+        elif district_name and town_village_name and not street_name:
+            try:
+                town_village = TownVillage.objects.get(town_village_name=town_village_name)
+                coordinates = [town_village.center_latitude, town_village.center_longitude]
+            except TownVillage.DoesNotExist:
+                pass
+        elif district_name and town_village_name and street_name:
+            try:
+                street = Street.objects.get(street_name=street_name)
+                coordinates = [street.center_latitude, street.center_longitude]
+            except Street.DoesNotExist:
+                pass
+        return coordinates

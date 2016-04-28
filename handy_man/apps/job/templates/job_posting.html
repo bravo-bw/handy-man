@@ -34,20 +34,47 @@
                     <tbody>
                       	<tr>
                       		<td>
+		                       <label for="district">District: </label>
+		                       <select name="district_select" id="district_select" onchange="getDistrict(this)">
+		                       		<option value="None">---------</option>
+	                           		{% for district in districts %}
+	                           			{% if district_name == district %}
+	                           				<option value={{ district }} selected>{{ district }}</option>
+	                           			{% else %}
+	                           				<option value={{ district }}>{{ district }}</option>
+	                           			{% endif %}
+	                           		{% endfor %}
+		                       </select>
+	                       </td>
+	                       <td>
+		                       <label for="town_village">Town/Village:</label>
+		                       <select name="town_village_select" id="town_village_select" onchange="getTownVillage(this)">
+		                       		<option value="None">---------</option>
+	                           		{% for town_village in town_villages %}
+	                           			{% if town_village_name ==  town_village %}
+	                           				<option value={{ town_village }} selected>{{ town_village }}</option>
+	                           			{% else %}
+	                           				<option value={{ town_village }}>{{ town_village }}</option>
+	                           			{% endif %}
+	                           		{% endfor %}
+		                       </select>
+		                    </td>
+                       </tr>
+                       <tr>
+                      		<td>
 		                       <label for="street">Street:</label>
-		                       <input id="street" type="text" name="street" value="">
+		                       <select name="street_select" id="street_select" onchange="getStreet(this)">
+		                       		<option value="None">---------</option>
+	                           		{% for street in streets %}
+	                           			{% if street_name == street %}
+	                           				<option value={{ street }} selected>{{ street }}</option>
+	                           			{% else %}
+	                           				<option value={{ street }}>{{ street }}</option>
+	                           			{% endif %}
+	                           		{% endfor %}
+		                       </select>
 		                    </td>
 		                    <td>
-		                       <label for="town_village">Town/Village:</label>
-		                       <input id="town_village" type="text" name="town_village" value="">
-		                    </td>
-                      	</tr>
-                      	<tr>
-                      		<td>
-		                       <label for="district">District:</label>
-		                       <input id="district" type="text" name="district" value="">
-	                       </td>
-                           <td>
 	                           	<label for="job_type">Job Type:</label>
 	                           	<select>
 	                           		<option value="None">---------</option>
@@ -56,16 +83,14 @@
 	                           		{% endfor %}
 	                           	</select>
                            </td>
-                       </tr>
+                      	</tr>
                       <tr>
                       		<td>
 		                        <label for="description">Description:</label><br>
 		                        <textarea rows="4" cols="50" id="description" name="description" value=""></textarea>
                         	</td>
                       </tr>
-                      <tr>
-				  </tr>
-				  <tr><td>Location</td></td></tr>
+				  <tr><td>Location</td><td></td></tr>
 				  <tr>
 				  	<td>
 				  		<div id="mapCanvas" style="width:680px;height:380px;"></div>
@@ -84,5 +109,21 @@
             </div>
           </div>
           </form>
-         </div>
+	 <script>
+	 function getDistrict(district_select) {
+		    var d = district_select.value;
+		    window.location="{% url 'job_posting_url' %}?district_name="+d;
+		}
+	 function getTownVillage(town_village_select) {
+		 var dist = document.getElementById("district_select").value;
+		 var tv = town_village_select.value;
+		 window.location="{% url 'job_posting_url' %}?town_village_name="+tv+"&district_name="+dist;
+		}
+	 function getStreet(street_select) {
+		 var dist = document.getElementById("district_select").value;
+		 var tv = document.getElementById("town_village_select").value;
+		 var st = street_select.value;
+		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
+		}
+	 </script>
 {% endblock %}

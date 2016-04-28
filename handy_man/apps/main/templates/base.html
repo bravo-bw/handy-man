@@ -87,9 +87,15 @@
     }
 
     function initialize() {
-      var latLng = new google.maps.LatLng(-24.656038, 25.921570);
+      {% if coordinates %}
+      var latLng = new google.maps.LatLng({{coordinates.0}}, {{coordinates.1}});
+      var zoom_level = 15;
+      {% else %}
+      var latLng = new google.maps.LatLng(-22.323764, 23.793962);
+      var zoom_level = 6;
+      {% endif %}
       var map = new google.maps.Map(document.getElementById('mapCanvas'), {
-        zoom: 16,
+        zoom: zoom_level,
         center: latLng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
