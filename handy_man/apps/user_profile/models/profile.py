@@ -88,7 +88,7 @@ class UserProfile(ItemGeolocationMixin):
             return '{}{}'.format(settings.STATIC_URL, document.name.split('/')[-1:][0])
         return ''
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} {} ({}), {}, {}'.format(self.user.first_name, self.user.last_name, self.user.username,
                                            self.user.email, 'location')
 
