@@ -11,6 +11,7 @@ from handy_man.apps.geo_location.models import TownVillage, District, Street
 
 from ..forms import JobForm
 from ..models import Job
+from handy_man.apps.geo_location.classes import Geolocation
 
 
 class JobPostingView(BaseDashboard):
@@ -23,6 +24,7 @@ class JobPostingView(BaseDashboard):
 
     def get(self, request, *args, **kwargs):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
+        geolocation = Geolocation()
         district_name = request.GET.get('district_name', '')
         town_village_name = request.GET.get('town_village_name', '')
         street_name = request.GET.get('street_name', '')
@@ -30,13 +32,13 @@ class JobPostingView(BaseDashboard):
             'name': 'Job Posting',
             'job_types': self.job_types,
             'task': "job_post",
-            'districts': self.districts,
-            'town_villages': self.town_villages(district_name),
+            'districts': geolocation.districts,
+            'town_villages': geolocation.town_villages(district_name),
             'district_name': district_name,
             'town_village_name': town_village_name,
             'street_name': street_name,
-            'coordinates': self.cernter_coordinates(district_name, town_village_name, street_name),
-            'streets': self.streets(town_village_name),
+            'coordinates': geolocation.cernter_coordinates(district_name, town_village_name, street_name),
+            'streets': geolocation.streets(town_village_name),
             'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
@@ -101,66 +103,3 @@ class JobPostingView(BaseDashboard):
             temp = temp[1].replace(")", "")
             job.append(temp.strip().replace('\'', ''))
         return job
-
-    def town_villages(self, district_name=None):
-        """Return a list of towns."""
-        town_villages = []
-        district = None
-        try:
-            district = District.objects.get(district_name=district_name)
-        except District.DoesNotExist:
-            pass
-        if district:
-            town_village_qs = TownVillage.objects.filter(district=district)
-        else:
-            town_village_qs = TownVillage.objects.all()
-        for tv in town_village_qs:
-            town_villages.append(tv.town_village_name)
-        return town_villages
-
-    def streets(self, town_village_name=None):
-        """Return a list of streets."""
-        streets = []
-        town_village = None
-        try:
-            town_village = TownVillage.objects.get(town_village_name=town_village_name)
-        except TownVillage.DoesNotExist:
-            pass
-        if town_village:
-            streets_qs = Street.objects.filter(town_village=town_village)
-        else:
-            streets_qs = Street.objects.all()
-        for street in streets_qs:
-            streets.append(street.street_name)
-        return streets
-
-    @property
-    def districts(self):
-        dist = []
-        districts = District.objects.all()
-        for district in districts:
-            dist.append(district.district_name)
-        return dist
-
-    def cernter_coordinates(self, district_name=None, town_village_name=None, street_name=None):
-        """Return the coordinates to center the map with."""
-        coordinates = []
-        if district_name and not town_village_name and not street_name:
-            try:
-                district = District.objects.get(district_name=district_name)
-                coordinates = [district.center_latitude, district.center_longitude]
-            except District.DoesNotExist:
-                pass
-        elif district_name and town_village_name and not street_name:
-            try:
-                town_village = TownVillage.objects.get(town_village_name=town_village_name)
-                coordinates = [town_village.center_latitude, town_village.center_longitude]
-            except TownVillage.DoesNotExist:
-                pass
-        elif district_name and town_village_name and street_name:
-            try:
-                street = Street.objects.get(street_name=street_name)
-                coordinates = [street.center_latitude, street.center_longitude]
-            except Street.DoesNotExist:
-                pass
-        return coordinates

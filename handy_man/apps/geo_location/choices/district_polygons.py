@@ -1,14 +1,3 @@
-district_centers = {
-    'north west': [-19.330536, 23.588973], 'central': [-21.443605, 26.330152], 'north east': [-20.985286, 27.549635],
-    'gantsi': [-22.267728, 21.590500], 'kgalagadi': [-24.725124, 21.820265], 'southren': [-24.804932, 24.709669],
-    'kweneng': [-23.759405, 24.801545], 'south east': [-24.947379, 25.759963], 'kgatleng': [-24.198013, 26.354423]}
-
-
-def create_districts():
-    from handy_man.apps.geo_location.models import District
-    for key, value in district_centers.items():
-        District.objects.create(district_name=key, center_latitude=value[0], center_longitude=value[1])
-
 north_west_district = [
     [-18.364952626539164, 21.02783203125], [-21.002471054356715, 21.038818359375],
     [-20.951179993976236, 23.873291015625], [-20.324023603422503, 23.92822265625],
