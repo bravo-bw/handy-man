@@ -16,29 +16,124 @@
     
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css" type="text/css" media="screen" />
     
-    <!-- datatable javascript 
-	<script src="{{ STATIC_URL }}js/jquery-1.12.0.min.js"></script>
-	<script src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>-->
-	
 	<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
 	</script>
+	
+	<!--  <script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/job_allocation.js"></script>-->
 
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
 	</script>
 	<script>
 		$(document).ready(function() {
-			var job_artisans = [];
-			function addJob(job_identifier, artisan_icon, artisan_username, artisan_fullname){
-				
-				var job_artisan = {
-						identifier : job_identifier,
-					    icon  : artisan_icon,
-					    username : artisan_username,
-					    fullname : artisan_fullname
-					};
-				job_artisans.push(job_artisan);
-			};
-
+			function wrapRadioElements(artisan_id){
+				$("[id='"+artisan_id+"']").wrapAll('<label name="lbl'+artisan_id+'" style="width:100%"></label>');
+			}//End wrapRadioElements
+			function wrapLabels(artisan_id){
+				$("[name='lbl"+artisan_id+"']").wrap(
+						'<div  class="radio" style="display:inline;" class="container" name="radio'+artisan_id+'"></div>');
+			}
+			function wrapLabelContainer(artisan_id){
+				$("[name='radio"+artisan_id+"']").wrap(
+						"<div id='{{identifier}}' style='background:#eee; width:100%;margin-left:1px;' class='row' name='side_nav_main'></div>");
+			}//End wrapLabels
+			function createRadio(artisan_id){
+				$("#artisan_container").append(
+						'<input type="radio" id="'+artisan_id+'" name="radio_img" value="setsiba">');
+			}//End createRadio
+			function createImage(artisan_id, avatar){
+				$("#artisan_container").append('<img name="radio_img" id="'+artisan_id+'" alt="Artisan Image">');
+				img_config = {
+					'class':'img-circle',
+					'width':'50',
+					'height':'50',
+					'src':avatar
+				}
+				$("img[id='"+artisan_id+"']").attr(img_config);
+			}//End createImage
+			function create_artisan_elements(artisan){
+				createImage(artisan.artisan_id, artisan.avatar);
+				createRadio(artisan.artisan_id);
+				wrapRadioElements(artisan.artisan_id);
+				wrapLabels(artisan.artisan_id);
+				wrapLabelContainer(artisan.artisan_id);
+				$("#artisan_container").append('<hr>');
+			}// End create_artisan_elements
+			function job_artisans(e, job_id){
+				e.preventDefault();
+				$.ajax({
+					type:'GET',
+					url:'/jobs/job_allocation/',
+					data:{
+						name:job_id,
+						action:"artisan_list",
+					},
+					success:function(data){
+						removeSidebarElements();
+						if (JSON.stringify(data) == '[]'){
+							$("#artisan_container").append('<label style="width:100%">No artisans.</label>');
+						}else{
+							$.each(data, function(idx, artisan){
+								create_artisan_elements(artisan)
+							}); 
+						}
+					}
+				});
+			}//End job_artisans
+			function removeSidebarElements(){
+				$("#artisan_container").empty();
+			}
+			/*
+				assign job, cancel assignement
+			*/ 
+			function submit_assign_job(e, job_id, artisan_id){
+				console.log("function get_artisans(e, job_id)");
+				e.preventDefault();
+				var is_success = 0;
+				$.ajax({
+					type:'GET',
+					url:'/jobs/job_allocation/',
+					data:{
+						job_id:job_id,
+						artisan_id:artisan_id,
+						action:"assign_job",
+					},
+					success:function(data){
+						//alert(JSON.stringify(data));
+						$.each(data, function(idx, status){
+							display_message(status.message);
+						}); 
+					}
+				});
+				return is_success;
+			}
+			
+			function re_assign_job(e, job_id, btn_assign, radio_reassign){
+				e.preventDefault();
+				$.ajax({
+					type:'GET',
+					url:'/jobs/job_allocation/',
+					data:{
+						job_id:job_id,
+						action:"re_assign_job",
+					},
+					success:function(data){
+						$.each(data, function(idx, message){
+							if (message.status == "success"){
+								radio_reassign.hide();
+			 		        	btn_assign.attr('style', 'visibility:visible;float:right;');
+			 		        	display_message(message.message);
+							} else {
+								display_message(status.message);
+							}
+						}); 
+					}
+				});
+			}
+			function display_message(message){
+				$("#message_box").text(""+message);
+				$("#message_box").show();
+				$('#message_box').delay(10000).fadeOut('slow');
+			}
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
@@ -46,23 +141,41 @@
 		    
 		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
 		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
-		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function () {
+		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function (e) {
+		    	job_identifier = $(this).closest("tr").find('input[name="job_identifier"]').val();
+		    	job_artisans(e, job_identifier);
+		    	
 		    	$(this).closest("tr").siblings().removeClass("selected");
 		        $(this).toggleClass('selected');
 		
 		        $('button[type="submit"]').attr('disabled','disabled');
 		        $(this).find('button').removeAttr( "disabled");
-		        $(this).find('button').click(function() {
-			        var $job_item = $(this).closest("tr").find('input[name="job_id"]');
-			        var $checked_radio_val = $("input[type='radio']:checked").val();
-			        $job_item.val($checked_radio_val);
+		        
+ 		        $(this).find('button').click(function(e) {
+			        checked_radio_val = $("input[type='radio']:checked").val();
+			        if (checked_radio_val == undefined){
+			        	//Please select artisan
+			        	alert("Please select artisan");
+			        }else{
+				        submit_assign_job(e, job_identifier, checked_radio_val);
+			        }
 		        });
+ 		       var btn_submit =  $(this).find('button');
+ 		       var radio_reassign = $(this).find('select');
+ 		       $(this).find('select').change(function(e) {
+ 		        	if($(this).val() == 're_assign'){
+ 		        		job_identifier = $(this).closest("tr").find('input[name="job_identifier"]').val();
+ 		        		re_assign_job(e, job_identifier, btn_submit, radio_reassign);
+ 		        	}else{
+ 		        		return false;
+ 		        	}
+ 		    	});
 		    } );
+		    //
 		    $("input[type='radio']").on( 'checked', function () {
 		    	$('div[class="side_nav"]').css( "background-color", "yellow" );
-		    });s 
+		    });
 		} );
-		
 		
 	</script>
 	<style type="text/css">
@@ -90,8 +203,8 @@
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-<!-- <div class="container"> -->  
-   
+<!-- <div class="container"> -->
+<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>
 <table class="table" style=" width:100%;" id="job_allocate_tb" >
 			    <thead>
 			      <tr>
@@ -104,39 +217,45 @@
 			    <tbody>
 			    {% for job in job_interests %}
 				    <tr>
-				    <script>
-				    	{% for artisan in job.artisans_interested %}
-				    		addJob('{{job.identifier}}', {{artisan.avatar_image}}, {{artisan.user.username}}, {{artisan.user.first_name}}+' '+{{artisan.user.last_name}}+' '+{{artisan.profession}});
-				    	{% endfor %}
-				    </script>
-					        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-					        <td>{{job.description}}</td>
-					        <td>{{job.street}}</td>
-							<td><form action="{% url 'jobs_url' %}" method="post">
-	               		{% csrf_token %}
-	               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-	               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-	               	 		<button type="submit" class="btn btn-primary">Assign</button>
-	        		</form></td>
+				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
+				        <td>{{job.description}}</td>
+				        <td>{{job.street}}</td>
+						<td>
+						 <form action="{% url 'jobs_url' %}" method="post">
+		               		{% csrf_token %}
+		               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
+		               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
+		               	 		{% if job.status == 'assigned' %}
+		               	 			<button type="button" class="btn btn-primary">Assign</button>
+		               	 		{% else %}
+		               	 			<button type="button" style="visibility:hidden" class="btn btn-primary" value="Assign">Assign</button>
+			               	 	 	<select id="select{{job.identifier}}">
+			               	 			<option value="assigned">Assigned</option>
+			               	 			<option value="re_assign">Re-assign</option>
+			               	 		</select>
+		               	 		{% endif %}
+		        		</form>
+        				</td>
 					</tr>
 				{% endfor %}
-			    <tr>
+		    		<tr>
 				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-				        <td>
-2
- Baellerry Genuine Leather Men's Long Wallet
-Baellerry Genuine Leather Men's Long Wallet</td>
-				        <td>Gaborone North</td>
+				        <td>dafkjgkjgakagkgakagkagkngaskskngsaknsk</td>
+				        <td>{{job.street}}</td>
 						<td>
-               <form action="{% url 'jobs_url' %}" method="post">
-               		{% csrf_token %}
-               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-               	 		<input name="job_id" type="hidden" value="10101010100yyyyyyy">
-               	 		<button type="submit" class="btn btn-primary">Assign</button>
-        		</form>
-				<!-- <button type="submit" class="btn btn-primary">Assign</button>-->
-				</td>
-				</tr>
+						 <form action="{% url 'jobs_url' %}" method="post">
+		               		{% csrf_token %}
+		               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
+		               	 		<input name="job_identifier" type="hidden" value="1">
+		               	 		<button type="button" style="visibility:visible" class="btn btn-primary" value="Assign">Assign</button>
+		               	 		 <!-- <button type="hidden" id="{{job.identifier}}" class="btn btn-primary">Cancel</button>-->
+		               	 	 	<select id="select{{job.identifier}}" type="hidden">
+		               	 			<option value="assigned">Assigned</option>
+		               	 			<option value="re_assign">Re-assign</option>
+		               	 		</select>
+		        		</form>
+        				</td>
+					</tr>
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  
@@ -176,48 +295,17 @@ Baellerry Genuine Leather Men's Long Wallet</td>
             <i class="fa fa-bell fa-fw"></i> Artisans
         </div>
         <!-- /.panel-heading -->
-        <div class="panel-body">
-			    <div style="background:#eee;" class="row" name='side_nav'>
-			    	<div class="radio" style="display:inline;" class="container">
-  						<label name="side_nav" style="width:100%">
-  						<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="tshepiso"><a title="Kagiso Thebe">kthebe</a></label>
-  						<!-- <img style="margin-right:0px" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
+        <div class="panel-body" id="artisan_container">
+        		{% for artisan in artisans %}
+				    <div id="{{identifier}}" style="background:#eee;" class="row" name='side_nav'>
+				    	<div type="hidden" class="radio" style="display:inline;" class="container">
+	  						<label name="side_nav" style="width:100%">
+	  						<img src="{{ STATIC_URL }}img/{{artisan_details.3}}" class="img-circle" alt="Cinque Terre" width="50" height="50">
+	  						<input type="radio" name="optradio" value="{{artisan_details.0}}"><a title="{{artisan_details.2}}">{{artisan_details.1}}</a></label>
+						</div>
 					</div>
-				</div>
-				<hr>
-			    <div style="background:#eee;" class="row">
-			    	<div class="radio" style="display:inline;" class="containers">
-			    		<label name="side_nav" style="width:100%">
-			    		<img src="{{ STATIC_URL }}img/team.jpg" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> bravo</a>
-  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-  						</label>
-					</div>
-				</div>
-				
-				<hr>
-			    <div style="background:#eee;" class="row side_nav">
-			    	<div class="radio" style="display:inline;" class="containers">
-			    		<label name="side_nav" style="width:100%">
-			    		<img src="{{ STATIC_URL }}img/juju.jpeg" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> juju</a>
-  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-  						</label>
-					</div>
-				</div>
-				<hr>
-			    <div style="background:#eee;" class="row side_nav">
-			    	<div class="radio" style="display:inline;" class="containers side_nav">
-			    		<label name="side_nav" style="width:100%">
-			    		<img src="{{ STATIC_URL }}img/user1.png" class="img-circle" alt="Cinque Terre" width="50" height="50">
-  						<input type="radio" name="optradio" value="setsiba"><a> ttiroyamodimo</a>
-  						<!-- <img style="margin-right:0" src="{{ STATIC_URL }}img/five.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">-->
-  						</label>
-					</div>
-				</div>
-				<hr>
-            <!--  <a href="#" class="btn btn-default btn-block">View All Requests</a>-->
+					<hr>
+				{% endfor %}
         </div>
         <!-- /.panel-body -->
     </div>
