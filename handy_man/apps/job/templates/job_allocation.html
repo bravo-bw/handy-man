@@ -160,6 +160,7 @@
 				        submit_assign_job(e, job_identifier, checked_radio_val);
 			        }
 		        });
+
  		       var btn_submit =  $(this).find('button');
  		       var radio_reassign = $(this).find('select');
  		       $(this).find('select').change(function(e) {
@@ -171,10 +172,6 @@
  		        	}
  		    	});
 		    } );
-		    //
-		    $("input[type='radio']").on( 'checked', function () {
-		    	$('div[class="side_nav"]').css( "background-color", "yellow" );
-		    });
 		} );
 		
 	</script>
@@ -205,12 +202,12 @@
         <div class="panel-body">
 <!-- <div class="container"> -->
 <div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>
-<table class="table" style=" width:100%;" id="job_allocate_tb" >
+		<table class="table" style=" width:100%;" id="job_allocate_tb" >
 			    <thead>
 			      <tr>
-			        <th></th>
+			        <th></th> <!-- Job Icon -->
 			        <th>Description</th>
-			        <th></th>
+			        <th></th> <!-- Job Street -->
 			        <th>Action</th>
 			        <th>Quote</th>
 			      </tr>
@@ -218,24 +215,26 @@
 			    <tbody>
 			    {% for job in job_interests %}
 				    <tr>
-				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
+				        <td>
+				        	<img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">
+				        </td>
 				        <td>{{job.description}}</td>
 				        <td>{{job.street}}</td>
 						<td>
-						 <form action="{% url 'jobs_url' %}" method="post">
-		               		{% csrf_token %}
-		               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-		               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-		               	 		{% if job.status == 'assigned' %}
-		               	 			<button type="button" class="btn btn-primary">Assign</button>
-		               	 		{% else %}
-		               	 			<button type="button" style="visibility:hidden" class="btn btn-primary" value="Assign">Assign</button>
-			               	 	 	<select id="select{{job.identifier}}">
-			               	 			<option value="assigned">Assigned</option>
-			               	 			<option value="re_assign">Re-assign</option>
-			               	 		</select>
-		               	 		{% endif %}
-		        		</form>
+							 <form action="{% url 'jobs_url' %}" method="post">
+			               		{% csrf_token %}
+			               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
+			               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
+			               	 		{% if job.status == 'assigned' %}
+			               	 			<button type="button" style="visibility:hidden" class="btn btn-primary" value="Assign">Assign</button>
+				               	 	 		<select id="select{{job.identifier}}">
+				               	 				<option value="assigned" selected="selected">Assigned</option>
+				               	 				<option value="re_assign">Re-assign</option>
+				               	 			</select>
+			               	 		{% else %}
+										<button type="button" class="btn btn-primary">Assign</button>
+			               	 		{% endif %}
+			        		</form>
         				</td>
   		        		<td>
 		        			<form action="{% url 'quote_url' job.pk %}" method="get">
@@ -249,7 +248,7 @@
 		        		</td>
 					</tr>
 				{% endfor %}
-		    		<tr>
+		    		<!-- <tr>
 				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
 				        <td>dafkjgkjgakagkgakagkagkngaskskngsaknsk</td>
 				        <td>{{job.street}}</td>
@@ -258,15 +257,15 @@
 		               		{% csrf_token %}
 		               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
 		               	 		<input name="job_identifier" type="hidden" value="1">
-		               	 		<button type="button" style="visibility:visible" class="btn btn-primary" value="Assign">Assign</button>
-		               	 		 <!-- <button type="hidden" id="{{job.identifier}}" class="btn btn-primary">Cancel</button>-->
-		               	 	 	<select id="select{{job.identifier}}" type="hidden">
+		               	 		<button type="button" style="visibility:visible;float:right;" class="btn btn-primary" value="Assign">Assign</button>
+		               	 	 	<select id="select{{job.identifier}}" style="visibility:hidden">
 		               	 			<option value="assigned">Assigned</option>
 		               	 			<option value="re_assign">Re-assign</option>
 		               	 		</select>
 		        		</form>
         				</td>
-					</tr>
+        				<td></td>
+					</tr> -->
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  
@@ -307,16 +306,6 @@
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body" id="artisan_container">
-        		{% for artisan in artisans %}
-				    <div id="{{identifier}}" style="background:#eee;" class="row" name='side_nav'>
-				    	<div type="hidden" class="radio" style="display:inline;" class="container">
-	  						<label name="side_nav" style="width:100%">
-	  						<img src="{{ STATIC_URL }}img/{{artisan_details.3}}" class="img-circle" alt="Cinque Terre" width="50" height="50">
-	  						<input type="radio" name="optradio" value="{{artisan_details.0}}"><a title="{{artisan_details.2}}">{{artisan_details.1}}</a></label>
-						</div>
-					</div>
-					<hr>
-				{% endfor %}
         </div>
         <!-- /.panel-body -->
     </div>

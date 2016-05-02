@@ -36,7 +36,6 @@
 					action:"add_job_interest",
 				},
 				success:function(data){
-					alert("response ok cool");
 					$.each(data, function(idx, status){
 						
 						if (status.status =='success'){
@@ -80,7 +79,7 @@
 		function display_message(message){
 			$("#message_box").text(""+message);
 			$("#message_box").show();
-			$('#message_box').delay(10000).fadeOut('slow');
+			$('#message_box').delay(7000).fadeOut('slow');
 		}
 		$(document).ready(function() {
 		    $('#job_allocate_tb').DataTable({
@@ -106,7 +105,6 @@
 		    } );
 		    var btn_submit = $(this).find('button[title="submit job request"]');
 		    $(this).find('button[title="submit job request"]').click(function(e){
-		    	alert("submit job request");
 		    	submit_job_interest(e, '1', btn_submit);
 		    });
 		    
@@ -179,7 +177,7 @@
         <!-- /.panel-heading -->
         <div class="panel-body">
 <!-- <div class="container"> -->  
-<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"> message message message</div>   
+<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>   
 <table class="table" style=" width:100%;" id="job_allocate_tb" >
 			    <thead>
 			      <tr>
@@ -190,67 +188,34 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-		{% for jobs, job_interest_status in new_jobs %}
+			{% for jobs, job_interest_status in new_jobs %}
 			    <tr>
 			        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
 			        <td>{{job.description}}</td>
 			        <td>{{job.street}}</td>
 					<td>
-				<form action="{% url 'jobs_url' %}" method="post">
-               		{% csrf_token %}
-               		     <input name="artisan" id="artisan" type="hidden" value="sets">
-               	 		<input name="job_id" type="hidden" value="{{job.identifier}}">
-               	 		<div class="list-inline">
-               	 		{% if job_interest_status %}
-               	 			<input name="action" id="action" type="hidden" value="interested">
-               	 			<input style="float:right;" id="action" type="image" src="{{ STATIC_URL }}img/cancel.png" alt="Submit" width="30" height="30">               	 		
-               	 		{% else %}
-               	 			<input name="action" id="action" type="hidden" value="notinterested">
-               	 			<input style="float:right;" id="action" type="image" src="{{ STATIC_URL }}img/tick.png" alt="Submit" width="30" height="30">
-               	 		{% endif %}
-               	 		</div>
-        		</form></td>
-			</tr>
-		{% endfor %}
-			    <tr>
-				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-				        <td>
-2
- Baellerry Genuine Leather Men's Long Wallet
-Baellerry Genuine Leather Men's Long Wallet</td>
-				        <td>Gaborone North</td>
-						<td>
-			               <form action="{% url 'jobs_url' %}" method="post">
-			               		{% csrf_token %}
-			               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-			               	 		<input name="job_id" type="hidden" value="10101010100yyyyyyy">
-									<div class="input-group" style="width:100px;">
-									  <div class="input-group-btn">									  
-									   <button type="button" class="btn btn-default btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
-									  <button type="button" class="btn btn-default btn-sm" title="cancel job request"><span class="glyphicon glyphicon-remove"></span></button>
-									  </div>
-									</div>
-			        		</form>
-				<!-- <button type="submit" class="btn btn-primary">Assign</button>-->
-				</td>
+						<form action="{% url 'jobs_url' %}" method="post">
+		               		{% csrf_token %}
+		               		     <input name="artisan" id="artisan" type="hidden" value="sets">
+		               	 		<input name="job_id" type="hidden" value="{{job.identifier}}">
+								<div class="input-group" style="width:100px;">
+								  	<div class="input-group-btn">
+								  		{% if job_interest_status %}									  
+								   			<button type="button" class="btn btn-success btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
+								   		{% else %}
+								   			<button type="button" class="btn btn-default btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
+								   		{% endif %}
+								  		<button type="button" class="btn btn-default btn-sm" title="cancel job request"><span class="glyphicon glyphicon-remove"></span></button>
+								  	</div>
+								</div>
+		        		</form>
+        			</td>
 				</tr>
+			{% endfor %}
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  
         </div>
-        <!-- /.panel-body 
-        <div class="panel-heading">
-            <i class="fa fa-bar-chart-o fa-fw"></i> Geo Location
-        </div>
-        <!-- /.panel-heading 
-                <div class="panel-body">
-                    	<table>
-                    	<tr><td>
-<div id="googleMap" style="width:600px;height:380px;"></div>
-            	</td></tr>
-            	</table>   --.                         
-        </div>
-        <!-- /.panel-body -->
     </div>
     <!-- /.panel -->
 </div>

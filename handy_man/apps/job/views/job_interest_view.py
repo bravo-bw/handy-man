@@ -44,11 +44,11 @@ class JobInterestView(BaseDashboard):
                     data = json.dumps([message])
                 return HttpResponse(data, content_type='application/json')
         else:
-            loggedin_user_profile = UserProfile.objects.get(user=request.user)
+            #loggedin_user_profile = UserProfile.objects.get(user=request.user)
             self.context.update({
                 'latest_jobs': self.latest_jobs,
                 'new_jobs': self.jobs_with_job_interest_status,
-                'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
+                #'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 

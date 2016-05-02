@@ -51,6 +51,7 @@ class JobAllocationView(BaseDashboard):
                 job_interests.append(self.job)
             else:
                 job_interests = self.new_jobs_with_job_interest
+            loggedin_user_profile = UserProfile.objects.get(user=request.user)
             self.context.update({
                 'job_interests': job_interests,
                 'task': "job_allocate",
