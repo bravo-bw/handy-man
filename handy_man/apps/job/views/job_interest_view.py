@@ -1,6 +1,9 @@
+import json
+
 from django.contrib import messages
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.http.response import HttpResponse
 
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.job.models.job import Job
@@ -21,10 +24,29 @@ class JobInterestView(BaseDashboard):
         super(JobInterestView, self).__init__()
 
     def get(self, request, *args, **kwargs):
-        self.context.update({
-            'latest_jobs': self.latest_jobs,
-            'new_jobs': self.jobs_with_job_interest_status
-        })
+        if request.is_ajax():
+            if request.GET.get('action') == 'add_job_interest':
+                if self.add_job_interest():
+                    message = {'message': "Job request has been submitted.", "status": "success"}
+                    data = json.dumps([message])
+                else:
+                    message = {'message': "Failed to submit job request.", "status": "failed"}
+                    data = json.dumps([message])
+                return HttpResponse(data, content_type='application/json')
+            elif request.GET.get('action') == 'cancel_job_interest':
+                data = None
+                if self.cancel_job_interests():
+                    message = {'message': "Job request for has been cancelled.", "status": "success"}
+                    data = json.dumps([message])
+                else:
+                    message = {'message': "Failed to cancel job request.", "status": "failed"}
+                    data = json.dumps([message])
+                return HttpResponse(data, content_type='application/json')
+        else:
+            self.context.update({
+                'latest_jobs': self.latest_jobs,
+                'new_jobs': self.jobs_with_job_interest_status
+            })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
@@ -55,6 +77,7 @@ class JobInterestView(BaseDashboard):
 
     @property
     def job(self):
+        job = None
         try:
             job = Job.objects.get(identifier=self._job_identifier)
         except Job.DoesNotExist:
