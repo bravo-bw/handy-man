@@ -113,6 +113,11 @@
 										  {% else %}
 										  	<option value="customer">Customer</option>
 										  {% endif %}
+										  {% if user_profile.account_type == "handyman_admin" %}
+										  	<option value="handyman_admin" selected>Handy Man Admin</option>
+										  {% else %}
+										  	<option value="handyman_admin">Handy Man Admin</option>
+										  {% endif %}
 										</select>
 									</td>
 									<td>
@@ -260,7 +265,7 @@
 					 </form>
 				  </div>
 			      <div id="geolocation" class="tab-pane fade">
-			      	<div id="map_canvas" style="width:680px;height:380px;"></div>
+			      	<div id="mapCanvas" style="width:680px;height:380px;"></div>
 			      </div>
 			      <div id="current_jobs" class="tab-pane fade">
 			      	<table id="user_current_jobs" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -286,7 +291,7 @@
 				        	{% for job in user_current_jobs %}
 					            <tr>
 					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
-					                <td><a href="{% url 'job_posting_url' %}">{{job.user.identifier}}</a></td>
+					                <td><a href="{% url 'quote_url' job.pk %}">{{job.identifier}}</a></td>
 					                <td>{{job.type}}</td>
 					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
@@ -396,7 +401,7 @@
 						profession.removeAttr("hidden");
 						profession_label.removeAttr("hidden");
 					}
-					if ($(this).val() == 'customer'){
+					if ($(this).val() == 'customer' || $(this).val() == 'handyman_admin'){
 						profession = $("#profession")
 						profession_label = $("#profession_label")
 						profession.val('');

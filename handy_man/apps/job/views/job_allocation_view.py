@@ -8,6 +8,7 @@ from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.job.models.job import Job
 from django.http.response import HttpResponse
 from handy_man.apps.user_profile.models.profile import UserProfile
+from handy_man.apps.user_profile.classes import MenuConfiguration
 
 
 class JobAllocationView(BaseDashboard):
@@ -53,11 +54,13 @@ class JobAllocationView(BaseDashboard):
             self.context.update({
                 'job_interests': job_interests,
                 'task': "job_allocate",
-                'artisans': self.artisans
+                'artisans': self.artisans,
+                'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self._job_identifier = request.POST.get('job_id')
         self._user_id = request.POST.get('artisan')
         messages.success(request, "Job {} has been allocated to {}")
@@ -67,6 +70,7 @@ class JobAllocationView(BaseDashboard):
             messages.success(request, "Failed to allocate job to artisan.")
         self.context.update({
             'title': self.title,
+            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
@@ -121,10 +125,11 @@ class JobAllocationView(BaseDashboard):
     @property
     def new_jobs_with_job_interest(self):
         new_jobs_with_job_interest = []
-        for job in Job.objects.filter(status__in=['new', 'assigned']):
-            if job.artisans_interested.all():
-                new_jobs_with_job_interest.append(job)
-        return new_jobs_with_job_interest
+#         for job in Job.objects.filter(status='new'):
+#             if job.artisans_interested.all():
+#                 new_jobs_with_job_interest.append(job)
+#         return new_jobs_with_job_interest
+        return Job.objects.filter(status='new')
 
     def job_artisans(self, request):
         data = json.dumps(self.artisans)

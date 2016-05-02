@@ -212,6 +212,7 @@
 			        <th>Description</th>
 			        <th></th>
 			        <th>Action</th>
+			        <th>Quote</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -236,6 +237,16 @@
 		               	 		{% endif %}
 		        		</form>
         				</td>
+  		        		<td>
+		        			<form action="{% url 'quote_url' job.pk %}" method="get">
+		        				{% csrf_token %}
+		        				{% if job.has_quote %}
+		        					<button type="submit" class="btn btn-primary">View Quote</button>
+		        				{% else %}
+		        					<button type="submit" class="btn btn-primary">Generate Quote</button>
+		        				{% endif %}
+		        			</form>
+		        		</td>
 					</tr>
 				{% endfor %}
 		    		<tr>

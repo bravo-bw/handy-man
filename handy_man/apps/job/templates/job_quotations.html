@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+ 
+{% block content %}
+	<div class="container">
+		<div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Job</h3>
+            </div>
+            <div class="panel-body">
+		      	<table id="master_job" class="table table-striped table-bordered" cellspacing="0" width="100%">
+		      			<thead>
+				            <tr>
+				                <th>Posted By</th>
+				                <th>Job Type</th>
+				                <th>Description</th>
+				                {% if loggedin_user_profile.account_type == 'handyman_admin' %}
+				                	<th>Add Another Quote</th>
+				                {% endif %}
+				            </tr>
+				        </thead>
+				        <tbody>
+			      			<tr>
+			      				<td>
+			      					{{job.posted_by.user.username}}
+			      				</td>
+			      				<td>
+			      					{{job.job_type}}
+			      				</td>
+			      				<td>
+			      					{{job.description}}
+			      				</td>
+			      				{% if loggedin_user_profile.account_type == 'handyman_admin' %}
+				      				<td>
+				      					<form action="{% url 'quote_url' job.pk %}" method="get">
+					        				{% csrf_token %}
+					        				<input name="hidden_job_id" type="hidden" value="{{job.pk}}">
+					        				{% if job.allow_add_quote %}
+					        					<button type="submit" class="btn btn-primary">Add New Quote</button>
+					        				{% else %}
+					        					<button type="submit" class="btn btn-primary" disabled>Add New Quote</button>
+					        				{% endif %}
+					        			</form>
+				      				</td>
+				      			{% endif %}
+			      			</tr>
+			      		</tbody>
+		      		</table>
+		      </div>
+        </div>
+		<div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Quotations Against Job</h3>
+            </div>
+            <div class="panel-body">
+	        	<table id="quotations" class="table table-striped table-bordered" cellspacing="0" width="100%">
+			        <thead>
+			            <tr>
+			                <th>currency</th>
+			                <th>amount</th>
+			                <th>accepted</th>
+			                {% if loggedin_user_profile.account_type == 'customer' %}
+			                	<th>accept</th>
+			                	<th>reject</th>
+			                {% endif %}
+			            </tr>
+			        </thead>
+			        <!--<tfoot>
+			            <tr>
+			                <th>currency</th>
+			                <th>amount</th>
+			                <th>accepted</th>
+			            </tr>
+			        </tfoot>-->
+			        <tbody>
+			        	{% for quote in quotes %}
+				            <tr>
+				                <td>{{quote.currency}}</td>
+				                <td>{{quote.amount}}</td>
+				                <td>
+				                	{% if quote.accepted == 'True' %}
+				                		<input type="checkbox" disabled checked>
+				                	{% else %}
+				                		<input type="checkbox" disabled>
+				                	{% endif %}
+				                </td>
+				                {% if loggedin_user_profile.account_type == 'customer' %}
+					                <td>
+					                	<button class="btn btn-primary" value="accept" name="accept" id="accept">Accept</button>
+					                </td>
+					                <td>
+					                	<button class="btn btn-primary" value="reject" name="reject" id="reject">Reject</button>
+					                </td>
+				                {% endif %}
+				            </tr>
+			            {% endfor %}
+			        </tbody>
+    			</table>
+		   </div>
+		</div>
+    </div>
+<script>
+	$(document).ready(function() {
+	    $('#quotations').DataTable();
+	});
+</script>
+{% endblock %}

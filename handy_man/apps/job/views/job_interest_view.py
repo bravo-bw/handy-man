@@ -8,6 +8,7 @@ from django.http.response import HttpResponse
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.job.models.job import Job
 from handy_man.apps.user_profile.models.profile import UserProfile
+from handy_man.apps.user_profile.classes import MenuConfiguration
 
 
 class JobInterestView(BaseDashboard):
@@ -43,13 +44,16 @@ class JobInterestView(BaseDashboard):
                     data = json.dumps([message])
                 return HttpResponse(data, content_type='application/json')
         else:
+            loggedin_user_profile = UserProfile.objects.get(user=request.user)
             self.context.update({
                 'latest_jobs': self.latest_jobs,
-                'new_jobs': self.jobs_with_job_interest_status
+                'new_jobs': self.jobs_with_job_interest_status,
+                'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self._job_identifier = request.POST.get('job_id')
         self._user = request.user
         if request.POST.get('action') == 'interested':
@@ -64,6 +68,7 @@ class JobInterestView(BaseDashboard):
                 messages.success(request, "Job Interest log {} has been removed successfully.".format(self.job))
         self.context.update({
             'job_id': self.job.identifier,
+            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 

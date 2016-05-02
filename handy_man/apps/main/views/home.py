@@ -2,6 +2,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from handy_man.apps.main.views import BaseDashboard
 from handy_man.apps.user_profile.forms import AuthenticateForm, UserCreateForm
+from handy_man.apps.user_profile.models.profile import UserProfile
+from handy_man.apps.user_profile.classes import MenuConfiguration
 
 
 class Home(BaseDashboard):
@@ -13,6 +15,7 @@ class Home(BaseDashboard):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
+            loggedin_user_profile = UserProfile.objects.get(user=request.user)
             user = request.user
             model = ''
             self.context.update({
@@ -25,6 +28,7 @@ class Home(BaseDashboard):
                 'public_notifications': [],
                 'next_url': '/',
                 'username': request.user.username,
+                'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         else:
             auth_form = AuthenticateForm()
@@ -37,8 +41,10 @@ class Home(BaseDashboard):
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self.context.update({
-            'title': self.title
+            'title': self.title,
+            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 

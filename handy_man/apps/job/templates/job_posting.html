@@ -34,20 +34,47 @@
                     <tbody>
                       	<tr>
                       		<td>
+		                       <label for="district">District: </label>
+		                       <select name="district_select" id="district_select" onchange="getDistrict(this)">
+		                       		<option value="None">---------</option>
+	                           		{% for district in districts %}
+	                           			{% if district_name == district %}
+	                           				<option value={{ district }} selected>{{ district }}</option>
+	                           			{% else %}
+	                           				<option value={{ district }}>{{ district }}</option>
+	                           			{% endif %}
+	                           		{% endfor %}
+		                       </select>
+	                       </td>
+	                       <td>
+		                       <label for="town_village">Town/Village:</label>
+		                       <select name="town_village_select" id="town_village_select" onchange="getTownVillage(this)">
+		                       		<option value="None">---------</option>
+	                           		{% for town_village in town_villages %}
+	                           			{% if town_village_name ==  town_village %}
+	                           				<option value={{ town_village }} selected>{{ town_village }}</option>
+	                           			{% else %}
+	                           				<option value={{ town_village }}>{{ town_village }}</option>
+	                           			{% endif %}
+	                           		{% endfor %}
+		                       </select>
+		                    </td>
+                       </tr>
+                       <tr>
+                      		<td>
 		                       <label for="street">Street:</label>
-		                       <input id="street" type="text" name="street" value="">
+		                       <select name="street_select" id="street_select" onchange="getStreet(this)">
+		                       		<option value="None">---------</option>
+	                           		{% for street in streets %}
+	                           			{% if street_name == street %}
+	                           				<option value={{ street }} selected>{{ street }}</option>
+	                           			{% else %}
+	                           				<option value={{ street }}>{{ street }}</option>
+	                           			{% endif %}
+	                           		{% endfor %}
+		                       </select>
 		                    </td>
 		                    <td>
-		                       <label for="town_village">Town/Village:</label>
-		                       <input id="town_village" type="text" name="town_village" value="">
-		                    </td>
-                      	</tr>
-                      	<tr>
-                      		<td>
-		                       <label for="district">District:</label>
-		                       <input id="district" type="text" name="district" value="">
-	                       </td>
-                           <td>
 	                           	<label for="job_type">Job Type:</label>
 	                           	<select>
 	                           		<option value="None">---------</option>
@@ -56,73 +83,14 @@
 	                           		{% endfor %}
 	                           	</select>
                            </td>
-                       </tr>
+                      	</tr>
                       <tr>
                       		<td>
 		                        <label for="description">Description:</label><br>
 		                        <textarea rows="4" cols="50" id="description" name="description" value=""></textarea>
                         	</td>
                       </tr>
-                      <tr>
-                      <!-- <div id="documents" class="tab-pane fade">
-				    	<div class="row">
-				    		<div class=" col-md-12 col-lg-12 ">
-								<label class="control-label">Documents</label>
-								<div class="file-input">
-									<div class="file-preview">
-									    <div class="close fileinput-remove">��</div>
-									    <div class="file-drop-disabled">
-									    	<div class="file-preview-thumbnails">
-									    		<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_0" data-fileindex="init_0">
-									    			<iframe src="{{user_profile.document_urls.0}}" style="width:124px; height:174px" frameborder="0" id='document_display_0'></iframe>
-											   		<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_0'> 
-												</div>
-												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_1" data-fileindex="init_1">
-													<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_1'>
-													<iframe src="{{user_profile.document_urls.1}}" style="width:124px; height:174px" frameborder="0" id='document_display_1'></iframe> 
-												</div>
-												<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_2" data-fileindex="init_2">
-													<iframe src="{{user_profile.document_urls.2}}" style="width:124px; height:174px" frameborder="0" id='document_display_2'></iframe>
-													<img src="" class="file-preview-image" alt="" title="" style="width:124px;height:174px" id='document_display_2'> 
-												</div>
-											    <div class="clearfix"></div>
-												<div class="file-preview-status text-center text-success"></div>
-												<div style="display: none;" class="kv-fileinput-error file-error-message"></div>
-									    	</div>
-										</div>
-										<div class="kv-upload-progress hide">
-											<div class="progress">
-											    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
-											        0%
-											     </div>
-											</div>
-										</div>
-								</div>
-							</div>
-						</div>
-					  </div>
-						  <div class="row">
-								<div class=" col-md-12 col-lg-12 ">
-									<div class="input-group ">
-									   <div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
-									   		<div title="upload documents" class="file-caption-name"><span class="glyphicon glyphicon-file kv-caption-icon"></span>upload documents</div>
-										</div>
-									   <div class="input-group-btn">
-									       <button type="button" tabindex="500" title="Clear selected files" class="btn btn-default fileinput-remove fileinput-remove-button" id="remove_document"><i class="glyphicon glyphicon-trash"></i> <span class="hidden-xs">Remove</span></button>
-									       <button type="button" tabindex="500" title="Abort ongoing upload" class="btn btn-default hide fileinput-cancel fileinput-cancel-button"><i class="glyphicon glyphicon-ban-circle"></i> <span class="hidden-xs">Cancel</span></button>
-									       <button type="submit" tabindex="500" title="Upload selected files" class="btn btn-default fileinput-upload fileinput-upload-button"><i class="glyphicon glyphicon-upload"></i> <span class="hidden-xs">Upload</span></button>
-									       <div tabindex="500" class="btn btn-primary btn-file">
-									       		<i class="glyphicon glyphicon-folder-open"></i>&nbsp;
-									       		 <span class="hidden-xs">Browse ���</span>
-									       		<input id="input-24" name="input-24" multiple class="file-loading" type="file"	>
-									       </div>
-									   </div>
-									</div>
-								</div>
-						    </div>
-				  </div> -->
-				  </tr>
-				  <tr><td>Location</td></td></tr>
+				  <tr><td>Location</td><td></td></tr>
 				  <tr>
 				  	<td>
 				  		<div id="mapCanvas" style="width:680px;height:380px;"></div>
@@ -141,66 +109,21 @@
             </div>
           </div>
           </form>
-         </div>
-         <!-- <script>
-      		//Changes user profile photo
-      		$(document).ready( function() {
-				$("#avatar_image").change(function(event) {
-					var selectedFile = event.target.files[0];
-					var reader = new FileReader();
-					var imgtag = $("#avatar_display")
-					imgtag.title = selectedFile.name;
-					reader.onload = function(event) {
-					    imgtag.attr('src', event.target.result);
-					}
-					reader.readAsDataURL(selectedFile);
-					  //$( "#avatar_image" ).attr('src', $( this ).val());
-				});
-	      		//Uploads supporting documents agains user profile
-				$("#input-24").change(function(event) {
-					var selectedFiles = event.target.files;
-					var reader = new FileReader();
-					var count = 0;
-					$("iframe[id^=document_display]").each(function(index) {
-						if ($(this).attr('src') == ''){
-							var imgtag = $(this);
-							if(count < selectedFiles.length){
-								imgtag.title = selectedFiles[count].name;
-								reader.onload = function(event) {
-									imgtag.attr('src', event.target.result);
-								}
-								reader.readAsDataURL(selectedFiles[count]);
-								count++;
-								reader = new FileReader();
-							}
-						}
-					});
-					count = 0;
-					return false;		
-				});
-				//When Edit button is clicked, make inputs ready to accept data.
-				$("#edit_profile").click(function(event) {
-					$("input[id^=id_]").each(function(index) {
-						$(this).removeAttr("readonly");
-						$(this).removeAttr("style");
-					});
-					return false;
-				});
-				//Remove all uploaded documents
-				$("#remove_document").click(function(event) {
-					$("iframe[id^=document_display]").each(function(index) {
-						$(this).attr('src', '');
-					});
-					return false;
-				});
-				//Open document in new tab on click
-				$("div[id^=preview-]").each(function(index) {
-					$(this).click(function() {
-						alert('INSIDE');
-						//window.open("http://www.google.com", "_blank");
-					});
-					//return false;
-				});	
-      		});
-	 </script> -->
+	 <script>
+	 function getDistrict(district_select) {
+		    var d = district_select.value;
+		    window.location="{% url 'job_posting_url' %}?district_name="+d;
+		}
+	 function getTownVillage(town_village_select) {
+		 var dist = document.getElementById("district_select").value;
+		 var tv = town_village_select.value;
+		 window.location="{% url 'job_posting_url' %}?town_village_name="+tv+"&district_name="+dist;
+		}
+	 function getStreet(street_select) {
+		 var dist = document.getElementById("district_select").value;
+		 var tv = document.getElementById("town_village_select").value;
+		 var st = street_select.value;
+		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
+		}
+	 </script>
 {% endblock %}
