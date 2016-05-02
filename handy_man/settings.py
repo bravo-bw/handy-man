@@ -22,6 +22,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 PATH = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(2).child('etc')
+print(PATH)
 
 if 'test' in sys.argv:
     DATABASES = {
@@ -124,6 +125,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'handy_man.apps.main',
     'handy_man.apps.job',
+    'handy_man.apps.geo_location',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
