@@ -22,7 +22,7 @@ class JobAllocationView(BaseDashboard):
         super(JobAllocationView, self).__init__()
 
     def get(self, request, *args, **kwargs):
-        self._job_identifier = request.GET.get('job_id')
+        self._job_identifier = request.GET.get('job_identifier')
         if request.is_ajax():
             if request.GET.get('action') == 'artisan_list':
                 return self.job_artisans(request)
@@ -60,20 +60,20 @@ class JobAllocationView(BaseDashboard):
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
-    def post(self, request, *args, **kwargs):
-        loggedin_user_profile = UserProfile.objects.get(user=request.user)
-        self._job_identifier = request.POST.get('job_id')
-        self._user_id = request.POST.get('artisan')
-        messages.success(request, "Job {} has been allocated to {}")
-        if self.assign_job():
-            messages.success(request, "Job {} has been allocated to {}".format(self.job, self.user_profile))
-        else:
-            messages.success(request, "Failed to allocate job to artisan.")
-        self.context.update({
-            'title': self.title,
-            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
-        })
-        return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
+#     def post(self, request, *args, **kwargs):
+#         loggedin_user_profile = UserProfile.objects.get(user=request.user)
+#         self._job_identifier = request.POST.get('job_id')
+#         self._user_id = request.POST.get('artisan')
+#         messages.success(request, "Job {} has been allocated to {}")
+#         if self.assign_job():
+#             messages.success(request, "Job {} has been allocated to {}".format(self.job, self.user_profile))
+#         else:
+#             messages.success(request, "Failed to allocate job to artisan.")
+#         self.context.update({
+#             'title': self.title,
+#             'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
+#         })
+#         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     @property
     def job(self):
@@ -118,8 +118,10 @@ class JobAllocationView(BaseDashboard):
                 temp.update({'artisan_id': artisan.id,
                              'username': artisan.user.username,
                              'full_name': "{} - {}".format(artisan.user.first_name, artisan.user.last_name),
-                             'avatar': artisan.avatar_image,
-                             'job_identifier': job.identifier})
+                             'avatar': '/static/{}'.format(str(artisan.avatar_image).split('/')[-1]),
+                             'job_identifier': job.identifier,
+                             'latitude': artisan.latitude,
+                             'longitude': artisan.longitude})
                 artisans.append(temp)
         return artisans
 

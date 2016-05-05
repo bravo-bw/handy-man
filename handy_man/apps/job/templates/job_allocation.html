@@ -36,12 +36,12 @@
 				$("[name='radio"+artisan_id+"']").wrap(
 						"<div id='{{identifier}}' style='background:#eee; width:100%;margin-left:1px;' class='row' name='side_nav_main'></div>");
 			}//End wrapLabels
-			function createRadio(artisan_id){
+			function createRadio(artisan_id, full_name, user_profile){
 				$("#artisan_container").append(
-						'<input type="radio" id="'+artisan_id+'" name="radio_img" value="setsiba">');
+						'<input type="radio" id="'+artisan_id+'" name="radio_img" value='+artisan_id+'><a id='+artisan_id+'>'+full_name+'</a>');
 			}//End createRadio
 			function createImage(artisan_id, avatar){
-				$("#artisan_container").append('<img name="radio_img" id="'+artisan_id+'" alt="Artisan Image">');
+				$("#artisan_container").append('<img name="radio_img" id="'+artisan_id+'" src="'+avatar+'" alt="Artisan Image" value="sfsd">');
 				img_config = {
 					'class':'img-circle',
 					'width':'50',
@@ -52,7 +52,7 @@
 			}//End createImage
 			function create_artisan_elements(artisan){
 				createImage(artisan.artisan_id, artisan.avatar);
-				createRadio(artisan.artisan_id);
+				createRadio(artisan.artisan_id, artisan.full_name, artisan.user_profile);
 				wrapRadioElements(artisan.artisan_id);
 				wrapLabels(artisan.artisan_id);
 				wrapLabelContainer(artisan.artisan_id);
@@ -64,7 +64,7 @@
 					type:'GET',
 					url:'/jobs/job_allocation/',
 					data:{
-						name:job_id,
+						job_identifier:job_id,
 						action:"artisan_list",
 					},
 					success:function(data){
@@ -73,7 +73,7 @@
 							$("#artisan_container").append('<label style="width:100%">No artisans.</label>');
 						}else{
 							$.each(data, function(idx, artisan){
-								create_artisan_elements(artisan)
+								create_artisan_elements(artisan);
 							}); 
 						}
 					}
