@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from handy_man.apps.main.choices import JOB_STATUS
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.job.models.job import Job
 from django.http.response import HttpResponse
@@ -19,29 +20,33 @@ class JobAllocationView(BaseDashboard):
         self.context = {}
         self._display_single = False
         self._job_identifier = None
+        self._user = None
         super(JobAllocationView, self).__init__()
 
     def get(self, request, *args, **kwargs):
         self._job_identifier = request.GET.get('job_identifier')
+        print ("self._job_identifier", self._job_identifier)
+        self._user = request.user
         if request.is_ajax():
             if request.GET.get('action') == 'artisan_list':
                 return self.job_artisans(request)
             elif request.GET.get('action') == 'assign_job':
                 data = None
                 if self.assign_job():
-                    message = {'message': "A job has been allocated to Tshepiso Setsiba."}
+                    message = {'message': "A job has been allocated to {} - {}.".format(self._user.first_name, self._user.last_name),
+                               "status": "success"}
                     data = json.dumps([message])
                 else:
-                    message = {'message': "Failed to allocated to Tshepiso Setsiba."}
+                    message = {'message': "Failed to allocated to {} - {}.".format(self._user.first_name, self._user.last_name)}
                     data = json.dumps([message])
                 return HttpResponse(data, content_type='application/json')
             elif request.GET.get('action') == 're_assign_job':
                 data = None
                 if self.cancel_assigned_job():
-                    message = {'message': "A job is open for re-assigning."}
+                    message = {'message': "A job is open for re-assigning.", "status": "success"}
                     data = json.dumps([message])
                 else:
-                    message = {'message': "Failed to open job for re-assigning.", "status": "success"}
+                    message = {'message': "Failed to open job for re-assigning.", "status": "failed"}
                     data = json.dumps([message])
                 return HttpResponse(data, content_type='application/json')
         else:
@@ -86,7 +91,7 @@ class JobAllocationView(BaseDashboard):
     @property
     def user_profile(self):
         try:
-            user_profile = UserProfile.objects.get(user__id=self._user_id)
+            user_profile = UserProfile.objects.get(user=self._user)
         except UserProfile.DoesNotExist:
             pass
         return user_profile
@@ -94,6 +99,7 @@ class JobAllocationView(BaseDashboard):
     def assign_job(self):
         if self.job:
             job = self.job
+            job.status = JOB_STATUS[2][0]
             job.allocated_to = self.user_profile
             job.save()
             return True
@@ -115,24 +121,30 @@ class JobAllocationView(BaseDashboard):
         if job:
             for artisan in job.artisans_interested.all():
                 temp = {}
+                location = None
+                try:
+                    location = artisan.street.street_name if job.street.street_name else 'Botswana'
+                except:
+                    location = 'Botswana'
                 temp.update({'artisan_id': artisan.id,
                              'username': artisan.user.username,
                              'full_name': "{} - {}".format(artisan.user.first_name, artisan.user.last_name),
                              'avatar': '/static/{}'.format(str(artisan.avatar_image).split('/')[-1]),
                              'job_identifier': job.identifier,
                              'latitude': artisan.latitude,
-                             'longitude': artisan.longitude})
+                             'longitude': artisan.longitude,
+                             'selected': True if job.allocated_to else False,
+                             'location': location})
                 artisans.append(temp)
         return artisans
 
     @property
     def new_jobs_with_job_interest(self):
         new_jobs_with_job_interest = []
-#         for job in Job.objects.filter(status='new'):
-#             if job.artisans_interested.all():
-#                 new_jobs_with_job_interest.append(job)
-#         return new_jobs_with_job_interest
-        return Job.objects.filter(status='new')
+        for job in Job.objects.all():
+            if job.artisans_interested.all():
+                new_jobs_with_job_interest.append(job)
+        return new_jobs_with_job_interest
 
     def job_artisans(self, request):
         data = json.dumps(self.artisans)
