@@ -23,7 +23,8 @@ urlpatterns = [
     url(r'^search$', SearchView.as_view(), name='search_url_get'),
     url(r'^signup$', signup),
     url(r'^profile/', include('handy_man.apps.user_profile.urls')),
-    #(r'^main/', include('handy_man.apps.main.urls')),
+#     (r'^main/', include('handy_man.apps.main.urls')),
+    url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
     url(r'^jobs/', include('handy_man.apps.job.urls')),
 ]
 
