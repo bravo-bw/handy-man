@@ -36,12 +36,12 @@
 				$("[name='radio"+artisan_id+"']").wrap(
 						"<div id='{{identifier}}' style='background:#eee; width:100%;margin-left:1px;' class='row' name='side_nav_main'></div>");
 			}//End wrapLabels
-			function createRadio(artisan_id){
+			function createRadio(artisan_id, full_name, user_profile){
 				$("#artisan_container").append(
-						'<input type="radio" id="'+artisan_id+'" name="radio_img" value="setsiba">');
+						'<input type="radio" id="'+artisan_id+'" name="radio_img" value='+artisan_id+'><a id='+artisan_id+'>'+full_name+'</a>');
 			}//End createRadio
 			function createImage(artisan_id, avatar){
-				$("#artisan_container").append('<img name="radio_img" id="'+artisan_id+'" alt="Artisan Image">');
+				$("#artisan_container").append('<img name="radio_img" id="'+artisan_id+'" src="'+avatar+'" alt="Artisan Image" value="sfsd">');
 				img_config = {
 					'class':'img-circle',
 					'width':'50',
@@ -52,7 +52,7 @@
 			}//End createImage
 			function create_artisan_elements(artisan){
 				createImage(artisan.artisan_id, artisan.avatar);
-				createRadio(artisan.artisan_id);
+				createRadio(artisan.artisan_id, artisan.full_name, artisan.user_profile);
 				wrapRadioElements(artisan.artisan_id);
 				wrapLabels(artisan.artisan_id);
 				wrapLabelContainer(artisan.artisan_id);
@@ -64,7 +64,7 @@
 					type:'GET',
 					url:'/jobs/job_allocation/',
 					data:{
-						name:job_id,
+						job_identifier:job_id,
 						action:"artisan_list",
 					},
 					success:function(data){
@@ -73,7 +73,11 @@
 							$("#artisan_container").append('<label style="width:100%">No artisans.</label>');
 						}else{
 							$.each(data, function(idx, artisan){
-								create_artisan_elements(artisan)
+								if (artisan.selected == true){
+									 assigned_artisan(artisan.avatar, artisan.full_name, artisan.location);
+								}else{
+									create_artisan_elements(artisan);
+								}
 							}); 
 						}
 					}
@@ -85,7 +89,7 @@
 			/*
 				assign job, cancel assignement
 			*/ 
-			function submit_assign_job(e, job_id, artisan_id){
+			function submit_assign_job(e, job_id, artisan_id, btn_assign, radio_reassign){
 				console.log("function get_artisans(e, job_id)");
 				e.preventDefault();
 				var is_success = 0;
@@ -93,14 +97,19 @@
 					type:'GET',
 					url:'/jobs/job_allocation/',
 					data:{
-						job_id:job_id,
+						job_identifier:job_id,
 						artisan_id:artisan_id,
 						action:"assign_job",
 					},
 					success:function(data){
-						//alert(JSON.stringify(data));
 						$.each(data, function(idx, status){
-							display_message(status.message);
+							if (status.status=="success"){
+								btn_assign.attr('style', 'visibility:hidden;float:right;');
+								radio_reassign.attr('style', 'visibility:visible;float:right;');
+								display_message(status.message);
+							}else{
+								display_message(status.message);
+							}
 						}); 
 					}
 				});
@@ -113,17 +122,17 @@
 					type:'GET',
 					url:'/jobs/job_allocation/',
 					data:{
-						job_id:job_id,
+						job_identifier:job_id,
 						action:"re_assign_job",
 					},
 					success:function(data){
 						$.each(data, function(idx, message){
 							if (message.status == "success"){
-								radio_reassign.hide();
+								radio_reassign.attr('style', 'visibility:hidden;float:right;');
 			 		        	btn_assign.attr('style', 'visibility:visible;float:right;');
 			 		        	display_message(message.message);
 							} else {
-								display_message(status.message);
+								display_message(message.message);
 							}
 						}); 
 					}
@@ -137,6 +146,11 @@
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
+		    function assigned_artisan(selected_artisan_avatar, selected_artisan_name, selected_artisan_location){
+		    	$("#selected_artisan_avatar").attr("src", selected_artisan_avatar);
+		    	$("#selected_artisan_name").text(selected_artisan_name);
+		    	$("#selected_artisan_location").text(selected_artisan_location);
+		    }
 		    //$("input[type='radio']:checked").css("background","red");
 		    
 		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
@@ -151,18 +165,20 @@
 		        $('button[type="submit"]').attr('disabled','disabled');
 		        $(this).find('button').removeAttr( "disabled");
 		        
+ 		       var btn_submit =  $(this).find('button').eq(0);
+ 		       var radio_reassign = $(this).find('select');
+		        
  		        $(this).find('button').click(function(e) {
 			        checked_radio_val = $("input[type='radio']:checked").val();
 			        if (checked_radio_val == undefined){
 			        	//Please select artisan
 			        	alert("Please select artisan");
 			        }else{
-				        submit_assign_job(e, job_identifier, checked_radio_val);
+			        	job_identifier = $(this).closest("tr").find('input[name="job_identifier"]').val();
+				        submit_assign_job(e, job_identifier, checked_radio_val, btn_submit, radio_reassign);
 			        }
 		        });
 
- 		       var btn_submit =  $(this).find('button');
- 		       var radio_reassign = $(this).find('select');
  		       $(this).find('select').change(function(e) {
  		        	if($(this).val() == 're_assign'){
  		        		job_identifier = $(this).closest("tr").find('input[name="job_identifier"]').val();
@@ -225,7 +241,7 @@
 			               		{% csrf_token %}
 			               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
 			               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-			               	 		{% if job.status == 'assigned' %}
+			               	 		{% if job.allocated_to %}
 			               	 			<button type="button" style="visibility:hidden" class="btn btn-primary" value="Assign">Assign</button>
 				               	 	 		<select id="select{{job.identifier}}">
 				               	 				<option value="assigned" selected="selected">Assigned</option>
@@ -233,6 +249,10 @@
 				               	 			</select>
 			               	 		{% else %}
 										<button type="button" class="btn btn-primary">Assign</button>
+										<select id="select{{job.identifier}}" style="visibility:hidden">
+				               	 			<option value="assigned" selected="selected">Assigned</option>
+				               	 			<option value="re_assign">Re-assign</option>
+				               	 		</select>
 			               	 		{% endif %}
 			        		</form>
         				</td>
@@ -290,12 +310,17 @@
 <div class="col-lg-3">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <i class="fa fa-bell fa-fw"></i> Best Artisan
+            <i class="fa fa-bell fa-fw"></i> Assigned Artisan
         </div>
         <!-- /.panel-heading -->
-        <div class="panel-body">
-            <!-- /.list-group -->
-            <!--  <a href="#" class="btn btn-default btn-block">V</a> -->
+        <div class="panel-body" id="qualified_artisan">
+			<div class="row placeholders">
+            <div class="col-xs-12 placeholder">
+              <img id="selected_artisan_avatar" src="{{ STATIC_URL }}/default_avatar_male.jpg" width="200" height="100" class="img-responsive img-rounded" alt="Assigned Artisan">
+              <h4 id="selected_artisan_name">Not Selected</h4>
+              <span id="selected_artisan_location"  class="text-muted"></span>
+            </div>
+            </div>
         </div>
         <!-- /.panel-body -->
     </div>

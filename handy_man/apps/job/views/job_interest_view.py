@@ -26,6 +26,8 @@ class JobInterestView(BaseDashboard):
 
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
+            self._user = request.user
+            self._job_identifier = request.GET.get('job_identifier')
             if request.GET.get('action') == 'add_job_interest':
                 if self.add_job_interest():
                     message = {'message': "Job request has been submitted.", "status": "success"}
@@ -44,17 +46,18 @@ class JobInterestView(BaseDashboard):
                     data = json.dumps([message])
                 return HttpResponse(data, content_type='application/json')
         else:
-            #loggedin_user_profile = UserProfile.objects.get(user=request.user)
+            self._user = request.user
             self.context.update({
                 'latest_jobs': self.latest_jobs,
                 'new_jobs': self.jobs_with_job_interest_status,
-                #'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
+                'menus': MenuConfiguration().user_menu_list(self.user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self._job_identifier = request.POST.get('job_id')
+        print ("self._job_identifier:", self._job_identifier)
         self._user = request.user
         if request.POST.get('action') == 'interested':
             if self.add_job_interest():
@@ -105,10 +108,10 @@ class JobInterestView(BaseDashboard):
     @property
     def user_profile(self):
         try:
-            user_profile = UserProfile.objects.get(user__id=self._user_id)
+            loggedin_user_profile = UserProfile.objects.get(user=self._user)
         except UserProfile.DoesNotExist:
             pass
-        return user_profile
+        return loggedin_user_profile
 
     def add_job_interest(self):
         if self.job:
