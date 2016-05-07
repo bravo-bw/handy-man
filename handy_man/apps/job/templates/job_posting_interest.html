@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block content %}
+{% block content %} 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -39,11 +39,12 @@
 					$.each(data, function(idx, status){
 						
 						if (status.status =='success'){
-							btn_config = {
-								'class':'btn btn-success btn-sm',
-								'disabled':'disabled'
-							}
-							btn_submit.attr(btn_config);
+							var btn_change = $('button[value="ok-'+job_id+'"]');
+								btn_config = {
+										'class':'btn btn-success btn-sm',
+										'disabled':'disabled'
+									}
+								btn_change.attr(btn_config);
 						}
 						display_message(status.message);
 					}); 
@@ -63,12 +64,13 @@
 				success:function(data){
 					$.each(data, function(idx, status){
 						if (status.status =='success'){
+							var btn_submit = $('button[value="ok-'+job_id+'"]');
 							btn_config = {
 								'class':'btn btn-default btn-sm',
 								'disabled':'disabled'
 							}
 							btn_submit.attr('class', 'btn btn-default btn-sm');
-							btn_cancel.attr(btn_config);
+							btn_submit.attr(btn_config);
 						}
 						display_message(status.message);
 					}); 
@@ -158,15 +160,6 @@
 <div class="row">
 <div class="col-lg-9">
     <!-- /.panel -->
-    
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
     <div class="panel panel-default">
         <div class="panel-heading">
             <i class="fa fa-bar-chart-o fa-fw"></i> Jobs
@@ -198,11 +191,11 @@
 								<div class="input-group" style="width:100px;">
 								  	<div class="input-group-btn" style="float:right;">
 								  		{% if job_interest_status %}									  
-								   			<button type="button" disabled="disabled" class="btn btn-success btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
+								   			<button type="button" disabled="disabled" class="btn btn-success btn-sm" value="ok-{{job.identifier}}" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
 								   		{% else %}
-								   			<button type="button" class="btn btn-default btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
+								   			<button type="button" class="btn btn-default btn-sm" title="submit job request" value="ok-{{job.identifier}}"><span class="glyphicon glyphicon-ok"></span></button>
 								   		{% endif %}
-								  		<button type="button" class="btn btn-default btn-sm" title="cancel job request"><span class="glyphicon glyphicon-remove"></span></button>
+								  		<button type="button" class="btn btn-default btn-sm" title="cancel job request" value="remove-{{job.identifier}}"><span class="glyphicon glyphicon-remove"></span></button>
 								  	</div>
 								</div>
 		        		</form>
