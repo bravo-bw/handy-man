@@ -161,14 +161,6 @@
 </head>
 <body>
 	{% block navigation %}
-	{% if messages %}
-	  <ul class="list-unstyled messages">
-	  {% for message in messages %}
-	    {% get_bootstrap_alert_msg_css_name message.tags as alert_tag %}
-	    <li class="alert alert-{{ alert_tag }}">{{ message }}</li>
-	  {% endfor %}
-	  </ul>
-	{% endif %}
  {% if user.is_authenticated %}
 <div class="container">
 
