@@ -80,10 +80,11 @@ class JobPostingView(BaseDashboard):
                         'street': street.id, 'description': description, 'job_type': job_type, 'job_image_1': job_image_1, 'job_image_2': job_image_2, 'job_image_3': job_image_3}
                 job_form = JobForm(data)
                 if job_form.is_valid():
-                    Job.objects.create(
-                        posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
-                        town_village=town_village, status=NEW, description=description,
-                        job_image_1=job_image_1, job_image_2=job_image_2, job_image_3=job_image_3)
+                    job_form.save()
+#                     Job.objects.create(
+#                         posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
+#                         town_village=town_village, status=NEW, description=description,
+#                         job_image_1=job_image_1, job_image_2=job_image_2, job_image_3=job_image_3)
                 messages.success(request, "Job has been saved successfully")
                 return redirect(user_profile, username=loggedin_user_profile.user.username)
             except Exception as err:
