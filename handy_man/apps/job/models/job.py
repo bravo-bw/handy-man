@@ -84,6 +84,9 @@ class Job(ItemGeolocationMixin, TimeStampedModel):
 
     objects = JobManager()
 
+    def __str__(self):
+        return self.job_type
+
     @property
     def has_quote(self):
         # TODO: implement this method to return True if a job has at least 1 quote attached to it.

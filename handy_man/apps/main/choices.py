@@ -10,6 +10,7 @@ ACCOUNT_TYPE = (('artisan', 'Artisan'),
 
 JOB_STATUS = (('new', 'New'),
               ('in_progess', 'In Progress'),
+              ('assigned', 'Assign'),
               ('completed', 'Completed'))
 
 PAYMENT_MODE = (

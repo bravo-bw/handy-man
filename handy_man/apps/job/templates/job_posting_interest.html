@@ -26,30 +26,95 @@
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
 	</script>
 	<script>
+		function submit_job_interest(e, job_id, btn_submit){
+			e.preventDefault();
+			$.ajax({
+				type:'GET',
+				url:'/jobs/available_jobs/',
+				data:{
+					job_identifier:job_id,
+					action:"add_job_interest",
+				},
+				success:function(data){
+					$.each(data, function(idx, status){
+						
+						if (status.status =='success'){
+							btn_config = {
+								'class':'btn btn-success btn-sm',
+								'disabled':'disabled'
+							}
+							btn_submit.attr(btn_config);
+						}
+						display_message(status.message);
+					}); 
+				}
+			});
+		}
+		
+		function cancel_job_interest(e, job_id, btn_submit, btn_cancel){
+			e.preventDefault();
+			$.ajax({
+				type:'GET',
+				url:'/jobs/available_jobs/',
+				data:{
+					job_identifier:job_id,
+					action:"cancel_job_interest",
+				},
+				success:function(data){
+					$.each(data, function(idx, status){
+						if (status.status =='success'){
+							btn_config = {
+								'class':'btn btn-default btn-sm',
+								'disabled':'disabled'
+							}
+							btn_submit.attr('class', 'btn btn-default btn-sm');
+							btn_cancel.attr(btn_config);
+						}
+						display_message(status.message);
+					}); 
+				}
+			});
+		}
+
+		function display_message(message){
+			$("#message_box").text(""+message);
+			$("#message_box").show();
+			$('#message_box').delay(7000).fadeOut('slow');
+		}
+
 		$(document).ready(function() {
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
 		    //$("input[type='radio']:checked").css("background","red");
-		    
+		    var job_identifier = 0
 		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
 		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
-		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function () {
+		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function (e) {
 		    	$(this).closest("tr").siblings().removeClass("selected");
 		        $(this).toggleClass('selected');
 		
 		        $('button[type="submit"]').attr('disabled','disabled');
 		        $(this).find('button').removeAttr( "disabled");
+		        
 		        $(this).find('button').click(function() {
 			        var $job_item = $(this).closest("tr").find('input[name="job_id"]');
 			        var $checked_radio_val = $("input[type='radio']:checked").val();
 			        $job_item.val($checked_radio_val);
 			        return False;
 		        });
+		        job_identifier = $(this).find('input[name="job_identifier"]').val();
 		    } );
-		    $("input[type='radio']").on( 'checked', function () {
-		    	$('div[class="side_nav"]').css( "background-color", "yellow" );
-		    });s 
+		    var btn_submit = $(this).find('button[title="submit job request"]');
+		    $(this).find('button[title="submit job request"]').click(function(e){
+		    	submit_job_interest(e, job_identifier, btn_submit);
+		    });
+		    
+		    var btn_cancel = $(this).find('button[title="cancel job request"]');
+		    $(this).find('button[title="cancel job request"]').click(function(e){
+		    	cancel_job_interest(e, job_identifier, btn_submit, btn_cancel);
+		    });
+		    
 		} );
 		
 		
@@ -109,7 +174,7 @@
         <!-- /.panel-heading -->
         <div class="panel-body">
 <!-- <div class="container"> -->  
-   
+<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>   
 <table class="table" style=" width:100%;" id="job_allocate_tb" >
 			    <thead>
 			      <tr>
@@ -120,65 +185,34 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-		{% for jobs, job_interest_status in new_jobs %}
+			{% for job, job_interest_status in new_jobs %}
 			    <tr>
 			        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
 			        <td>{{job.description}}</td>
 			        <td>{{job.street}}</td>
 					<td>
-				<form action="{% url 'jobs_url' %}" method="post">
-               		{% csrf_token %}
-               		     <input name="artisan" id="artisan" type="hidden" value="sets">
-               	 		<input name="job_id" type="hidden" value="{{job.identifier}}">
-               	 		<div class="list-inline">
-               	 		{% if job_interest_status %}
-               	 			<input name="action" id="action" type="hidden" value="interested">
-               	 			<input style="float:right;" id="action" type="image" src="{{ STATIC_URL }}img/cancel.png" alt="Submit" width="30" height="30">               	 		
-               	 		{% else %}
-               	 			<input name="action" id="action" type="hidden" value="notinterested">
-               	 			<input style="float:right;" id="action" type="image" src="{{ STATIC_URL }}img/tick.png" alt="Submit" width="30" height="30">
-               	 		{% endif %}
-               	 		</div>
-        		</form></td>
-			</tr>
-		{% endfor %}
-			    <tr>
-				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-				        <td>
-2
- Baellerry Genuine Leather Men's Long Wallet
-Baellerry Genuine Leather Men's Long Wallet</td>
-				        <td>Gaborone North</td>
-						<td>
-               <form action="{% url 'jobs_url' %}" method="post">
-               		{% csrf_token %}
-               		     <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-               	 		<input name="job_id" type="hidden" value="10101010100yyyyyyy">
-               	 		<div class="list-inline">
-               	 		<input style="float:right;" type="image" src="{{ STATIC_URL }}img/tick.png" alt="Submit" width="30" height="30">
-               	 		<!--<input type="image" style="background:red;" src="{{ STATIC_URL }}img/cancel.png" alt="Submit" width="30" height="30">-->
-               	 		</div>
-        		</form>
-				<!-- <button type="submit" class="btn btn-primary">Assign</button>-->
-				</td>
+						<form action="{% url 'jobs_url' %}" method="post">
+		               		{% csrf_token %}
+		               		    <input name="artisan" id="artisan" type="hidden" value="sets">
+		               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
+								<div class="input-group" style="width:100px;">
+								  	<div class="input-group-btn" style="float:right;">
+								  		{% if job_interest_status %}									  
+								   			<button type="button" disabled="disabled" class="btn btn-success btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
+								   		{% else %}
+								   			<button type="button" class="btn btn-default btn-sm" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
+								   		{% endif %}
+								  		<button type="button" class="btn btn-default btn-sm" title="cancel job request"><span class="glyphicon glyphicon-remove"></span></button>
+								  	</div>
+								</div>
+		        		</form>
+        			</td>
 				</tr>
+			{% endfor %}
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  
         </div>
-        <!-- /.panel-body 
-        <div class="panel-heading">
-            <i class="fa fa-bar-chart-o fa-fw"></i> Geo Location
-        </div>
-        <!-- /.panel-heading 
-                <div class="panel-body">
-                    	<table>
-                    	<tr><td>
-<div id="googleMap" style="width:600px;height:380px;"></div>
-            	</td></tr>
-            	</table>   --.                         
-        </div>
-        <!-- /.panel-body -->
     </div>
     <!-- /.panel -->
 </div>

@@ -59,6 +59,8 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+STAR_RATINGS_RERATE = True
+STAR_RATINGS_RANGE = 5
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
@@ -92,6 +94,18 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.Loader',
 )
 
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#     'django.core.context_processors.request,'
+# )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -126,6 +140,7 @@ INSTALLED_APPS = (
     'handy_man.apps.main',
     'handy_man.apps.job',
     'handy_man.apps.geo_location',
+    'star_ratings',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
