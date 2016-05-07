@@ -48,6 +48,7 @@ class JobPostingView(BaseDashboard):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         posted_by = self.get_current_user(request.user.username)
         data = {}
+        job_form = JobForm
         if request.method == 'POST':
             try:
                 latitude = request.POST.get('latitude')
@@ -87,7 +88,6 @@ class JobPostingView(BaseDashboard):
                 return redirect(user_profile, username=loggedin_user_profile.user.username)
             except Exception as err:
                 print(err)
-        print(job_form.errors)
         self.context.update({'title': self.title,
                              'job_form': job_form,
                              'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
