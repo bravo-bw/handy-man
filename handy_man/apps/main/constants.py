@@ -13,6 +13,7 @@ ON_HOLD = 'ob_hold'
 HOME = ('Home', 'home_url')
 MY_PROFILE = ('My Profile', 'user_profile', 'user.username')
 JOBS = ('Jobs', 'jobs_url')
+AVAILABLE_JOBS = ('Available Jobs', 'available_url')
 POST_JOB = ('Post Job', 'job_posting_url')
 USERS = ('Registered Users', 'registered_users_url')
 ARTISAN = 'artisan'
