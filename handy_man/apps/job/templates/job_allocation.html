@@ -1,5 +1,5 @@
-{% extends "base_job.html" %}
-{% block controlled_table %}
+{% extends "base.html" %}
+{% block content %}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -104,8 +104,8 @@
 					success:function(data){
 						$.each(data, function(idx, status){
 							if (status.status=="success"){
-								btn_assign.attr('style', 'visibility:hidden;float:right;');
-								radio_reassign.attr('style', 'visibility:visible;float:right;');
+								btn_assign.attr('style', 'visibility:hidden;');
+								radio_reassign.attr('style', 'visibility:visible;');
 								display_message(status.message);
 							}else{
 								display_message(status.message);
@@ -128,9 +128,10 @@
 					success:function(data){
 						$.each(data, function(idx, message){
 							if (message.status == "success"){
-								radio_reassign.attr('style', 'visibility:hidden;float:right;');
-			 		        	btn_assign.attr('style', 'visibility:visible;float:right;');
+								radio_reassign.attr('style', 'visibility:hidden;');
+			 		        	btn_assign.attr('style', 'visibility:visible;');
 			 		        	display_message(message.message);
+			 		        	default_assigned_artisan_to_none();
 							} else {
 								display_message(message.message);
 							}
@@ -151,11 +152,17 @@
 		    	$("#selected_artisan_name").text(selected_artisan_name);
 		    	$("#selected_artisan_location").text(selected_artisan_location);
 		    }
+		    function default_assigned_artisan_to_none(){
+		    	$("#selected_artisan_avatar").attr("src", "/static//default_avatar_male.jpg");
+		    	$("#selected_artisan_name").text("Not Selected");
+		    	$("#selected_artisan_location").text("");
+		    }
 		    //$("input[type='radio']:checked").css("background","red");
 		    
 		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
 		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
 		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function (e) {
+		    	default_assigned_artisan_to_none();
 		    	job_identifier = $(this).closest("tr").find('input[name="job_identifier"]').val();
 		    	job_artisans(e, job_identifier);
 		    	
@@ -163,6 +170,7 @@
 		        $(this).toggleClass('selected');
 		
 		        $('button[type="submit"]').attr('disabled','disabled');
+		        $('button[type="button"]').attr('disabled','disabled');
 		        $(this).find('button').removeAttr( "disabled");
 		        
  		       var btn_submit =  $(this).find('button').eq(0);
@@ -171,8 +179,7 @@
  		        $(this).find('button').click(function(e) {
 			        checked_radio_val = $("input[type='radio']:checked").val();
 			        if (checked_radio_val == undefined){
-			        	//Please select artisan
-			        	alert("Please select artisan");
+			        	display_message("Please select artisan");
 			        }else{
 			        	job_identifier = $(this).closest("tr").find('input[name="job_identifier"]').val();
 				        submit_assign_job(e, job_identifier, checked_radio_val, btn_submit, radio_reassign);
@@ -195,6 +202,9 @@
 		label[name='side_nav']:hover, label[name='side_nav']:active, input:hover+label[name='side_nav'], input[type='radio']:active+label[name='side_nav']{
 			background:#6495ED;
 			color: #F2F3F7;
+		}
+		td{
+			/*float:l;*/
 		}
 	</style>
 </head>
@@ -232,7 +242,9 @@
 			    {% for job in job_interests %}
 				    <tr>
 				        <td>
+				        	<a href="{% url 'job_timeline_url' job.identifier %}">
 				        	<img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px">
+				       		</a>
 				        </td>
 				        <td>{{job.description}}</td>
 				        <td>{{job.street}}</td>
@@ -243,13 +255,13 @@
 			               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
 			               	 		{% if job.allocated_to %}
 			               	 			<button type="button" style="visibility:hidden" class="btn btn-primary" value="Assign">Assign</button>
-				               	 	 		<select id="select{{job.identifier}}">
+				               	 	 		<select id="select{{job.identifier}}" style="float:left;">
 				               	 				<option value="assigned" selected="selected">Assigned</option>
 				               	 				<option value="re_assign">Re-assign</option>
 				               	 			</select>
 			               	 		{% else %}
 										<button type="button" class="btn btn-primary">Assign</button>
-										<select id="select{{job.identifier}}" style="visibility:hidden">
+										<select id="select{{job.identifier}}" style="visibility:hidden; float:left;">
 				               	 			<option value="assigned" selected="selected">Assigned</option>
 				               	 			<option value="re_assign">Re-assign</option>
 				               	 		</select>
@@ -268,24 +280,6 @@
 		        		</td>
 					</tr>
 				{% endfor %}
-		    		<!-- <tr>
-				        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
-				        <td>dafkjgkjgakagkgakagkagkngaskskngsaknsk</td>
-				        <td>{{job.street}}</td>
-						<td>
-						 <form action="{% url 'jobs_url' %}" method="post">
-		               		{% csrf_token %}
-		               		    <input name="artisan" id="artisan" type="hidden" value="tshepiso">
-		               	 		<input name="job_identifier" type="hidden" value="1">
-		               	 		<button type="button" style="visibility:visible;float:right;" class="btn btn-primary" value="Assign">Assign</button>
-		               	 	 	<select id="select{{job.identifier}}" style="visibility:hidden">
-		               	 			<option value="assigned">Assigned</option>
-		               	 			<option value="re_assign">Re-assign</option>
-		               	 		</select>
-		        		</form>
-        				</td>
-        				<td></td>
-					</tr> -->
 			    </tbody>
 			  </table>
 		<!-- </div> -->                  

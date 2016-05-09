@@ -15,10 +15,7 @@
     <!-- <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" type="text/css" media="screen" /> -->
     
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css" type="text/css" media="screen" />
-    
-    <!-- datatable javascript 
-	<script src="{{ STATIC_URL }}js/jquery-1.12.0.min.js"></script>
-	<script src="{{ STATIC_URL }}js/jquery.dataTables.min.js"></script>-->
+   
 	
 	<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
 	</script>
@@ -217,6 +214,15 @@
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
+        	{% for job in lastest_jobs %}
+        	<p><h6>{{job.created}}<br>{{job.job_type}} @ G-West, Gaborone, South-East <br> Posted By <a href="#">{{job.posted_by.user.first_name}} - {{job.posted_by.user.last_name}}</a></h6></p>
+			<hr>
+			{% endfor %}
+        	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
+			<hr>
+        	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
+			<hr>
+        	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
 			<hr>
             <a href="#" class="btn btn-default btn-block">View All</a>
         </div>
