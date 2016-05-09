@@ -1,9 +1,10 @@
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
 from .location_divisions import Street, TownVillage, District
 
 
-class ItemGeolocationMixin(models.Model):
+class ItemGeolocationMixin(TimeStampedModel):
 
     latitude = models.FloatField(
         verbose_name='Latitude',
@@ -17,11 +18,11 @@ class ItemGeolocationMixin(models.Model):
         null=True,
         blank=True,)
 
-    street = models.ForeignKey(Street, on_delete=models.CASCADE)
+    street = models.ForeignKey(Street, on_delete=models.CASCADE, null=True, blank=True)
 
-    town_village = models.ForeignKey(TownVillage, on_delete=models.CASCADE)
+    town_village = models.ForeignKey(TownVillage, on_delete=models.CASCADE, null=True, blank=True)
 
-    district = models.ForeignKey(District, on_delete=models.CASCADE)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         abstract = True
