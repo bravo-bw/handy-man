@@ -22,8 +22,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 PATH = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(2).child('etc')
-print(PATH)
-
+print (PATH)
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
@@ -39,7 +38,7 @@ else:
                 'init_command': 'SET storage_engine=INNODB',
             },
             'OPTIONS': {
-                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
+                'read_default_file': os.path.join(BASE_DIR, 'handy_man.conf'),
             },
             'HOST': '',
             'PORT': '',

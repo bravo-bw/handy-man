@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django_extensions.db.models import TimeStampedModel
 from django.conf import settings
 
 from handy_man.apps.main.constants import NEW
@@ -10,7 +9,7 @@ from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.job.managers import JobManager
 
 
-class Job(ItemGeolocationMixin, TimeStampedModel):
+class Job(ItemGeolocationMixin):
 
     """
     This model describes the job and its details.
@@ -24,6 +23,18 @@ class Job(ItemGeolocationMixin, TimeStampedModel):
     posted_by = models.ForeignKey(UserProfile, related_name='profile_sumbittor')
 
     allocated_to = models.ForeignKey(UserProfile, related_name='allocated', null=True, blank=True)
+
+    allocation_date = models.DateField(
+        verbose_name='Allocation Date',
+        null=True,
+        blank=True,
+    )
+
+    completion_date = models.DateField(
+        verbose_name='Completion Date',
+        null=True,
+        blank=True,
+    )
 
     identifier = models.AutoField(
         primary_key=True,

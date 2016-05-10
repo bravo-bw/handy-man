@@ -1,11 +1,12 @@
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
 from .location_divisions import Street, TownVillage, District
 # from ..choices import *
 # from ..classes import Geolocation
 
 
-class ItemGeolocationMixin(models.Model):
+class ItemGeolocationMixin(TimeStampedModel):
 
     latitude = models.FloatField(
         verbose_name='Latitude',
