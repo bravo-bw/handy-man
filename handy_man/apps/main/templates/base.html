@@ -191,9 +191,11 @@
             <ul class="nav navbar-nav navbar-right">
             	<li><a href="./">Logged in as {{user.username}}</a></li>
 			   <li>
-			       <form action="/logout">
-			       		<input type="submit" id="btnLogOut" value="Log Out" class="btn btn-primary">
-			   	   </form>
+			   <a href="/logout">
+			        <button type="button" class="btn btn-default btn-sm">
+			          <span class="glyphicon glyphicon-log-out"></span> Log out
+			        </button>
+		        </a>
 			   </li>
             </ul>
           </div><!--/.nav-collapse -->
