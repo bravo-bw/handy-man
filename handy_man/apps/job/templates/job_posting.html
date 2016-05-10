@@ -16,7 +16,7 @@
 
 
 {% block content %}
-
+<div class="jumbotron">
 <form class="form-inline" action="{% url 'job_posting_url' %}" method="post">
         	{% csrf_token %}
           <div class="panel panel-info">
@@ -126,4 +126,5 @@
 		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
 		}
 	 </script>
+	</div>
 {% endblock %}

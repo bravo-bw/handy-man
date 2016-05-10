@@ -178,11 +178,6 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <!--<li class="active"><a href="{% url 'home_url' %}">Home</a></li>
-              <li><a href="{% url 'user_profile' user.username %}">My Profile</a></li>
-              <li><a href="{% url 'jobs_url' %}">Jobs</a></li>
-              <li><a href="{% url 'job_posting_url' %}">Post Job</a></li>
-              <li><a href="{% url 'registered_users_url' %}">Registered Users</a></li>-->
               {% for item in menus %}
               	{% if item|length == 2 %}
               		<li><a href="{% url item.1 %}">{{item.0}}</a></li>
@@ -206,7 +201,6 @@
       </nav>
 
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
   {% endif %}
  {% endblock %}
  
@@ -238,7 +232,6 @@
 
 {% block content %}
 {% endblock %}
-</div>
 </body>
 
 {% block footer %}
