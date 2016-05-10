@@ -61,7 +61,7 @@ class JobAllocationView(BaseDashboard):
                 return HttpResponse(data, content_type='application/json')
         else:
             self.context.update({
-                'job_interests': self.job_allocation.new_jobs_with_job_interest,
+                'job_interests': job_allocation.new_jobs_with_job_interest,
                 'task': "job_allocate",
                 'artisans': job_allocation.artisans,
                 #'menus': MenuConfiguration().user_menu_list(self.user_profile)
