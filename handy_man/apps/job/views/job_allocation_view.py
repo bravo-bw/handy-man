@@ -64,7 +64,7 @@ class JobAllocationView(BaseDashboard):
                 'job_interests': job_allocation.new_jobs_with_job_interest,
                 'task': "job_allocate",
                 'artisans': job_allocation.artisans,
-                #'menus': MenuConfiguration().user_menu_list(self.user_profile)
+                'menus': MenuConfiguration().user_menu_list(self.user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 

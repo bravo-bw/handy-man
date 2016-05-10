@@ -58,7 +58,7 @@ class JobInterestView(BaseDashboard):
             self.context.update({
                 'latest_jobs': job_interest.latest_jobs,
                 'new_jobs': job_interest.jobs_with_job_interest_status,
-                #'menus': MenuConfiguration().user_menu_list(self.user_profile)
+                'menus': MenuConfiguration().user_menu_list(self.user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
