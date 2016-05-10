@@ -140,7 +140,6 @@ INSTALLED_APPS = (
     'handy_man.apps.main',
     'handy_man.apps.job',
     'handy_man.apps.geo_location',
-    'star_ratings',
     'handy_man.apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -150,6 +149,18 @@ INSTALLED_APPS = (
 
 SECRET_KEY = os.path.join(PATH, 'handy_man.txt')
 
+PINAX_RATINGS_CATEGORY_CHOICES = {
+    "app.Model": {
+        "exposure": "How good is the exposure?",
+        "framing": "How well was the photo framed?",
+        "saturation": "How would you rate the saturation?"
+    },
+    "app.Model2": {
+        "grammar": "Good grammar?",
+        "complete": "Is the story complete?",
+        "compelling": "Is the article compelling?"
+    }
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

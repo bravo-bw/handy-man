@@ -190,18 +190,6 @@
 			                        	<td><a href=>Change Password</a><br></td>
 			                        {% endif %}
 			                     </tr>
-			                     <tr>
-			                     <td>
-			                     {% load static %}
-								<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
-								<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
-								
-								{% load ratings %}
-								{% if user.is_authenticated %}
-								{% ratings user_profile %}
-								{% endif %}
-			                     </td>
-			                     </tr> 				                  
 			                    </tbody>
 			                  </table>
 			               </div>
