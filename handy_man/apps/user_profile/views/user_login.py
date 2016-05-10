@@ -10,10 +10,11 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 
-from handy_man.apps.main.constants import IN_PROGRESS, COMPLETED, NEW
+from handy_man.apps.main.constants import IN_PROGRESS, COMPLETED, NEW, ARTISAN, CUSTOMER
 from handy_man.apps.job.models import Job
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
+from handy_man.apps.geo_location.classes import Geolocation
 
 from ..classes import MenuConfiguration
 
@@ -29,9 +30,18 @@ def get_latest(user):
 def user_profile(request, username):
     loggedin_user_profile = UserProfile.objects.get(user=request.user)
     user_profile = UserProfile.objects.get(user__username=username)
-    user_jobs = Job.objects.filter(allocated_to=user_profile)
+    if user_profile.account_type == ARTISAN:
+        user_jobs = Job.objects.filter(allocated_to=user_profile)
+    elif user_profile.account_type == CUSTOMER:
+        user_jobs = Job.objects.filter(posted_by=user_profile)
+    else:
+        user_jobs = Job.objects.filter(posted_by=user_profile)
     user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
     user_completed_jobs = user_jobs.filter(status=COMPLETED)
+    geolocation = Geolocation()
+    district_name = request.GET.get('district_name', '')
+    town_village_name = request.GET.get('town_village_name', '')
+    street_name = request.GET.get('street_name', '')
     if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
@@ -68,6 +78,13 @@ def user_profile(request, username):
     return render(request,
                   'user_profile.html',
                   {'user_profile': user_profile,
+                   'districts': geolocation.districts,
+                   'town_villages': geolocation.town_villages(district_name),
+                   'district_name': district_name,
+                   'town_village_name': town_village_name,
+                   'street_name': street_name,
+                   'coordinates': geolocation.cernter_coordinates(district_name, town_village_name, street_name),
+                   'streets': geolocation.streets(town_village_name),
                    'logged_in_user': request.user,
                    'user_current_jobs': user_current_jobs,
                    'user_completed_jobs': user_completed_jobs,
@@ -193,3 +210,63 @@ def signup(request):
         else:
             return index(request, user_form=user_form)
     return redirect('/')
+
+
+@login_required
+def user_profile_geolocation(request, username):
+    loggedin_user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = UserProfile.objects.get(user__username=username)
+    user_jobs = Job.objects.filter(allocated_to=user_profile)
+    user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
+    user_completed_jobs = user_jobs.filter(status=COMPLETED)
+    geolocation = Geolocation()
+    district_name = request.GET.get('district_name', '')
+    town_village_name = request.GET.get('town_village_name', '')
+    street_name = request.GET.get('street_name', '')
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            try:
+                avatar_image = request.FILES['avatar_image']
+                user_profile.avatar_image = avatar_image
+                user_profile.save()
+            except MultiValueDictKeyError:
+                pass
+            except Exception as e:
+                raise e
+            updated_user_values = {}
+            updated_profile_values = {}
+            for fld in UserProfileForm.Meta.fields:
+                updated_user_values[fld] = form.cleaned_data.get(fld)
+            for fld in UserProfileForm.Meta.profile_fields:
+                updated_profile_values[fld] = form.cleaned_data.get(fld)
+            User.objects.filter(id=request.user.id).update(**updated_user_values)
+            #updated_profile_values['avatar_image'] = avatar_image
+            UserProfile.objects.filter(user=request.user).update(**updated_profile_values)
+            return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
+    else:
+        # If requet is a get, then do just display profile values.
+        pass
+#         form_values = {}
+#         for fld in UserProfileForm.Meta.fields:
+#             form_values[fld] = user_profile.user.__dict__[fld]
+#         for fld in UserProfileForm.Meta.profile_fields:
+#             print user_profile.__dict__[fld]
+#             form_values[fld] = user_profile.__dict__[fld]
+#         form = UserProfileForm(form_values)
+#         print form.instance.__dict__
+
+    return render(request,
+                  'user_profile.html',
+                  {'user_profile': user_profile,
+                   'districts': geolocation.districts,
+                   'town_villages': geolocation.town_villages(district_name),
+                   'district_name': district_name,
+                   'town_village_name': town_village_name,
+                   'street_name': street_name,
+                   'coordinates': geolocation.cernter_coordinates(district_name, town_village_name, street_name),
+                   'streets': geolocation.streets(town_village_name),
+                   'logged_in_user': request.user,
+                   'user_current_jobs': user_current_jobs,
+                   'user_completed_jobs': user_completed_jobs,
+                   'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})

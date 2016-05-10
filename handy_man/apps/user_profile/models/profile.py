@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
+from star_ratings.models import Rating
 
 from ...main.choices import GENDER, ACCOUNT_TYPE, ARTISAN_PROFESSION
 from handy_man.apps.geo_location.models import ItemGeolocationMixin
@@ -15,6 +17,7 @@ class UserProfile(ItemGeolocationMixin):
     alter_contact = models.CharField(max_length=10, null=True, blank=True)
     email_validated = models.BooleanField(default=False)
     administrator_validated = models.BooleanField(default=False)
+    ratings = GenericRelation(Rating, related_query_name='users')
     avatar_image = models.ImageField(upload_to=settings.MEDIA_ROOT,
                                      default=settings.MEDIA_ROOT + '/default_avatar_male.jpg',
                                      null=True,

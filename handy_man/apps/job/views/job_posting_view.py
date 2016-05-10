@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib import messages
 
@@ -8,6 +8,7 @@ from handy_man.apps.main.choices import JOB_TYPE
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.user_profile.classes import MenuConfiguration
 from handy_man.apps.geo_location.models import TownVillage, District, Street
+from handy_man.apps.user_profile.views.user_login import  user_profile
 
 from ..forms import JobForm
 from ..models import Job
@@ -46,45 +47,50 @@ class JobPostingView(BaseDashboard):
     def post(self, request, *args, **kwargs):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         posted_by = self.get_current_user(request.user.username)
-        job_posting_form = JobForm(request.POST)
+        data = {}
+        job_form = JobForm
         if request.method == 'POST':
-            if job_posting_form.is_valid():
+            try:
+                latitude = request.POST.get('latitude')
+                longitude = request.POST.get('longitude')
+                district_name = request.POST.get('district_select')
+                street_name = request.POST.get('street_select')
+                town_village_name = request.POST.get('town_village_select')
+                description = request.POST.get('description')
+                job_type = request.POST.get('job_type')
+                job_image_1 = request.POST.get('job_image_1', '')
+                job_image_2 = request.POST.get('job_image_2', '')
+                job_image_3 = request.POST.get('job_image_3', '')
+                street = None
+                district = None
+                town_village = None
                 try:
-                    latitude = request.POST.get('latitude')
-                    longitude = request.POST.get('longitude')
-                    district_name = request.POST.get('district_name')
-                    street_name = request.POST.get('street_name')
-                    town_village_name = request.POST.get('town_village_name')
-                    description = request.POST.get('description')
-                    job_type = request.POST.get('job_type')
-                    job_image_1 = request.POST.get('job_image_1', '')
-                    job_image_2 = request.POST.get('job_image_2', '')
-                    job_image_3 = request.POST.get('job_image_3', '')
-                    street = None
-                    district = None
-                    town_village = None
-                    try:
-                        district = District.objects.get(district_name=district_name)
-                    except District.DoesNotExist:
-                        pass
-                    try:
-                        town_village = TownVillage.objects.get(town_village_name=town_village_name)
-                    except TownVillage.DoesNotExist:
-                        pass
-                    try:
-                        street = Street.objects.get(street_name=street_name)
-                    except Street.DoesNotExist:
-                        pass
-                    town_village = TownVillage
-                    job = Job.objects.create(
-                        posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
-                        town_village=town_village, status=NEW, description=description,
-                        job_image_1=job_image_1, job_image_2=job_image_2, job_image_3=job_image_3)
-                    job.save()
-                    messages.success(request, "Job has been saved successfully")
-                except Exception as err:
-                    print(err)
+                    district = District.objects.get(district_name=district_name)
+                except District.DoesNotExist:
+                    pass
+                try:
+                    town_village = TownVillage.objects.get(town_village_name=town_village_name)
+                except TownVillage.DoesNotExist:
+                    pass
+                try:
+                    street = Street.objects.get(street_name=street_name)
+                except Street.DoesNotExist:
+                    pass
+                data = {'latitude': latitude, 'longitude': longitude, 'district': district.id, 'town_village': town_village.id, 'posted_by': posted_by.id,
+                        'street': street.id, 'description': description, 'job_type': job_type, 'job_image_1': job_image_1, 'job_image_2': job_image_2, 'job_image_3': job_image_3}
+                job_form = JobForm(data)
+                if job_form.is_valid():
+                    job_form.save()
+#                     Job.objects.create(
+#                         posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
+#                         town_village=town_village, status=NEW, description=description,
+#                         job_image_1=job_image_1, job_image_2=job_image_2, job_image_3=job_image_3)
+                messages.success(request, "Job has been saved successfully")
+                return redirect(user_profile, username=loggedin_user_profile.user.username)
+            except Exception as err:
+                print(err)
         self.context.update({'title': self.title,
+                             'job_form': job_form,
                              'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
@@ -100,6 +106,6 @@ class JobPostingView(BaseDashboard):
         job = []
         for x in JOB_TYPE:
             temp = str(x).split(",")
-            temp = temp[1].replace(")", "")
+            temp = temp[0].replace("(", "")
             job.append(temp.strip().replace('\'', ''))
         return job

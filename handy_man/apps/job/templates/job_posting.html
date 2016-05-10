@@ -16,7 +16,7 @@
 
 
 {% block content %}
-
+<div class="jumbotron">
 <form class="form-inline" action="{% url 'job_posting_url' %}" method="post">
         	{% csrf_token %}
           <div class="panel panel-info">
@@ -29,7 +29,7 @@
               <div class="row"> 
                 <div class=" col-md-9 col-lg-9 ">
                 <div id="markerStatus"><i>Click and drag the marker.</i></div>
-                <input type="hidden" name="lat" id="latitude"><br> <input type="hidden" name="lon" id="longitude"> 
+                <input type="hidden" name="latitude" id="latitude" value="latitude"><br> <input type="hidden" name="longitude" id="longitude" value="longitude"> 
                   <table class="table table-user-information">
                     <tbody>
                       	<tr>
@@ -76,7 +76,7 @@
 		                    </td>
 		                    <td>
 	                           	<label for="job_type">Job Type:</label>
-	                           	<select>
+	                           	<select name="job_type" id="job_type">
 	                           		<option value="None">---------</option>
 	                           		{% for job in job_types %}
 	                           			<option value={{ job }}>{{ job }}</option>
@@ -126,4 +126,5 @@
 		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
 		}
 	 </script>
+	</div>
 {% endblock %}

@@ -27,6 +27,7 @@ class Home(BaseDashboard):
                 'notifications': [],
                 'public_notifications': [],
                 'next_url': '/',
+                'loggedin_user_profile': loggedin_user_profile,
                 'username': request.user.username,
                 'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
