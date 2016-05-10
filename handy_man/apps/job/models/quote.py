@@ -21,7 +21,7 @@ class Quote(models.Model):
     amount = models.DecimalField(max_digits=8,
                                  decimal_places=2)
 
-    accepted = models.BooleanField(default=False)
+    accepted = models.NullBooleanField(default=None)
 
     class Meta:
         app_label = 'job'

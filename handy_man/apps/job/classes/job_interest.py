@@ -26,14 +26,20 @@ class JobInterest(object):
     @property
     def jobs_with_job_interest_status(self):
         jobs_with_job_interest_status = []
-        for job in self.all_new_jobs:
-            self._job_identifier = job.identifier
-            jobs_with_job_interest_status.append([job, self.job_interest_status])
-        return jobs_with_job_interest_status
+        if self.job:
+            for job in self.all_new_jobs:
+                self._job_identifier = job.identifier
+                jobs_with_job_interest_status.append([job, self.job_interest_status])
+            return jobs_with_job_interest_status
+        else:
+            return []
 
     @property
     def latest_jobs(self):
-        return Job.objects.latest_ten_jobs()
+        if self.job:
+            return Job.objects.latest_ten_jobs()
+        else:
+            return []
 
     @property
     def all_new_jobs(self):

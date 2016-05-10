@@ -38,7 +38,7 @@ else:
                 'init_command': 'SET storage_engine=INNODB',
             },
             'OPTIONS': {
-                'read_default_file': os.path.join(BASE_DIR, 'handy_man.conf'),
+                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
             },
             'HOST': '',
             'PORT': '',
@@ -145,6 +145,14 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
 )
+
+if 'test' in sys.argv:
+    # TODO: Make this list auto generate from INSTALLED_APPS
+    # Ignore running migrations on unit tests, greately speeds up tests.
+    MIGRATION_MODULES = {"geo_location": None,
+                         "job": None,
+                         "main": None,
+                         "user_profile": None}
 
 SECRET_KEY = os.path.join(PATH, 'handy_man.txt')
 
