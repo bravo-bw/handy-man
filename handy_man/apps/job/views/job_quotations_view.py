@@ -40,10 +40,17 @@ class JobQuotationsView(BaseDashboard):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         form = QuotationForm(request.POST)
         if form.is_valid():
-            qoute = form.instance
             job = Job.objects.get(pk=kwargs.get('job_id'))
-            qoute.job = job
-            qoute.save()
+            if request.POST.get('quote_id'):
+                # Update, can only update accepted field.
+                quote = Quote.objects.get(pk=int(request.POST.get('quote_id')[0]))
+                print(request.POST.get('accepted'))
+                quote.accepted = True if request.POST.get('accepted') == 'on' else False
+            else:
+                # new instance.
+                quote = form.instance
+            quote.job = job
+            quote.save()
             self.context.update({
                 'loggedin_user_profile': loggedin_user_profile,
                 'job': job,
