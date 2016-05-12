@@ -1,6 +1,9 @@
+import json
+
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.contrib import messages
+from django.http.response import HttpResponse
 
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.user_profile.models import UserProfile
@@ -24,25 +27,28 @@ class JobPostingView(BaseDashboard):
         super(JobPostingView, self).__init__()
 
     def get(self, request, *args, **kwargs):
-        loggedin_user_profile = UserProfile.objects.get(user=request.user)
-        geolocation = Geolocation()
-        district_name = request.GET.get('district_name', '')
-        town_village_name = request.GET.get('town_village_name', '')
-        street_name = request.GET.get('street_name', '')
-        self.context.update({
-            'name': 'Job Posting',
-            'job_types': self.job_types,
-            'task': "job_post",
-            'districts': geolocation.districts,
-            'town_villages': geolocation.town_villages(district_name),
-            'district_name': district_name,
-            'town_village_name': town_village_name,
-            'street_name': street_name,
-            'coordinates': geolocation.cernter_coordinates(district_name, town_village_name, street_name),
-            'streets': geolocation.streets(town_village_name),
-            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
-        })
-        return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
+        if request.is_ajax():
+            return self.map_info(request)
+        else:
+            loggedin_user_profile = UserProfile.objects.get(user=request.user)
+            geolocation = Geolocation()
+            district_name = request.GET.get('district_name', '')
+            town_village_name = request.GET.get('town_village_name', '')
+            street_name = request.GET.get('street_name', '')
+            self.context.update({
+                'name': 'Job Posting',
+                'job_types': self.job_types,
+                'task': "job_post",
+                'districts': geolocation.districts,
+                'town_villages': geolocation.town_villages(district_name),
+                'district_name': district_name,
+                'town_village_name': town_village_name,
+                'street_name': street_name,
+                'coordinates': geolocation.cernter_coordinates(district_name, town_village_name, street_name),
+                'streets': geolocation.streets(town_village_name),
+                'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
+            })
+            return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     def post(self, request, *args, **kwargs):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
@@ -100,6 +106,30 @@ class JobPostingView(BaseDashboard):
         except UserProfile.DoesNotExist:
             return None
         return user
+
+    def map_info(self, request):
+            data = []
+            geo_data = {}
+            district = request.GET.get('district')
+            town_village = request.GET.get('town_village')
+            street = request.GET.get('street')
+            geolocation = Geolocation()
+            lat, lon = geolocation.cernter_coordinates(district, town_village, street)
+            geo_data.update({'latitude': lat, 'longitude': lon})
+            if request.GET.get('action') == 'town_village_action':
+                data.append(geo_data)
+                for street in geolocation.streets(street):
+                    data.append(dict({"street": street}))
+            elif request.GET.get('action') == 'street_action':
+                data.append(geo_data)
+            elif request.GET.get('action') == 'district_action':
+                district_name = request.GET.get('district')
+                town_villages = geolocation.town_villages(district_name)
+                data.append(geo_data)
+                for town in town_villages:
+                    data.append(dict({"town_village": town}))
+            data = json.dumps(data)
+            return HttpResponse(data, content_type='application/json')
 
     @property
     def job_types(self):
