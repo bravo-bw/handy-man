@@ -347,17 +347,20 @@
 				                <th>Job Type</th>
 				                <th>Status</th>
 				                <th>description</th>
+				                <th>Allocated To</th>
+				                <td>Quote</td>
 				            </tr>
 				        </thead>
-				        <tfoot>
+				        <!--<tfoot>
 				            <tr>
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
 				                <th>Status</th>
 				                <th>description</th>
+				                <td>Quote</td>
 				            </tr>
-				        </tfoot>
+				        </tfoot>-->
 				        <tbody>
 				        	{% for job in user_current_jobs %}
 					            <tr>
@@ -366,6 +369,17 @@
 					                <td>{{job.job_type}}</td>
 					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
+					                <td>{{job.allocated_to.user.username}}</td>
+					                <td>
+					                	<form action="{% url 'quote_url' job.pk %}" method="get">
+					        				{% csrf_token %}
+					        				{% if job.has_quote %}
+					        					<button type="submit" class="btn btn-primary">View Quote(s)</button>
+					        				{% else %}
+					        					<button type="submit" class="btn btn-primary" disabled>View Quote(s)</button>
+					        				{% endif %}
+					        			</form>
+									</td>
 					            </tr>
 				            {% endfor %}
 				        </tbody>
