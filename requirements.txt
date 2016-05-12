@@ -7,3 +7,4 @@ factory-boy==2.6.1
 geopy
 factory-boy==2.6.1
 fake-factory==0.5.7
+django-star-ratings

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^profile/', include('handy_man.apps.user_profile.urls')),
 #     (r'^main/', include('handy_man.apps.main.urls')),
     url(r'^jobs/', include('handy_man.apps.job.urls')),
+    url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
 ]
 
 

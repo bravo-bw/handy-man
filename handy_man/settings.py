@@ -22,7 +22,8 @@ ADMINS = (
 MANAGERS = ADMINS
 
 PATH = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(2).child('etc')
-print (PATH)
+print(PATH)
+
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
@@ -93,9 +94,9 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.Loader',
 )
 
-# TEMPLATE_CONTEXT_PROCESSORS = (
-#     'django.core.context_processors.request,'
-# )
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request,'
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -137,6 +138,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'handy_man.apps.main',
+    'star_ratings',
     'handy_man.apps.job',
     'handy_man.apps.geo_location',
     'handy_man.apps.user_profile',
@@ -156,18 +158,6 @@ if 'test' in sys.argv:
 
 SECRET_KEY = os.path.join(PATH, 'handy_man.txt')
 
-PINAX_RATINGS_CATEGORY_CHOICES = {
-    "app.Model": {
-        "exposure": "How good is the exposure?",
-        "framing": "How well was the photo framed?",
-        "saturation": "How would you rate the saturation?"
-    },
-    "app.Model2": {
-        "grammar": "Good grammar?",
-        "complete": "Is the story complete?",
-        "compelling": "Is the article compelling?"
-    }
-}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
