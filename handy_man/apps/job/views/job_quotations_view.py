@@ -23,7 +23,7 @@ class JobQuotationsView(BaseDashboard):
             self.template_name = 'submit_quotation.html'
             self.context.update({
                 'loggedin_user_profile': loggedin_user_profile,
-                'job_id': request.GET.get('hidden_job_id'),
+                'job': Job.objects.get(pk=request.GET.get('hidden_job_id')),
                 'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         else:
