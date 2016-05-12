@@ -17,8 +17,8 @@ class TestGeolocationMethods(TestCase):
             'kgatleng': [-24.198013, 26.354423]}
         self.create_districts(district_centers)
         south_east_district = District.objects.get(district_name='south-east')
-        self.gaborone_town_village = TownVillage.objects.create(district=south_east_district, town_village_name='gaborone', center_latitude=-21.869753, center_longitude=27.753179)
-        self.street = Street.objects.create(town_village=self.gaborone_town_village, street_name='phase-2', center_latitude=-21.869753, center_longitude=27.753179)
+        self.gaborone_town_village = TownVillage.objects.create(district=south_east_district, town_village_name='gaborone', center_latitude=-24.606059, center_longitude=25.936671){}
+        self.street = Street.objects.create(town_village=self.gaborone_town_village, street_name='phase-2', center_latitude=-24.644422, center_longitude=25.896777)
 
     def create_districts(self, district_centers):
         """Create districts from a dictionary of district centers."""

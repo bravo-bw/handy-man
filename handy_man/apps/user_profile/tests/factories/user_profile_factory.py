@@ -2,7 +2,7 @@ import factory
 from django.contrib.auth.models import User
 
 from handy_man.apps.user_profile.models import UserProfile
-from ....main.choices import ACCOUNT_TYPE
+from .profession_factory import ProfessionFactory
 from datetime import date
 
 
@@ -29,4 +29,5 @@ class UserProfileFactory(factory.DjangoModelFactory):
     email_validated = True
     administrator_validated = True
     gender = 'F'
+    profession = factory.SubFactory(ProfessionFactory)
     dob = date(1990, 12, 1)

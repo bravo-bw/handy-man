@@ -20,11 +20,11 @@ class ItemGeolocationMixin(TimeStampedModel):
         null=True,
         blank=True,)
 
-    street = models.ForeignKey(Street, on_delete=models.CASCADE, null=True,)
+    street = models.ForeignKey(Street, on_delete=models.CASCADE, blank=True, null=True,)
 
-    town_village = models.ForeignKey(TownVillage, on_delete=models.CASCADE, null=True,)
+    town_village = models.ForeignKey(TownVillage, on_delete=models.CASCADE, blank=True, null=True,)
 
-    district = models.ForeignKey(District, on_delete=models.CASCADE, null=True,)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, blank=True, null=True,)
 
     def save(self, *args, **kwargs):
 #         geolocation = Geolocation()

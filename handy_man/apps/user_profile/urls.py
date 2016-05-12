@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url, include
-# from django.contrib import admin
+from django.contrib import admin
 # from django.contrib.auth.decorators import login_required
 from handy_man.apps.user_profile.views import (user_profile, login_view, signup, logout_view, verify_account,
                                                user_profile_documents, RegisteredUsersView, user_profile_geolocation)
@@ -15,3 +15,5 @@ urlpatterns = [
 #     url(r'^user_profile/$', user_profile),
     url(r'^registered_users/$', RegisteredUsersView.as_view(), name='registered_users_url')
 ]
+
+admin.site.site_header = 'Handy Man Administration'

@@ -14,7 +14,7 @@ class UserProfileAdmin(ModelAdmin):
 
 #     list_display = ['user__username', 'get_user.first_name', 'user__last_name', 'mobile', 'alter_contact', 'omang',
 #                     'administrator_validated', 'email_validated']
-    list_display = ['user_name', 'first_name', 'last_name', 'mobile', 'alter_contact', 'omang', 'administrator_validated', 'email_validated']
+    list_display = ['user_name', 'first_name', 'last_name', 'ratings', 'mobile', 'alter_contact', 'omang', 'administrator_validated', 'email_validated']
 
 #     fields = []
 
