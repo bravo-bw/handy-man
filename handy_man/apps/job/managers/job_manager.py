@@ -12,4 +12,4 @@ class JobManager(models.Manager):
         return self.filter().order_by('-created')[:10]
 
     def available_jobs(self):
-        return self.filter(status=JOB_STATUS[0][0])
+        return self.filter(status='New')
