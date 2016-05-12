@@ -186,8 +186,8 @@
 		               		{% csrf_token %}
 		               		    <input name="artisan" id="artisan" type="hidden" value="sets">
 		               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-								<div class="input-group" style="width:100px;">
-								  	<div class="input-group-btn" style="float:right;">
+								<div class="input-group" style="width:100px; margin-left:0px;">
+								  	<div class="input-group-btn" style="float:left;">
 								  		{% if job_interest_status %}									  
 								   			<button type="button" disabled="disabled" class="btn btn-success btn-sm" value="ok-{{job.identifier}}" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
 								   		{% else %}
@@ -215,16 +215,17 @@
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-        	{% for job in lastest_jobs %}
-        	<p><h6>{{job.created}}<br>{{job.job_type}} @ G-West, Gaborone, South-East <br> Posted By <a href="#">{{job.posted_by.user.first_name}} - {{job.posted_by.user.last_name}}</a></h6></p>
+        	{% for job in latest_jobs %}
+        	<p><h6>{{job.created}}<br>{{job.job_type}} @ {{job.street.street_name}}, {{job.town_village.town_village_name}}, {{job.district.district_name}} <br> Posted By <a href="#">{{job.posted_by.user.first_name}} - {{job.posted_by.user.last_name}}</a></h6></p>
 			<hr>
 			{% endfor %}
+			<!--
         	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
 			<hr>
         	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
 			<hr>
         	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
-			<hr>
+			<hr> -->
             <a href="#" class="btn btn-default btn-block">View All</a>
         </div>
         <!-- /.panel-body -->

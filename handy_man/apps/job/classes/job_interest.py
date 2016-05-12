@@ -26,28 +26,24 @@ class JobInterest(object):
     @property
     def jobs_with_job_interest_status(self):
         jobs_with_job_interest_status = []
-        if self.job:
-            for job in self.all_new_jobs:
-                self._job_identifier = job.identifier
-                jobs_with_job_interest_status.append([job, self.job_interest_status])
-            return jobs_with_job_interest_status
-        else:
-            return []
+        for job in self.all_new_jobs:
+            self._job_identifier = job.identifier
+            jobs_with_job_interest_status.append([job, self.job_interest_status(job)])
+        return jobs_with_job_interest_status
 
     @property
     def latest_jobs(self):
-        if self.job:
-            return Job.objects.latest_ten_jobs()
-        else:
-            return []
+        return Job.objects.latest_ten_jobs()
 
     @property
     def all_new_jobs(self):
         return Job.objects.available_jobs()
 
-    @property
-    def job_interest_status(self):
-        return True if self.user_profile in self.job.artisans_interested.all() else False
+    def job_interest_status(self, job):
+        try:
+            return True if self.user_profile in job.artisans_interested.all() else False
+        except AttributeError:
+            return False
 
     @property
     def artisan_qualifications(self):

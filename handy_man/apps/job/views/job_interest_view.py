@@ -32,10 +32,10 @@ class JobInterestView(BaseDashboard):
         return super(JobInterestView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        self._job_identifier = request.GET.get('job_identifier')
+        self._user = request.user
         job_interest = JobInterest(self.job, self.user_profile)
         if request.is_ajax():
-            self._user = request.user
-            self._job_identifier = request.GET.get('job_identifier')
             if request.GET.get('action') == 'add_job_interest':
                 if job_interest.add_job_interest():
                     message = {'message': "Job request has been submitted.", "status": "success"}

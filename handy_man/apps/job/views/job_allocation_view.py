@@ -36,7 +36,7 @@ class JobAllocationView(BaseDashboard):
         job_allocation = JobAllocation(self.job, self.user_profile)
         if request.is_ajax():
             if request.GET.get('action') == 'artisan_list':
-                data = json.dumps(self.artisans)
+                data = json.dumps(job_allocation.artisans)
                 return HttpResponse(data, content_type='application/json')
             elif request.GET.get('action') == 'assign_job':
                 data = None

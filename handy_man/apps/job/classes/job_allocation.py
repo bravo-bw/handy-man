@@ -100,8 +100,8 @@ class JobAllocation(object):
     def new_jobs_with_job_interest(self):
         new_jobs_with_job_interest = []
         for job in Job.objects.available_jobs():
-            if job.artisans_interested.all():
-                new_jobs_with_job_interest.append(job)
+            #if job.artisans_interested.all():
+            new_jobs_with_job_interest.append(job)
         return new_jobs_with_job_interest
 
     def validate_job_assign(self):

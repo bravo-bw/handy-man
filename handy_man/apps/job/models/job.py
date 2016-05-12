@@ -10,7 +10,6 @@ from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.job.managers import JobManager
 
 
-
 class Job(ItemGeolocationMixin):
 
     """

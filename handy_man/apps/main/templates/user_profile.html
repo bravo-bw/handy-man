@@ -1,5 +1,4 @@
-{% extends "base.html" %}
- 
+{% extends "base.html" %} 
 <style>
 .kv-avatar .file-preview-frame,.kv-avatar .file-preview-frame:hover {
     margin: 0;
@@ -184,6 +183,17 @@
 										  {% endif %}
 										</select>
 									</td>
+								 </tr>
+								 <tr>
+								 <td>
+								 {% load static %}
+								<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+								<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+								 {% load ratings %}
+								{% if user.is_authenticated %}
+								{% ratings user_profile %}
+								{% endif %}
+								 </td>
 								 </tr>
 								 <tr>
 			                      	{% if logged_in_user.username == user_profile.user.username %}

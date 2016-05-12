@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="jumbotron">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -42,7 +43,7 @@
 				 		 <h2>Job Details</h2>
 				 	 	<hr>
 				  		<h4 style="float:left;"><span style="color:black; float:left;">Job Status:</span> - <span>{{job.status}}</span></h4>
-				  		<p style="padding:10px; margin:10px;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?{{job.description}}</p>
+				  		<p style="padding:10px; margin:10px;">{{job.description}}</p>
 				  		<hr>
 				  		<p>{{job.job_type}}</p>
 			  		</div>
@@ -62,6 +63,13 @@
 				
 				<a href="#0" class="cd-read-more">Read more</a>
 				<span class="cd-date">Jan 18</span>
+				<div class="cd-date" style="margin-top:-40px;">
+					<div class="container_timeline" style="width:100%; background:white;">
+				  		<span style="color:black; float:left;margin:10px;">Administrative Box</span><br>
+				  		<hr>
+				  		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
+			  		</div>
+				</div>
 			</div> <!-- cd-timeline-content -->
 		</div> <!-- cd-timeline-block -->
 
@@ -130,5 +138,5 @@
 	</section> <!-- cd-timeline -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="{{ STATIC_URL }}js/timeline_main.js"></script> <!-- Resource jQuery -->
-
+</div>
 {% endblock %}
