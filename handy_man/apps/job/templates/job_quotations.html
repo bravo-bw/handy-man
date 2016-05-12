@@ -25,7 +25,7 @@
 			      					{{job.posted_by.user.username}}
 			      				</td>
 			      				<td>
-			      					{{job.job_type}}
+			      					{{job.job_type.name}}
 			      				</td>
 			      				<td>
 			      					{{job.description}}
@@ -61,7 +61,6 @@
 			                <th>accepted</th>
 			                {% if loggedin_user_profile.account_type == 'customer' %}
 			                	<th>accept</th>
-			                	<th>reject</th>
 			                {% endif %}
 			            </tr>
 			        </thead>
@@ -78,18 +77,31 @@
 				                <td>{{quote.currency}}</td>
 				                <td>{{quote.amount}}</td>
 				                <td>
-				                	{% if quote.accepted == 'True' %}
-				                		<input type="checkbox" disabled checked>
-				                	{% else %}
-				                		<input type="checkbox" disabled>
-				                	{% endif %}
+				                	<form id="accept_quote_form" action="{% url 'quote_url' job.pk %}" method="post">
+				                		{% csrf_token %}
+				                		<input name="quote_id" type="text" value={{quote.pk}} hidden>
+				                		<input name="currency" type="text" value={{quote.currency}} hidden>
+				                		<input name="amount" type="text" value={{quote.amount}} hidden>
+				                		<input name="estimate_hours" type="text" value={{quote.estimate_hours}} hidden>
+				                		<input name="rate_per_hour" type="text" value={{quote.rate_per_hour}} hidden>
+					                	{% if quote.accepted %}
+					                		<input name="accepted" type="checkbox" checked disabled>
+					                	{% else %}
+					                		{% if loggedin_user_profile.account_type == 'customer' %}
+					                			<input name="accepted" type="checkbox">
+					                		{% else %}
+					                			<input name="accepted" type="checkbox" disabled>
+					                		{% endif %}
+					                	{% endif %}
+					                </form>
 				                </td>
 				                {% if loggedin_user_profile.account_type == 'customer' %}
 					                <td>
-					                	<button class="btn btn-primary" value="accept" name="accept" id="accept">Accept</button>
-					                </td>
-					                <td>
-					                	<button class="btn btn-primary" value="reject" name="reject" id="reject">Reject</button>
+					                	{% if quote.accepted %}
+					                		<button class="btn btn-primary" value="accept" name="accept_quote" id="accept_quote" disabled>Submit</button>
+					                	{% else %}
+					                		<button class="btn btn-primary" value="accept" name="accept_quote" id="accept_quote">Submit</button>
+					                	{% endif %}
 					                </td>
 				                {% endif %}
 				            </tr>
@@ -103,6 +115,10 @@
 <script>
 	$(document).ready(function() {
 	    $('#quotations').DataTable();
+	});
+	
+	$("#accept_quote").click(function(event) {
+		$("#accept_quote_form").submit();
 	});
 </script>
 {% endblock %}
