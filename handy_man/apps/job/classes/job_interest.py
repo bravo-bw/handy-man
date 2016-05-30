@@ -7,8 +7,15 @@ class JobInterest(object):
         self.job = job
         self.user_profile = user_profile
 
+    @property
+    def validate_job_interest(self):
+        has_logged_interest = True if self.user_profile in self.job.artisan_interested.all() else False
+        if self.job.status in ['assigned', 'completed'] or has_logged_interest:
+            return False
+        return True
+
     def add_job_interest(self):
-        if self.job:
+        if self.job and self.validate_job_interest:
             job = self.job
             job.artisans_interested.add(self.user_profile)
             job.save()
