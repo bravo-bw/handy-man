@@ -1,8 +1,8 @@
 {% extends "base.html" %}
  
 {% block content %}
-	<div class="container">
-	<div class="jumbotron">
+	<!--<div class="container">-->
+	<!-- <div class="jumbotron">-->
 		<div class="panel panel-info">
             <div class="panel-heading">
               <h3 class="panel-title">Job</h3>
@@ -14,7 +14,7 @@
 				                <th>Posted By</th>
 				                <th>Job Type</th>
 				                <th>Description</th>
-				                {% if loggedin_user_profile.account_type == 'handyman_admin' %}
+				                {% if loggedin_user_profile.account_type == 'artisan' %}
 				                	<th>Add Another Quote</th>
 				                {% endif %}
 				            </tr>
@@ -30,7 +30,7 @@
 			      				<td>
 			      					{{job.description}}
 			      				</td>
-			      				{% if loggedin_user_profile.account_type == 'handyman_admin' %}
+			      				{% if loggedin_user_profile.account_type == 'artisan' %}
 				      				<td>
 				      					<form action="{% url 'quote_url' job.pk %}" method="get">
 					        				{% csrf_token %}
@@ -48,6 +48,8 @@
 		      		</table>
 		      </div>
         </div>
+        <!--<div class="row">-->
+		<div class="col-md-9">
 		<div class="panel panel-info">
             <div class="panel-heading">
               <h3 class="panel-title">Quotations Against Job</h3>
@@ -110,8 +112,19 @@
     			</table>
 		   </div>
 		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Recommended</h3>
+            </div>
+            <div class="panel-body">
+            </div>
+        </div>
+	</div>
+	<!--</div>
     </div>
-    </div>
+    </div>-->
 <script>
 	$(document).ready(function() {
 	    $('#quotations').DataTable();

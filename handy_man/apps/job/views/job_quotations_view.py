@@ -20,14 +20,16 @@ class JobQuotationsView(BaseDashboard):
     def get(self, request, *args, **kwargs):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         if request.GET.get('hidden_job_id'):
+            form = QuotationForm(request.GET)
             self.template_name = 'submit_quotation.html'
             self.context.update({
+                'form': form,
                 'loggedin_user_profile': loggedin_user_profile,
                 'job': Job.objects.get(pk=request.GET.get('hidden_job_id')),
                 'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         else:
-            job = Job.objects.get(pk=kwargs.get('job_id'))
+            job = Job.objects.get(pk=kwargs.get('job'))
             self.context.update({
                 'loggedin_user_profile': loggedin_user_profile,
                 'job': job,
@@ -40,7 +42,7 @@ class JobQuotationsView(BaseDashboard):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         form = QuotationForm(request.POST)
         if form.is_valid():
-            job = Job.objects.get(pk=kwargs.get('job_id'))
+            job = Job.objects.get(pk=kwargs.get('job'))
             if request.POST.get('quote_id'):
                 # Update, can only update accepted field.
                 quote = Quote.objects.get(pk=int(request.POST.get('quote_id')[0]))
