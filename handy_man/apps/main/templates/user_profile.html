@@ -131,56 +131,13 @@
 										<label for="profession" id="profession_label" hidden>Profession:</label>
 			                      		<select name="profession"  id="profession" disabled style="background-color: #D8D8D8" hidden>
 			                      		  <option value="-------">-------</option>
-			                      		  {% if user_profile.profession == "carpenter" %}
-			                      		  	<option value="carpenter" selected>Carpenter</option>
-			                      		  {% else %}
-										  	<option value="carpenter">Carpenter</option>
-										  {% endif %}
-										  {% if user_profile.profession == "plumber" %}
-										  	<option value="plumber" selected>Plumber</option>
-										  {% else %}
-										  	<option value="plumber">Plumber</option>
-										  {% endif %}
-										  {% if user_profile.profession == "electrician" %}
-										  	<option value="electrician" selected>Electrician</option>
-										  {% else %}
-										  	<option value="electrician">Electrician</option>
-										  {% endif %}
-										  {% if user_profile.profession == "brick_layer" %}
-										  	<option value="brick_layer" selected>Brick Layer</option>
-										  {% else %}
-										  	<option value="brick_layer">Brick Layer</option>
-										  {% endif %}
-										  {% if user_profile.profession == "tiler" %}
-										  	<option value="tiler" selected>Tiler</option>
-										  {% else %}
-										  	<option value="tiler">Tiler</option>
-										  {% endif %}
-										  {% if user_profile.profession == "roofer" %}
-										  	<option value="roofer" selected>Roofer</option>
-										  {% else %}
-										  	<option value="roofer">Roofer</option>
-										  {% endif %}
-										  {% if user_profile.profession == "gardener" %}
-										  	<option value="gardener" selected>Gardener</option>
-										  {% else %}
-										  	<option value="gardener">Gardener</option>
-										  {% endif %}
-										  {% if user_profile.profession == "mechanic" %}
-										  	<option value="mechanic" selected>Mechanic</option>
-										  {% else %}
-										  	<option value="mechanic">Mechanic</option>
-										  {% endif %}
-										  {% if user_profile.profession == "auto_electrician" %}
-										  	<option value="auto_electrician" selected>Auto Electrician</option>
-										  {% else %}
-										  	<option value="auto_electrician">Auto Electrician</option>
-										  {% endif %}
-										  {% if user_profile.profession == "panel_beater" %}
-										  	<option value="panel_beater" selected>Panel Beater</option>
-										  {% else %}
-										  	<option value="panel_beater">Panel Beater</option>
-										  {% endif %}
+			                      		  {% for profession in professions %}
+			                      		  	{% if user_profile.profession.profession_type == profession.profession_type %}
+			                      		  		<option value={{profession.profession_type}} selected>{{profession.profession_type}}</option>
+			                      		  	{% else %}
+			                      		  		<option value={{profession.profession_type}} >{{profession.profession_type}}</option>
+			                      		  	{% endif %}
+			                      		  {% endfor %}
 										</select>
 									</td>
 								 </tr>
