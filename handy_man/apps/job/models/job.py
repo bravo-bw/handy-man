@@ -9,6 +9,7 @@ from handy_man.apps.geo_location.models import ItemGeolocationMixin
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.job.managers import JobManager
 
+from .job_type import JobType
 
 class Job(ItemGeolocationMixin):
 
@@ -53,12 +54,9 @@ class Job(ItemGeolocationMixin):
         editable=False
     )
 
-    job_type = models.CharField(
+    job_type = models.ForeignKey(
+        JobType,
         verbose_name='Job Type',
-        max_length=25,
-        choices=JOB_TYPE,
-        null=True,
-        blank=True
     )
 
     artisans_interested = models.ManyToManyField(
