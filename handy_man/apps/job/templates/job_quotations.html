@@ -80,13 +80,14 @@
 				                <td>
 				                	<form id="accept_quote_form" action="{% url 'quote_url' job.pk %}" method="post">
 				                		{% csrf_token %}
+				                		<input name="job" type="hidden" value="{{job.pk}}">
 				                		<input name="quote_id" type="text" value={{quote.pk}} hidden>
 				                		<input name="currency" type="text" value={{quote.currency}} hidden>
 				                		<input name="amount" type="text" value={{quote.amount}} hidden>
 				                		<input name="estimate_hours" type="text" value={{quote.estimate_hours}} hidden>
 				                		<input name="rate_per_hour" type="text" value={{quote.rate_per_hour}} hidden>
 					                	{% if quote.accepted %}
-					                		<input name="accepted" type="checkbox" checked disabled>
+					                		<input id='accept_box' name="accepted" type="checkbox" checked>
 					                	{% else %}
 					                		{% if loggedin_user_profile.account_type == 'customer' %}
 					                			<input id='accept_box' name="accepted" type="checkbox">
@@ -123,7 +124,6 @@
 	    	if($(this).is(":checked")) {
 	            var returnVal = confirm("You are about to ACCEPT a quotation, are you sure?");
 	            if(returnVal){
-	            	alert(returnVal);
 	            	//$(this).attr("checked", returnVal);
 	            	$("#accept_quote_form").submit();
 	            }
@@ -134,7 +134,6 @@
 	    	if(!$(this).is(":checked")) {
 	            var returnVal = confirm("You are about to CANCELL a quotation, are you sure?");
 	            if(returnVal){
-	            	alert(returnVal);
 	            	//$(this).attr("checked", returnVal);
 	            	$("#accept_quote_form").submit();
 	            }

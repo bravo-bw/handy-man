@@ -7,6 +7,7 @@ from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes import MenuConfiguration
 
 from ..models import Quote, Job
+from ..classes import QuoteHelper
 from ..forms import QuotationForm
 
 
@@ -42,21 +43,17 @@ class JobQuotationsView(BaseDashboard):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         form = QuotationForm(request.POST)
         if form.is_valid():
-            job = Job.objects.get(pk=kwargs.get('job'))
             if request.POST.get('quote_id'):
                 # Update, can only update accepted field.
                 quote = Quote.objects.get(pk=int(request.POST.get('quote_id')[0]))
-                print(request.POST.get('accepted'))
-                quote.accepted = True if request.POST.get('accepted') == 'on' else False
+                quote_helper = QuoteHelper(quote)
+                quote_helper.accept_cancel_qoute(request.POST.get('accepted'))
             else:
-                # new instance.
-                quote = form.instance
-            quote.job = job
-            quote.save()
+                form.save()
             self.context.update({
                 'loggedin_user_profile': loggedin_user_profile,
-                'job': job,
-                'quotes': Quote.objects.filter(job=job),
+                'job': form.cleaned_data.get('job'),
+                'quotes': Quote.objects.filter(job=form.cleaned_data.get('job')),
                 'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))

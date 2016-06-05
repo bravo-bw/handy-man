@@ -11,8 +11,9 @@ class QuotationForm(forms.ModelForm):
     rate_per_hour = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Rate Per Hour'}))
     estimate_hours = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Estimate Hours'}))
     amount = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Amount'}))
+    accepted = forms.CheckboxInput()
     job = forms.ModelChoiceField(queryset=Job.objects.all(), to_field_name='pk')
 
     class Meta:
         model = Quote
-        fields = ['currency', 'estimate_hours', 'rate_per_hour', 'amount', 'job']
+        fields = ['currency', 'estimate_hours', 'rate_per_hour', 'amount', 'job', 'accepted']
