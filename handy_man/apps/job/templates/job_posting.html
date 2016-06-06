@@ -110,88 +110,21 @@
           </div>
           </form>
 	 <script>
-//$(document).ready(function() {
 	 function getDistrict(district_select) {
-		    var district = district_select.value;
-		   $(document).ready(function() {
-				$.ajax({
-						type:'GET',
-						url:"{% url 'job_posting_url' %}",
-						data:{
-							district: district,
-							action:"district_action",
-						},
-						success:function(data){
-							var select_village = $("#town_village_select");
-							select_village.empty();
-							select_village.append('<option value="None">---------</option>');
-							$.each(data, function(idx, data){
-								if (idx == 0){
-									latitude = data.latitude
-									longitude = data.longitude;
-								} else{
-									select_village.append("<option value="+data.town_village+">"+data.town_village+"</option>");
-								}
-						});
-					}
-				});
-		    });
+		    var d = district_select.value;
+		    window.location="{% url 'job_posting_url' %}?district_name="+d;
 		}
 	 function getTownVillage(town_village_select) {
-		 var district = $("#district_select").val();
-		 var town_village = town_village_select.value;
-		 //window.location="{% url 'job_posting_url' %}?town_village_name="+tv+"&district_name="+dist;
- 		$.ajax({
-				type:'GET',
-				url:"{% url 'job_posting_url' %}",
-				data:{
-					district: district,
-					town_village: town_village,
-					action: "town_village_action",
-				},
-				success:function(data){
-					var select_street = $("#street_select");
-					select_street.empty();
-					select_street.append('<option value="None">---------</option>');
-					alert("ok cool");
-					$.each(data, function(idx, data){
-						if (idx == 0){
-							latitude = data.latitude
-							longitude = data.longitude;
-						} else {
-							select_street.append("<option value="+data.street+">"+data.street+"</option>");
-						}
-					});
-				}
-			}); 
-			
+		 var dist = document.getElementById("district_select").value;
+		 var tv = town_village_select.value;
+		 window.location="{% url 'job_posting_url' %}?town_village_name="+tv+"&district_name="+dist;
 		}
 	 function getStreet(street_select) {
-		 var district = $("#district_select").val();
-		 var town_village = $("#town_village_select").val();
-		 var street = street_select.value;
-		 alert(street);
-		 $.ajax({
-				type:'GET',
-				url:"{% url 'job_posting_url' %}",
-				data:{
-					street: street,
-					town_village: town_village,
-					district: district,
-					action: "street_action",
-				},
-				success:function(data){
-					$.each(data, function(idx, data){
-						if (idx == 0){
-							latitude = data.latitude
-							longitude = data.longitude;
-						}
-					});
-				}
-			});
+		 var dist = document.getElementById("district_select").value;
+		 var tv = document.getElementById("town_village_select").value;
+		 var st = street_select.value;
+		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
 		}
-	 
-//});
 	 </script>
 	</div>
 {% endblock %}

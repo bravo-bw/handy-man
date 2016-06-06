@@ -5,7 +5,7 @@
  */
 
 body {
-    background-color: #f8f8f8;
+    background-image: url("/static/gfx/thandy-map-wall.jpeg");
 }
 
 #wrapper {
