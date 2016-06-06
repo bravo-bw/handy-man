@@ -47,7 +47,8 @@ class JobQuotationsView(BaseDashboard):
                 # Update, can only update accepted field.
                 quote = Quote.objects.get(pk=int(request.POST.get('quote_id')[0]))
                 quote_helper = QuoteHelper(quote)
-                quote_helper.accept_cancel_qoute(request.POST.get('accepted'))
+                new_quote = quote_helper.accept_cancel_qoute(request.POST.get('accepted'))
+                new_quote.save()
             else:
                 form.save()
             self.context.update({
