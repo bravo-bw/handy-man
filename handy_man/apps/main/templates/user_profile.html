@@ -304,6 +304,7 @@
 				                <th>Job Type</th>
 				                <th>Status</th>
 				                <th>description</th>
+				                <th>rating</th>
 				                <th>Allocated To</th>
 				                <td>Quote</td>
 				            </tr>
@@ -326,6 +327,14 @@
 					                <td>{{job.job_type.name}}</td>
 					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
+					                <td>
+					                	<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=LIKE&job_identifier={{job.identifier}}'">
+								          <span class="glyphicon glyphicon-thumbs-up"></span> Like {{ job.rating.likes }}
+								        </button>
+								        <button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=DISLIKE&job_identifier={{job.identifier}}'">
+          									<span class="glyphicon glyphicon-thumbs-down"></span> Unlike {{ job.rating.dislikes }}
+								        </button>
+									</td>
 					                <td>{{job.allocated_to.user.username}}</td>
 					                <td>
 					                	<form action="{% url 'quote_url' job.pk %}" method="get">

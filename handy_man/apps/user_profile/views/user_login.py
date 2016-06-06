@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 
+from updown.models import SCORE_TYPES
+
 from handy_man.apps.main.constants import IN_PROGRESS, COMPLETED, NEW, ARTISAN, CUSTOMER
 from handy_man.apps.job.models import Job
 from handy_man.apps.user_profile.models import UserProfile, Profession
@@ -37,6 +39,18 @@ def user_profile(request, username):
     else:
         user_jobs = Job.objects.filter(posted_by=user_profile)
     user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
+    print(user_current_jobs[0].__dict__)
+    like = request.GET.get('score_type', '')
+    job_identifier = request.GET.get('job_identifier', '')
+    job = None
+    if job_identifier:
+        try:
+            job = Job.objects.get(identifier=job_identifier)
+            job.rating.add(SCORE_TYPES[like], loggedin_user_profile.user, request.META['REMOTE_ADDR'])
+        except Job.DoesNotExist:
+            pass
+#     print("**********", user_current_jobs[0].rating_likes, "***********here is the rating")
+#     print("**********", user_current_jobs[0].rating_dislikes, "***********here is the rating")
     user_completed_jobs = user_jobs.filter(status=COMPLETED)
     geolocation = Geolocation()
     district_name = request.GET.get('district_name', '')

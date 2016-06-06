@@ -9,7 +9,10 @@ from handy_man.apps.geo_location.models import ItemGeolocationMixin
 from handy_man.apps.user_profile.models import UserProfile
 from handy_man.apps.job.managers import JobManager
 
+from updown.fields import RatingField
+
 from .job_type import JobType
+
 
 class Job(ItemGeolocationMixin):
 
@@ -25,6 +28,8 @@ class Job(ItemGeolocationMixin):
     posted_by = models.ForeignKey(UserProfile, related_name='profile_sumbittor')
 
     allocated_to = models.ForeignKey(UserProfile, related_name='allocated', null=True, blank=True)
+
+    rating = RatingField(can_change_vote=True)
 
     allocation_date = models.DateField(
         verbose_name='Allocation Date',

@@ -48,6 +48,22 @@ else:
 
 SITE_ID = 1
 
+#  Maximum number of jobs that can be completed by an artisan, for ranking purposes.
+MAX_COMPLETED_JOBS = 1000
+
+#  Maximum number of jobs that an artisan can do at a time.
+MAX_CURRENT_JOBS = 5
+
+#  Maximum number of 𝑚𝑎𝑥𝑖𝑚𝑢𝑚 𝑡h𝑢𝑚𝑏𝑠 𝑢𝑝 that can be accumulated.
+MAXIMUM_THUMBS_UP = 1000
+
+#  Job ranking Weights
+PRICE_WEIGHT = 0.25
+COMPLETED_JOBS_WEIGHT = 0.20
+SATISFACTION_WEIGHT = 0.25
+IN_PROGRESS_JOBS_WEIGHT = 0.15
+QUALIFICATION_WEIGHT = 0.15
+
 # If ,you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -139,6 +155,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'handy_man.apps.main',
     'star_ratings',
+    'updown',
     'handy_man.apps.job',
     'handy_man.apps.geo_location',
     'handy_man.apps.user_profile',
