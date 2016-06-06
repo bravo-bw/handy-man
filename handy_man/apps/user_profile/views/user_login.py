@@ -14,7 +14,7 @@ from updown.models import SCORE_TYPES
 
 from handy_man.apps.main.constants import IN_PROGRESS, COMPLETED, NEW, ARTISAN, CUSTOMER
 from handy_man.apps.job.models import Job
-from handy_man.apps.user_profile.models import UserProfile
+from handy_man.apps.user_profile.models import UserProfile, Profession
 from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm, UserProfileForm)
 from handy_man.apps.geo_location.classes import Geolocation
 
@@ -93,6 +93,7 @@ def user_profile(request, username):
                   'user_profile.html',
                   {'user_profile': user_profile,
                    'districts': geolocation.districts,
+                   'professions': Profession.objects.all(),
                    'town_villages': geolocation.town_villages(district_name),
                    'district_name': district_name,
                    'town_village_name': town_village_name,

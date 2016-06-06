@@ -11,6 +11,8 @@ from handy_man.apps.job.managers import JobManager
 
 from updown.fields import RatingField
 
+from .job_type import JobType
+
 
 class Job(ItemGeolocationMixin):
 
@@ -57,12 +59,9 @@ class Job(ItemGeolocationMixin):
         editable=False
     )
 
-    job_type = models.CharField(
+    job_type = models.ForeignKey(
+        JobType,
         verbose_name='Job Type',
-        max_length=25,
-        choices=JOB_TYPE,
-        null=True,
-        blank=True
     )
 
     artisans_interested = models.ManyToManyField(

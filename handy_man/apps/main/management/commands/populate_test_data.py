@@ -2,6 +2,8 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
 from handy_man.apps.job.tests.factories import JobFactory
+from handy_man.apps.user_profile.models import Profession
+from handy_man.apps.job.models import JobType
 from handy_man.apps.user_profile.tests.factories import UserProfileFactory, UserFactory
 
 from ...constants import SHIPPER, INDIVIDUAL, NEW
@@ -30,18 +32,16 @@ class Command(BaseCommand):
         user4.first_name = 'user4'
         user4.last_name = 'user4'
         user4.save()
-        profile1 = UserProfileFactory(user=user1)
-        profile2 = UserProfileFactory(user=user2)
-        profile3 = UserProfileFactory(user=user3)
-        profile4 = UserProfileFactory(user=user4)
-        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='new')
-        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='new')
-        job3 = JobFactory(posted_by=profile3, allocated_to=profile1, status='completed')
-#         individual1.create_job({'job_status': NEW, 'starting_point': 'Lobatse', 'destination': 'Gaborone',
-#                                 'cargo_type': CARGO_TYPE[0][0], 'description': 'Its just a job'})
-#         individual1.create_job({'job_status': NEW, 'starting_point': 'Kanye', 'destination': 'Gaborone',
-#                                 'cargo_type': CARGO_TYPE[1][0], 'description': 'Its just a job'})
-#         individual2.create_job({'job_status': NEW, 'starting_point': 'Molepolole', 'destination': 'Gaborone',
-#                                 'cargo_type': CARGO_TYPE[2][0], 'description': 'Its just a job'})
-#         individual2.create_job({'job_status': NEW, 'starting_point': 'Lobatse', 'destination': 'Gaborone',
-#                                 'cargo_type': CARGO_TYPE[3][0], 'description': 'Its just a job'})
+        user1 = User.objects.get(first_name='user1')
+        user2 = User.objects.get(first_name='user2')
+        user3 = User.objects.get(first_name='user3')
+        user4 = User.objects.get(first_name='user4')
+        prof = Profession.objects.first()
+        profile1 = UserProfileFactory(user=user1, profession=prof)
+        profile2 = UserProfileFactory(user=user2, profession=prof)
+        profile3 = UserProfileFactory(user=user3, profession=prof)
+        profile4 = UserProfileFactory(user=user4, profession=prof)
+        job_type = JobType.objects.first()
+        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='new', job_type=job_type)
+        job1 = JobFactory(posted_by=profile2, allocated_to=profile1, status='new', job_type=job_type)
+        job3 = JobFactory(posted_by=profile3, allocated_to=profile1, status='completed',job_type=job_type)

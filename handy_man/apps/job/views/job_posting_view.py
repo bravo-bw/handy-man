@@ -14,7 +14,7 @@ from handy_man.apps.geo_location.models import TownVillage, District, Street
 from handy_man.apps.user_profile.views.user_login import  user_profile
 
 from ..forms import JobForm
-from ..models import Job
+from ..models import Job, JobType
 from handy_man.apps.geo_location.classes import Geolocation
 
 
@@ -63,10 +63,10 @@ class JobPostingView(BaseDashboard):
                 street_name = request.POST.get('street_select')
                 town_village_name = request.POST.get('town_village_select')
                 description = request.POST.get('description')
-                job_type = request.POST.get('job_type')
                 job_image_1 = request.POST.get('job_image_1', '')
                 job_image_2 = request.POST.get('job_image_2', '')
                 job_image_3 = request.POST.get('job_image_3', '')
+                job_type = JobType.objects.get(pk=request.POST.get('job_type'))
                 street = None
                 district = None
                 town_village = None
@@ -83,8 +83,8 @@ class JobPostingView(BaseDashboard):
                 except Street.DoesNotExist:
                     pass
                 data = {'latitude': latitude, 'longitude': longitude, 'district': district.id, 'town_village': town_village.id, 'posted_by': posted_by.id,
-                        'street': street.id, 'description': description, 'job_type': job_type, 'job_image_1': job_image_1, 'job_image_2': job_image_2, 'job_image_3': job_image_3}
-                job_form = JobForm(data)
+                        'street': street.id, 'description': description, 'job_image_1': job_image_1, 'job_image_2': job_image_2, 'job_image_3': job_image_3, 'job_type': job_type}
+                job_form = JobForm(data, job_type=request.POST.get('job_type'), posted_by_id=posted_by.id)
                 if job_form.is_valid():
                     job_form.save()
 #                     Job.objects.create(
@@ -133,9 +133,4 @@ class JobPostingView(BaseDashboard):
 
     @property
     def job_types(self):
-        job = []
-        for x in JOB_TYPE:
-            temp = str(x).split(",")
-            temp = temp[0].replace("(", "")
-            job.append(temp.strip().replace('\'', ''))
-        return job
+        return JobType.objects.all()

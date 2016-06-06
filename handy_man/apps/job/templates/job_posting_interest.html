@@ -82,7 +82,7 @@
 			$('#message_box').delay(7000).fadeOut('slow');
 		}
 
-		$(document).ready(function() {
+/* 		$(document).ready(function() {
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
@@ -115,7 +115,7 @@
 		    	cancel_job_interest(e, job_identifier, btn_submit, btn_cancel);
 		    });
 		    
-		} );
+		} ); */
 		
 		
 	</script>
@@ -173,6 +173,7 @@
 			        <th>Description</th>
 			        <th></th>
 			        <th>Action</th>
+			        <th>Quote</th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -198,6 +199,16 @@
 								</div>
 		        		</form>
         			</td>
+        			<td>
+	        			<form action="{% url 'quote_url' job.pk %}" method="get">
+	        				{% csrf_token %}
+	        				{% if job.has_quote %}
+	        					<button type="submit" class="btn btn-primary">View Quote</button>
+	        				{% else %}
+	        					<button type="submit" class="btn btn-primary">Submit Quote</button>
+	        				{% endif %}
+	        			</form>
+	        		</td>
 				</tr>
 			{% endfor %}
 			    </tbody>

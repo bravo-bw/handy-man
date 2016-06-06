@@ -8,19 +8,19 @@
 	             <h3 class="panel-title">Attach New Quote</h3>
 	           </div>
 	           <div class="panel-body">
-	           <form action="{% url 'quote_url' job_id %}" method="post">
+	           <form action="{% url 'quote_url' job.pk %}" method="post">
 	           		{% csrf_token %}
-		        	<table cellspacing="0" width="100%">
+		        	<table class="table table-user-information">
 				        <tbody>
-				        	<input id="job_id" type="text" name="job_id" value={{job_id}} hidden>
+				        	<input id="job_id" type="text" name="job" value={{job.pk}} hidden>
 				        	<tr>
 				        		<td>
 			                       <label for="job_type">Job Type:</label>
-			                       <input id="job_type" type="text" name="job_type" value="">
+			                       <input id="job_type" type="text" name="job_type" value={{job.job_type.name}}>
 			                    </td>
 			                    <td>
 			                       <label for="rate_per_hour">Rate/hr:</label>
-			                       <input id="rate_per_hour" type="text" name="rate_per_hour" value="">
+			                       <input id="rate_per_hour" type="text" name="rate_per_hour" value={{job.job_type.rate_per_hour}}>
 			                    </td>
 				        	</tr>
 				        	<tr>
@@ -38,6 +38,11 @@
 			                       <label for="amount">Amount:</label>
 			                       <input id="amount" type="text" name="amount" value="">
 			                    </td>
+			                </tr>
+			                <tr>
+			                	<td>
+				        			<button type="button" class="btn btn-primary" disabled>Cancel</button>
+				        		</td>
 				        		<td>
 				        			<button type="submit" class="btn btn-primary">Submit</button>
 				        		</td>

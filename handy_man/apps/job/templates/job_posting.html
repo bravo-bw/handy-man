@@ -78,8 +78,8 @@
 	                           	<label for="job_type">Job Type:</label>
 	                           	<select name="job_type" id="job_type">
 	                           		<option value="None">---------</option>
-	                           		{% for job in job_types %}
-	                           			<option value={{ job }}>{{ job }}</option>
+	                           		{% for type in job_types %}
+	                           			<option value={{ type.id }}>{{type.id }}--{{ type.name }}</option>
 	                           		{% endfor %}
 	                           	</select>
                            </td>

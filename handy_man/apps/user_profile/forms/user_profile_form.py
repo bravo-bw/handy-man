@@ -1,9 +1,7 @@
-from django.core.files.images import get_image_dimensions
 from django import forms
-from handy_man.apps.user_profile.models import UserProfile
+from handy_man.apps.user_profile.models import UserProfile, Profession
 
-from ...main.custom_form_fields import SubmitButtonField
-from ...main.choices import ACCOUNT_TYPE, ARTISAN_PROFESSION
+from ...main.choices import ACCOUNT_TYPE
 
 
 class UserProfileForm(forms.ModelForm):
@@ -16,7 +14,7 @@ class UserProfileForm(forms.ModelForm):
     username = forms.CharField(required=False, widget=forms.widgets.TextInput(attrs={'readonly': 'readonly', 'placeholder': 'Username'}))
     dob = forms.DateField(required=True, widget=forms.widgets.DateInput(attrs={'readonly': 'readonly', 'placeholder': 'Date Of Birth'}))
     account_type = forms.ChoiceField(required=False, widget=forms.Select, choices=ACCOUNT_TYPE)
-    profession = forms.ChoiceField(required=False, widget=forms.Select, choices=ARTISAN_PROFESSION)
+    profession = forms.ModelChoiceField(required=False, queryset=Profession.objects.all(), to_field_name='profession_type')
 #     submit_button = SubmitButtonField(label='Submit', initial="Submit")
 
 #     def clean_avatar(self):
