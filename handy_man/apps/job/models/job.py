@@ -77,20 +77,20 @@ class Job(ItemGeolocationMixin):
         blank=True
     )
 
-    job_image_1 = models.FileField(
+    job_image_1 = models.ImageField(
         upload_to=settings.STATIC_ROOT + '/gfx/',
         default=None,
         null=True,
         blank=True
     )
 
-    job_image_2 = models.FileField(
+    job_image_2 = models.ImageField(
         upload_to=settings.STATIC_ROOT + '/gfx/',
         default=None,
         null=True,
         blank=True
     )
-    job_image_3 = models.FileField(
+    job_image_3 = models.ImageField(
         upload_to=settings.STATIC_ROOT + '/gfx/',
         default=None,
         null=True,

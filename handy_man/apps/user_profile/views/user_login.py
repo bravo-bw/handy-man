@@ -39,7 +39,6 @@ def user_profile(request, username):
     else:
         user_jobs = Job.objects.filter(posted_by=user_profile)
     user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
-    print(user_current_jobs[0].__dict__)
     like = request.GET.get('score_type', '')
     job_identifier = request.GET.get('job_identifier', '')
     job = None
@@ -165,8 +164,12 @@ def index(request, auth_form=None, user_form=None):
 
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticateForm(data=request.POST)
-        user_profile = UserProfile.objects.filter(user__username=request.POST.get('username'), email_validated=True)
+        username = request.POST.get('form-username', '')
+        password = request.POST.get('form-password', '')
+        data = {'username': username, 'password': password}
+        print(data, "**&&login dict")
+        form = AuthenticateForm(data=data)
+        user_profile = UserProfile.objects.filter(user__username=username, email_validated=True)
         if form.is_valid() and user_profile:
             login(request, form.get_user())
 

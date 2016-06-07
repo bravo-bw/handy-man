@@ -32,6 +32,7 @@ class Home(BaseDashboard):
                 'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         else:
+            self.template_name = 'login_register.html'
             auth_form = AuthenticateForm()
             user_form = UserCreateForm()
             self.context.update({

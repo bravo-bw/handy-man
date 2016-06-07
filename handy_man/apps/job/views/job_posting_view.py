@@ -63,9 +63,9 @@ class JobPostingView(BaseDashboard):
                 street_name = request.POST.get('street_select')
                 town_village_name = request.POST.get('town_village_select')
                 description = request.POST.get('description')
-                job_image_1 = request.POST.get('job_image_1', '')
-                job_image_2 = request.POST.get('job_image_2', '')
-                job_image_3 = request.POST.get('job_image_3', '')
+                job_image_1 = request.POST.get('image1', '')
+                job_image_2 = request.POST.get('image2', '')
+                job_image_3 = request.POST.get('image3', '')
                 job_type = JobType.objects.get(pk=request.POST.get('job_type'))
                 street = None
                 district = None

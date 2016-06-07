@@ -16,6 +16,7 @@
 
 
 {% block content %}
+<div class="container">
 <div class="jumbotron">
 <form class="form-inline" action="{% url 'job_posting_url' %}" method="post">
         	{% csrf_token %}
@@ -90,6 +91,13 @@
 		                        <textarea rows="4" cols="50" id="description" name="description" value=""></textarea>
                         	</td>
                       </tr>
+                      <tr>
+                      <td>
+                      <p>Upload images of the Job</p>
+                      <input id="id_image1" type="file" class="" name="image1">
+                      <input id="id_image2" type="file" class="" name="image2">
+                      <input id="id_image3" type="file" class="" name="image3"></td>
+                      </tr>
 				  <tr><td>Location</td><td></td></tr>
 				  <tr>
 				  	<td>
@@ -126,5 +134,6 @@
 		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
 		}
 	 </script>
+	</div>
 	</div>
 {% endblock %}
