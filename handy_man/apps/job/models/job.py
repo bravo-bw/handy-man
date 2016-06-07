@@ -100,7 +100,7 @@ class Job(ItemGeolocationMixin):
     objects = JobManager()
 
     def __str__(self):
-        return self.job_type
+        return (self.job_type.name,)
 
     @property
     def has_quote(self):

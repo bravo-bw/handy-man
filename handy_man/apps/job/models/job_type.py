@@ -17,7 +17,7 @@ class JobType(TimeStampedModel):
         decimal_places=2
     )
 
-    def __str_(self):
+    def __str__(self):
         return self.name
 
     class Meta:

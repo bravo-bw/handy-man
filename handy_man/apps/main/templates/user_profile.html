@@ -1,4 +1,5 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+{% load admin_urls %} 
 <style>
 .kv-avatar .file-preview-frame,.kv-avatar .file-preview-frame:hover {
     margin: 0;
@@ -305,6 +306,7 @@
 				                <th>Status</th>
 				                <th>description</th>
 				                <th>rating</th>
+				                <th>Modify job</th>
 				                <th>Allocated To</th>
 				                <td>Quote</td>
 				            </tr>
@@ -334,6 +336,9 @@
 								        <button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=DISLIKE&job_identifier={{job.identifier}}'">
           									<span class="glyphicon glyphicon-thumbs-down"></span> Unlike {{ job.rating.dislikes }}
 								        </button>
+									</td>
+									<td>
+									<A href="#">modify</A>
 									</td>
 					                <td>{{job.allocated_to.user.username}}</td>
 					                <td>
