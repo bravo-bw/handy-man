@@ -14,6 +14,8 @@ class QuotationForm(forms.ModelForm):
     amount = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Amount'}))
     accepted = forms.CheckboxInput()
     job = forms.ModelChoiceField(queryset=Job.objects.all(), to_field_name='pk')
+    # Validating this causes a problem when unique_together is set in the model. Need to fix it so we have the
+    # important unique_together.
     artisan = forms.ModelChoiceField(queryset=UserProfile.objects.all(), to_field_name='pk')
 
     class Meta:

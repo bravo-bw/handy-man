@@ -37,4 +37,4 @@ class Quote(models.Model):
 
     class Meta:
         app_label = 'job'
-        unique_together = ('job', 'artisan', 'amount')
+#         unique_together = ('job', 'artisan', 'amount')
