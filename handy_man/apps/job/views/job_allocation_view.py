@@ -5,9 +5,11 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
+from django.http.response import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.job.models.job import Job
-from django.http.response import HttpResponse
 from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes import MenuConfiguration
 
@@ -60,14 +62,25 @@ class JobAllocationView(BaseDashboard):
                     data = json.dumps([message])
                 return HttpResponse(data, content_type='application/json')
         else:
+            page = 1
             self.context.update({
 #                 'job_interests': job_allocation.new_jobs_with_job_interest,
                 'job_interests': Job.objects.all(),
                 'task': "job_allocate",
-                'artisans': job_allocation.artisans,
+                'artisans': self.paginate_interested_artisans(job_allocation.artisans, page),
                 'menus': MenuConfiguration().user_menu_list(self.user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
+
+    def paginate_interested_artisans(self, interested_artisans, page):
+        paginator = Paginator(interested_artisans, 25)
+        try:
+            artisans = paginator.page(page)
+        except PageNotAnInteger:
+            artisans = paginator.page(1)
+        except EmptyPage:
+            artisans = paginator.page(paginator.num_pages)
+        return artisans
 
     @property
     def job(self):

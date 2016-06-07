@@ -1,6 +1,6 @@
 /*
  * Job Allocation script
- * 
+ *
  */
 /*
 var job_interests = [];
@@ -84,7 +84,7 @@ $(document).ready(function (){
 				var artisans = JSON.stringify(data);
 				alert()
 				$.each(data, function(idx, artisan){
-					
+
 				});
 //				for(i=0; i<data.length; i++){
 //					artisan = artisans[i];
@@ -93,6 +93,15 @@ $(document).ready(function (){
 			}
 		});
 	}//End get_artisans
+	
+	function tastypie_fetch_data(){
+		$.ajax({
+  		url: 'http://localhost:8000/api/v1/user/1/',
+  		type: 'GET',
+  		accepts: 'application/json',
+  		dataType: 'json'
+		});
+	}
 	function create_artisan_elements(artisan){
 		createImage(artisan.artisan_id, artisan.avatar);
 		createRadio(artisan.artisan_id);
@@ -100,12 +109,6 @@ $(document).ready(function (){
 		wrapLabels(artisan.artisan_id);
 		wrapLabelContainer(artisan.artisan_id);
 		$("#artisan_container").append('<hr>');
-    	
+
 	}// End create_artisan_elements
 });
-
-
-
-
-
-

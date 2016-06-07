@@ -83,40 +83,23 @@
 			$('#message_box').delay(7000).fadeOut('slow');
 		}
 
-/* 		$(document).ready(function() {
+	$(document).ready(function() {
 		    $('#job_allocate_tb').DataTable({
 		    	select: true
 		    });
-		    //$("input[type='radio']:checked").css("background","red");
-		    var job_identifier = 0
-		    $('#job_allocate_tb').find('button').attr('disabled','disabled');
-		    //$('#job_allocate_tb').find('button').removeAttr( "disabled");
-		    $('#job_allocate_tb tbody').on( 'dblclick', 'tr', function (e) {
-		    	$(this).closest("tr").siblings().removeClass("selected");
-		        $(this).toggleClass('selected');
-		
-		        $('button[type="submit"]').attr('disabled','disabled');
-		        $(this).find('button').removeAttr( "disabled");
-		        
-		        $(this).find('button').click(function() {
-			        var $job_item = $(this).closest("tr").find('input[name="job_id"]');
-			        var $checked_radio_val = $("input[type='radio']:checked").val();
-			        $job_item.val($checked_radio_val);
+		    $('#job_allocate_tb tbody').on( 'click', 'tr', function (e) {
+		    	var job_id =  $(this).find('button').val();
+		    	var url_str = "/jobs/job_quote/" + job_id +"/";
+		    	$("#new_quote_form").attr("action", url_str);
+		    	$("#job_id").val(job_id);
+		    	$("#mjob_id").text(job_id);
+/* 		        $(this).find('button').click(function() {
+			          var job_id = $(this).val();
+			          
 			        return False;
-		        });
-		        job_identifier = $(this).find('input[name="job_identifier"]').val();
-		    } );
-		    var btn_submit = $(this).find('button[title="submit job request"]');
-		    $(this).find('button[title="submit job request"]').click(function(e){
-		    	submit_job_interest(e, job_identifier, btn_submit);
-		    });
-		    
-		    var btn_cancel = $(this).find('button[title="cancel job request"]');
-		    $(this).find('button[title="cancel job request"]').click(function(e){
-		    	cancel_job_interest(e, job_identifier, btn_submit, btn_cancel);
-		    });
-		    
-		} ); */
+		        }); */
+		    } ); 
+		} );
 		
 		
 	</script>
@@ -173,7 +156,6 @@
 			        <th></th>
 			        <th>Description</th>
 			        <th></th>
-			        <th>Action</th>
 			        <th>Quote</th>
 			      </tr>
 			    </thead>
@@ -183,7 +165,7 @@
 			        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
 			        <td>{{job.description}}</td>
 			        <td>{{job.street}}</td>
-					<td>
+					<!-- <td>
 						<form action="{% url 'jobs_url' %}" method="post">
 		               		{% csrf_token %}
 		               		    <input name="artisan" id="artisan" type="hidden" value="sets">
@@ -199,14 +181,14 @@
 								  	</div>
 								</div>
 		        		</form>
-        			</td>
+        			</td> -->
         			<td>
 	        			<form action="{% url 'quote_url' job.pk %}" method="get">
 	        				{% csrf_token %}
 	        				{% if job.has_quote %}
-	        					<button type="submit" class="btn btn-primary">View Quote</button>
+	        					<button type="submit" class="btn btn-primary" value="{{job.identifier}}">View Quote</button>
 	        				{% else %}
-	        					<button type="submit" class="btn btn-primary">Submit Quote</button>
+	        					<button data-toggle="modal" data-target="#myModal"  type="button" class="btn btn-primary" value="{{job.identifier}}">Submit Quote</button>
 	        				{% endif %}
 	        			</form>
 	        		</td>
@@ -252,6 +234,53 @@
 
 </div>
 </div>
+
+		<div class="modal fade" id="myModal" role="dialog" style="padding:10px;">
+		  <div class="modal-dialog" role="document" style="padding:10px;">
+		  	<div class="modal-content" style="padding:10px;"> 
+			<div class="modal-header" id="mmodal-header">
+				<h4 class="modal-title" id="myModalLabel">Add New Quotation <em id="mjob_status"></em></h4>
+				<span id="mjob_identifier"></span>
+				<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>
+			</div>       
+			<form id="new_quote_form" action="{% url 'quote_url' job_identifier %}" method="post">
+				{% csrf_token %}
+				  
+				  <div class="form-group">
+				    <label for="job_identifier" id="mjob_identifier_lbl">Job Identifier:<em id="mjob_id"></em></label>
+				    <input id="job_id" type="text" name="job" hidden>
+				</div>
+				<hr>			
+				  <div class="form-group">
+				    {{ quotation_form.currency.errors }}
+				    <label for="{{ form.subject.id_for_label }}">Currency:</label>
+				    {{ quotation_form.currency }}
+				</div>
+				<hr>
+				<div class="form-group">
+				    {{ quotation_form.estimate_hours.errors }}
+				    <label for="{{ form.subject.id_for_label }}">Estimate hours:</label>
+				    {{ quotation_form.estimate_hours }}
+				</div>
+				<hr>
+				<div class="form-group">
+				    {{ quotation_form.rate_per_hour.errors }}
+				    <label for="{{ form.subject.id_for_label }}">Rate per hour:</label>
+				    {{ quotation_form.rate_per_hour }}
+				</div>
+				<hr>
+				<div class="form-group">
+				    {{ quotation_form.amount.errors }}
+				    <label for="{{ form.subject.id_for_label }}">Amount:</label>
+				    {{ quotation_form.amount }}
+				</div>
+			<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        		<button id="btn_m_changes" type="submit" class="btn btn-primary">Save</button>
+     	 	</div>
+			</form>
+			</div>
+			</div>
 <script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/datatableview.js"></script>
 <!-- /.row -->
 </div>

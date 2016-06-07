@@ -25,7 +25,7 @@ def create_streests(gaborone_streets, town_village):
 
 
 class Command(BaseCommand):
-    ...
+    
     can_import_settings = True
 
     def handle(self, *args, **options):

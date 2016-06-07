@@ -186,7 +186,7 @@
 								<label class="control-label">Documents</label>
 								<div class="file-input">
 									<div class="file-preview">
-									    <div class="close fileinput-remove">×</div>
+									    <div class="close fileinput-remove"></div>
 									    <div class="file-drop-disabled">
 									    	<div class="file-preview-thumbnails">
 									    		<div class="file-preview-frame file-preview-initial" id="preview-1460010531223-init_0" data-fileindex="init_0">
@@ -230,7 +230,7 @@
 									       <button type="submit" tabindex="500" title="Upload selected files" class="btn btn-default fileinput-upload fileinput-upload-button"><i class="glyphicon glyphicon-upload"></i> <span class="hidden-xs">Upload</span></button>
 									       <div tabindex="500" class="btn btn-primary btn-file">
 									       		<i class="glyphicon glyphicon-folder-open"></i>&nbsp;
-									       		 <span class="hidden-xs">Browse …</span>
+									       		 <span class="hidden-xs">Browse</span>
 									       		<input id="input-24" name="input-24" multiple class="file-loading" type="file"	>
 									       </div>
 									   </div>
@@ -300,8 +300,9 @@
 			      	<table id="user_current_jobs" class="table table-striped table-bordered" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
+				            	<th>Id</th>
+				            	<th></th>
 				                <th>Posted By</th>
-				                <th>Job Identifier</th>
 				                <th>Job Type</th>
 				                <th>Status</th>
 				                <th>description</th>
@@ -323,9 +324,10 @@
 				        </tfoot>-->
 				        <tbody>
 				        	{% for job in user_current_jobs %}
-					            <tr>
+					            <tr><!-- <a href="{% url 'quote_url' job.pk %}">-->
+					            	<td>{{job.identifier}}</td>
+					            	<td><a value="{{job.identifier}}" id="mjob_identifier">..<span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-pencil"></span></a></td>
 					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
-					                <td><a href="{% url 'quote_url' job.pk %}">{{job.identifier}}</a></td>
 					                <td>{{job.job_type.name}}</td>
 					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
@@ -347,7 +349,7 @@
 					        				{% if job.has_quote %}
 					        					<button type="submit" class="btn btn-primary">View Quote(s)</button>
 					        				{% else %}
-					        					<button type="submit" class="btn btn-primary" disabled>View Quote(s)</button>
+					        					<button type="submit" class="btn btn-primary">View Quote(s)</button>
 					        				{% endif %}
 					        			</form>
 									</td>
@@ -394,6 +396,49 @@
           </div>
       </div>
       </div>
+		<div class="modal fade" id="myModal" role="dialog" style="padding:10px;">
+		  <div class="modal-dialog" role="document" style="padding:10px;">
+		  	<div class="modal-content" style="padding:10px;"> 
+			<div class="modal-header" id="mmodal-header">
+				<h4 class="modal-title" id="myModalLabel">Change Job <em id="mjob_status"></em></h4>
+				<span id="mjob_identifier"></span>
+				<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>
+			</div>
+			<!-- <form class="form-horizontal"> -->
+			<div class="form-group">
+				<label for="job_type">Job Type: <em id="mjob_type">Plumbing</em></label><br>
+				<label for="job_type">Select New Job Type:</label>
+                 	<select name="mjob_type_new" id="mjob_type_new">
+                 		<option value="None">---------</option>
+                 		{% for type in job_types %}
+                 			<option value={{ type.id }}>{{type.id }}--{{ type.name }}</option>
+                 		{% endfor %}
+                 	</select>
+			</div>
+		  <hr>
+          <div class="form-group">
+          <label for="estimated_job_closing_date">Estimated Job Closing Date: <em id="estimated_job_closing_date">06/06/2016</em></label><br>
+                <div class='input-group date' id='datetimepicker1' style="width:50%;">
+                    <input id="new_estimated_job_closing_date" type="date" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div> 
+			<hr>
+			<div class="form-group">
+				<label for="job_type">Description</label>
+   				<textarea name="mdescription" id="mdescription" class="form-control" rows="3"></textarea>
+			</div>
+			<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        		<button id="btn_m_changes" type="button" class="btn btn-primary">Save changes</button>
+     	 	</div>
+			<!--  </form> -->
+            </div>
+          </div>
+		    </div>
+		  </div>
       <script>
       		//Changes user profile photo
       		$(document).ready( function() {
@@ -491,11 +536,28 @@
 				});
 				// User's current jobs data table
 				$(document).ready(function() {
-				    $('#user_current_jobs').DataTable();
+					var table = $('#user_current_jobs').DataTable();
+					$('#user_current_jobs tbody').on( 'click', 'tr', function () {
+					    var row_data = table.row( this ).data();
+					    var row_data_str = row_data.toString();
+					    var row_data_array = row_data_str.split(",");
+					    job_id = row_data_array[0];
+					    job_type = row_data_array[3];
+					    job_status = row_data_array[4];
+					    description  = row_data_array[5];
+					    $("#mjob_status").text(job_status +' '+job_id);
+					    $("#mjob_type").text(job_type);
+					    $("#mdescription").text(description);
+					    $("#mjob_identifier").val(job_id);
+					} );
 				});
 				// User's completed jobs data table
 				$(document).ready(function() {
 				    $('#user_completed_jobs').DataTable();
+				});
+				$("#btn_m_changes").click(function(event) {
+					job_id = $("#mjob_identifier").val();
+					save_job_changes(event, job_id);
 				});
       		});
 	 </script>
@@ -514,8 +576,33 @@
 		 var tv = document.getElementById("town_village_select").value;
 		 var st = street_select.value;
 		 window.location="{% url 'user_profile_geolocation' user_profile.user.username %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
+	}
+	function save_job_changes(e, job_id){
+			e.preventDefault();
+			$.ajax({
+				type:'GET',
+				url:"{% url 'user_profile' 'user2' %}",
+				data:{
+					action:"save_job_changes",
+					job_identifier:job_id,
+					description:$("#mdescription").val(),
+					job_type: $("#mjob_type_new").val(),	
+				},
+				success:function(data){
+					$.each(data, function(idx, message){
+						//alert(message);
+						display_message(message);
+						$( "a[href='#completed_jobs']" ).trigger( "click" );
+						$( "a[href='#current_jobs']" ).trigger( "click" );
+					}); 
+				}
+			});
+		}//End job_artisans
+		function display_message(message){
+			$("#message_box").text(""+message);
+			$("#message_box").show();
+			$('#message_box').delay(10000).fadeOut('slow');
 		}
 	 </script>
 {% endblock %}
-
 

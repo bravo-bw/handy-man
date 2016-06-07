@@ -24,7 +24,6 @@ class Job(ItemGeolocationMixin):
          4. Job Payment
          5. Job Report
     """
-
     posted_by = models.ForeignKey(UserProfile, related_name='profile_sumbittor')
 
     allocated_to = models.ForeignKey(UserProfile, related_name='allocated', null=True, blank=True)
@@ -39,6 +38,12 @@ class Job(ItemGeolocationMixin):
 
     completion_date = models.DateField(
         verbose_name='Completion Date',
+        null=True,
+        blank=True,
+    )
+
+    estimated_closing_date = models.DateField(
+        verbose_name='Estimated Closing Date',
         null=True,
         blank=True,
     )

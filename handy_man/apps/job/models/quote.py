@@ -3,7 +3,8 @@ from django.db import models
 from handy_man.apps.main.choices import CURRENCY
 from handy_man.apps.user_profile.models import UserProfile
 
-from ..classes import QuoteHelper
+
+from handy_man.apps.job.classes import QuoteHelper
 from .job import Job
 
 

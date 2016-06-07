@@ -1,8 +1,8 @@
 from django.conf.urls import url
 
-
 from .views import JobAllocationView, JobPostingView, JobInterestView, JobQuotationsView, JobTimelineView
 from updown.views import AddRatingFromModel
+
 
 urlpatterns = [
     url(r'^job_posting/', JobPostingView.as_view(), name='job_posting_url'),
@@ -15,4 +15,5 @@ urlpatterns = [
         'model': 'Job',
         'field_name': 'rating', },
         name="job_rating"),
+
 ]

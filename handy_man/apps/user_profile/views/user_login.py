@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -9,6 +10,7 @@ from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
+from django.http.response import HttpResponse
 
 from updown.models import SCORE_TYPES
 
@@ -19,6 +21,7 @@ from handy_man.apps.user_profile.forms import (AuthenticateForm, UserCreateForm,
 from handy_man.apps.geo_location.classes import Geolocation
 
 from ..classes import MenuConfiguration
+from handy_man.apps.job.models.job_type import JobType
 
 
 def get_latest(user):
@@ -55,7 +58,17 @@ def user_profile(request, username):
     district_name = request.GET.get('district_name', '')
     town_village_name = request.GET.get('town_village_name', '')
     street_name = request.GET.get('street_name', '')
-    if request.method == 'POST':
+    if request.is_ajax():
+        if request.GET.get('action') == 'save_job_changes':
+            message = {'message': "Job has been updated."}
+            job_id = request.GET.get('job_identifier')
+            description = request.GET.get('description')
+            job_type = request.GET.get('job_type')
+            if not save_job_changes(job_id, description, job_type):
+                message = {'message': "Failed to update the job."}
+            data = json.dumps(message)
+            return HttpResponse(data, content_type='application/json')
+    elif request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
             try:
@@ -102,6 +115,7 @@ def user_profile(request, username):
                    'logged_in_user': request.user,
                    'user_current_jobs': user_current_jobs,
                    'user_completed_jobs': user_completed_jobs,
+                   'job_types': JobType.objects.all(),
                    'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
 
 
@@ -288,3 +302,27 @@ def user_profile_geolocation(request, username):
                    'user_current_jobs': user_current_jobs,
                    'user_completed_jobs': user_completed_jobs,
                    'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
+
+
+def save_job_changes(job_id, description, job_type):
+    """
+        1. check whether the job can be changed.
+        2. if job can be changed then save
+        3. On post save then notify artisans who have logged interest for the job.
+    """
+    try:
+        job_type = JobType.objects.get(id=job_type)
+        job = Job.objects.get(identifier=job_id)
+        print (description)
+        job.description = description
+        job.job_type = job_type
+        job.save()
+    except Job.DoesNotExist:
+        print ("except Job.DoesNotExist")
+        return False
+    except JobType.DoesNotExist:
+        print ("except JobType.DoesNotExist:")
+        return False
+    return True
+
+

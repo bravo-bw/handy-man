@@ -56,6 +56,7 @@ class JobPostingView(BaseDashboard):
         data = {}
         job_form = JobForm
         if request.method == 'POST':
+            print ("def post(self, request, *args, **kwargs):")
             try:
                 latitude = request.POST.get('latitude')
                 longitude = request.POST.get('longitude')
@@ -82,11 +83,15 @@ class JobPostingView(BaseDashboard):
                     street = Street.objects.get(street_name=street_name)
                 except Street.DoesNotExist:
                     pass
-                data = {'latitude': latitude, 'longitude': longitude, 'district': district.id, 'town_village': town_village.id, 'posted_by': posted_by.id,
-                        'street': street.id, 'description': description, 'job_image_1': job_image_1, 'job_image_2': job_image_2, 'job_image_3': job_image_3, 'job_type': job_type}
+                data = {'latitude': latitude, 'longitude': longitude, 'district': district.id, 'town_village': town_village.id,
+                        'posted_by': posted_by.id, 'street': street.id, 'description': description, 'job_image_1': job_image_1,
+                        'job_image_2': job_image_2, 'job_image_3': job_image_3, 'job_type': job_type.id}
                 job_form = JobForm(data, job_type=request.POST.get('job_type'), posted_by_id=posted_by.id)
+                print(job_form.errors)
                 if job_form.is_valid():
                     job_form.save()
+                else:
+                    print("Not valid********************")
 #                     Job.objects.create(
 #                         posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
 #                         town_village=town_village, status=NEW, description=description,

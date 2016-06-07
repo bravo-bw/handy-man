@@ -12,6 +12,7 @@ from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes import MenuConfiguration
 
 from ..classes import JobInterest
+from ..forms import QuotationForm
 
 
 class JobInterestView(BaseDashboard):
@@ -58,6 +59,8 @@ class JobInterestView(BaseDashboard):
             self.context.update({
                 'latest_jobs': job_interest.latest_jobs,
                 'new_jobs': job_interest.jobs_with_job_interest_status,
+                'job_identifier': 1,
+                'quotation_form': QuotationForm(),
                 'menus': MenuConfiguration().user_menu_list(self.user_profile)
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
