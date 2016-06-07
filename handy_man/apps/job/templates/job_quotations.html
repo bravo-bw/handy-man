@@ -81,11 +81,12 @@
 				                	<form id="accept_quote_form" action="{% url 'quote_url' job.pk %}" method="post">
 				                		{% csrf_token %}
 				                		<input name="job" type="hidden" value="{{job.pk}}">
-				                		<input name="quote_id" type="text" value={{quote.pk}} hidden>
-				                		<input name="currency" type="text" value={{quote.currency}} hidden>
-				                		<input name="amount" type="text" value={{quote.amount}} hidden>
-				                		<input name="estimate_hours" type="text" value={{quote.estimate_hours}} hidden>
-				                		<input name="rate_per_hour" type="text" value={{quote.rate_per_hour}} hidden>
+				                		<input id="artisan_id" type="hidden" name="artisan" value={{quote.artisan.pk}}>
+				                		<input name="quote_id" type="hidden" value={{quote.pk}}>
+				                		<input name="currency" type="hidden" value={{quote.currency}}>
+				                		<input name="amount" type="hidden" value={{quote.amount}}>
+				                		<input name="estimate_hours" type="hidden" value={{quote.estimate_hours}}>
+				                		<input name="rate_per_hour" type="hidden" value={{quote.rate_per_hour}}>
 					                	{% if quote.accepted %}
 					                		<input id='accept_box' name="accepted" type="checkbox" checked>
 					                	{% else %}

@@ -18,9 +18,6 @@
     
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css" type="text/css" media="screen" />
    
-	
-	<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.0.min.js">
-	</script>
 
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
 	</script>
@@ -154,8 +151,9 @@
 			    <thead>
 			      <tr>
 			        <th></th>
+			        <th>Type</th>
 			        <th>Description</th>
-			        <th></th>
+			        <th>street</th>
 			        <th>Quote</th>
 			      </tr>
 			    </thead>
@@ -163,6 +161,7 @@
 			{% for job, job_interest_status in new_jobs %}
 			    <tr>
 			        <td><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></td>
+			        <td>{{job.job_type.name}}</td>
 			        <td>{{job.description}}</td>
 			        <td>{{job.street}}</td>
 					<!-- <td>
@@ -245,10 +244,10 @@
 			</div>       
 			<form id="new_quote_form" action="{% url 'quote_url' job_identifier %}" method="post">
 				{% csrf_token %}
-				  
 				  <div class="form-group">
 				    <label for="job_identifier" id="mjob_identifier_lbl">Job Identifier:<em id="mjob_id"></em></label>
-				    <input id="job_id" type="text" name="job" hidden>
+				    <input id="job_id" type="hidden" name="job" value={{job.pk}}>
+				    <input id="artisan_id" type="hidden" name="artisan" value={{loggedin_user_profile.pk}}>
 				</div>
 				<hr>			
 				  <div class="form-group">
