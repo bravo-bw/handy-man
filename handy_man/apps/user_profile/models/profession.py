@@ -5,6 +5,10 @@ from ...main.choices import ARTISAN_PROFESSION
 
 class Profession(models.Model):
 
+    code = models.CharField(
+        max_length=5
+    )
+
     profession_type = models.CharField(
         max_length=20,
         choices=ARTISAN_PROFESSION,
