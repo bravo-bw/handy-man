@@ -56,7 +56,6 @@ class JobPostingView(BaseDashboard):
         data = {}
         job_form = JobForm
         if request.method == 'POST':
-            print ("def post(self, request, *args, **kwargs):")
             try:
                 latitude = request.POST.get('latitude')
                 longitude = request.POST.get('longitude')
@@ -67,7 +66,10 @@ class JobPostingView(BaseDashboard):
                 job_image_1 = request.POST.get('image1', '')
                 job_image_2 = request.POST.get('image2', '')
                 job_image_3 = request.POST.get('image3', '')
-                job_type = JobType.objects.get(pk=request.POST.get('job_type'))
+                try:
+                    job_type = JobType.objects.get(pk=request.POST.get('job_type'))
+                except JobType.DoesNotExist:
+                    job_type = None
                 street = None
                 district = None
                 town_village = None
@@ -86,7 +88,8 @@ class JobPostingView(BaseDashboard):
                 data = {'latitude': latitude, 'longitude': longitude, 'district': district.id, 'town_village': town_village.id,
                         'posted_by': posted_by.id, 'street': street.id, 'description': description, 'job_image_1': job_image_1,
                         'job_image_2': job_image_2, 'job_image_3': job_image_3, 'job_type': job_type.id}
-                job_form = JobForm(data, job_type=request.POST.get('job_type'), posted_by_id=posted_by.id)
+                job_form = JobForm(data)
+                print("***form dictionary*****\ln", data)
                 print(job_form.errors)
                 if job_form.is_valid():
                     job_form.save()
@@ -100,6 +103,7 @@ class JobPostingView(BaseDashboard):
                 return redirect(user_profile, username=loggedin_user_profile.user.username)
             except Exception as err:
                 print(err)
+                print(job_form.errors)
         self.context.update({'title': self.title,
                              'job_form': job_form,
                              'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
