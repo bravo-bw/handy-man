@@ -227,11 +227,24 @@ def verify_account(request, username):
 
 
 def signup(request):
-    user_form = UserCreateForm(data=request.POST)
     if request.method == 'POST':
+        email = request.POST.get('form-email', '')
+        first_name = request.POST.get('form-first-name', '')
+        last_name = request.POST.get('form-last-name', '')
+        mobile = request.POST.get('form-mobile', '')
+        username = request.POST.get('form-username', '')
+        password1 = request.POST.get('form-password1', '')
+        password2 = request.POST.get('form-password2', '')
+        data = {
+            'email': email,
+            'first_name': first_name,
+            'last_name': last_name,
+            'mobile': mobile,
+            'username': username,
+            'password1': password1,
+            'password2': password2}
+        user_form = UserCreateForm(data=data)
         if user_form.is_valid():
-            username = user_form.cleaned_data.get("username")
-            password = user_form.clean_password2()
             with transaction.atomic():
                 user_form.save()
 #                 user = authenticate(username=username, password=password)
