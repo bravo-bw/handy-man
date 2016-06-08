@@ -1,4 +1,6 @@
 import json
+import datetime
+
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
@@ -22,6 +24,7 @@ from handy_man.apps.geo_location.classes import Geolocation
 
 from ..classes import MenuConfiguration
 from handy_man.apps.job.models.job_type import JobType
+from handy_man.apps.job.classes.job_helper import JobHelper
 
 
 def get_latest(user):
@@ -44,13 +47,13 @@ def user_profile(request, username):
     user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
     like = request.GET.get('score_type', '')
     job_identifier = request.GET.get('job_identifier', '')
-    job = None
-    if job_identifier:
-        try:
-            job = Job.objects.get(identifier=job_identifier)
-            job.rating.add(SCORE_TYPES[like], loggedin_user_profile.user, request.META['REMOTE_ADDR'])
-        except Job.DoesNotExist:
-            pass
+#     job = None
+#     if job_identifier:
+#         try:
+#             job = Job.objects.get(identifier=job_identifier)
+#             job.rating.add(SCORE_TYPES[like], loggedin_user_profile.user, request.META['REMOTE_ADDR'])
+#         except Job.DoesNotExist:
+#             pass
 #     print("**********", user_current_jobs[0].rating_likes, "***********here is the rating")
 #     print("**********", user_current_jobs[0].rating_dislikes, "***********here is the rating")
     user_completed_jobs = user_jobs.filter(status=COMPLETED)
@@ -60,13 +63,21 @@ def user_profile(request, username):
     street_name = request.GET.get('street_name', '')
     if request.is_ajax():
         if request.GET.get('action') == 'save_job_changes':
-            message = {'message': "Job has been updated."}
             job_id = request.GET.get('job_identifier')
             description = request.GET.get('description')
+            job_closing_date = request.GET.get('job_closing_date') or None
+            if job_closing_date:
+                job_closing_date = datetime.datetime.strptime(job_closing_date, '%d/%m/%Y').date()
+            print ("Job closing date:", job_closing_date)
             job_type = request.GET.get('job_type')
-            if not save_job_changes(job_id, description, job_type):
-                message = {'message': "Failed to update the job."}
-            data = json.dumps(message)
+            status, message = save_job_changes(job_id, description, job_type, job_closing_date)
+            data = None
+            if status:
+                msg = {'message': message}
+                data = json.dumps(msg)
+            else:
+                msg = {'message': message}
+                data = json.dumps(msg)
             return HttpResponse(data, content_type='application/json')
     elif request.method == 'POST':
         form = UserProfileForm(request.POST)
@@ -317,25 +328,30 @@ def user_profile_geolocation(request, username):
                    'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
 
 
-def save_job_changes(job_id, description, job_type):
+def save_job_changes(job_id, description, jotype, est):
     """
         1. check whether the job can be changed.
         2. if job can be changed then save
         3. On post save then notify artisans who have logged interest for the job.
     """
     try:
-        job_type = JobType.objects.get(id=job_type)
         job = Job.objects.get(identifier=job_id)
-        print (description)
-        job.description = description
-        job.job_type = job_type
-        job.save()
+        jtype = job_type(jotype) if job_type(jotype) else None
+        job_helper = JobHelper(job=job, job_type=jtype, estimated_job_closing_date=est)
+        if job_helper.save_job():
+            return (True, "Job has been updated successfully.")
+        else:
+            if job_helper.validate_job_change:
+                return (False, "Assigned job or completed cannot be modified.")
     except Job.DoesNotExist:
-        print ("except Job.DoesNotExist")
-        return False
-    except JobType.DoesNotExist:
-        print ("except JobType.DoesNotExist:")
-        return False
-    return True
+        return (False, "Cannot find job record, failed to update.")
+    return (False, "Failed to update job")
 
+
+def job_type(job_type):
+    try:
+        joype = JobType.objects.get(id=job_type)
+    except JobType.DoesNotExist:
+        return False
+    return joype
 

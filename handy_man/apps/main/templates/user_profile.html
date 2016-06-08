@@ -307,7 +307,6 @@
 				                <th>Status</th>
 				                <th>description</th>
 				                <th>rating</th>
-				                <th>Modify job</th>
 				                <th>Allocated To</th>
 				                <td>Quote</td>
 				            </tr>
@@ -338,9 +337,6 @@
 								        <button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=DISLIKE&job_identifier={{job.identifier}}'">
           									<span class="glyphicon glyphicon-thumbs-down"></span> Unlike {{ job.rating.dislikes }}
 								        </button>
-									</td>
-									<td>
-									<A href="#">modify</A>
 									</td>
 					                <td>{{job.allocated_to.user.username}}</td>
 					                <td>
@@ -576,6 +572,7 @@
 				data:{
 					action:"save_job_changes",
 					job_identifier:job_id,
+					job_closing_date: $("#new_estimated_job_closing_date").val(), 
 					description:$("#mdescription").val(),
 					job_type: $("#mjob_type_new").val(),	
 				},
