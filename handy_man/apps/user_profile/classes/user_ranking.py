@@ -2,21 +2,21 @@ from operator import itemgetter
 
 from django.conf import settings
 
-from handy_man.apps.job.models import Job
+from handy_man.apps.job.models import Job, Quote
 
 
 class UserRanking:
 
-    def qualified_for_profession_marks(self, profession, user):
+    def qualified_for_profession_marks(self, user, job):
         """Returns the marks for the user's qualifications."""
         qualification_marks = 0
-        if user.profession.profession_type == profession and user.profession.qualified:
+        if user.profession.profession_type == job.job_type.name and user.profession.code == job.job_type.code:
             qualification_marks = settings.QUALIFICATION_WEIGHT
         return qualification_marks
 
-    def price_marks(self, quote_price, standard_price):
+    def job_rate_marks(self, quote_job_rate, standard_job_rate):
         """Returns the marks awarded for pricing."""
-        price_marks = (1 / (quote_price - standard_price) / standard_price) * settings.PRICE_WEIGHT
+        price_marks = (1 / (quote_job_rate - standard_job_rate) / standard_job_rate) * settings.PRICE_WEIGHT
         return price_marks
 
     def satisfaction_marks(self, user):
@@ -42,16 +42,13 @@ class UserRanking:
         user_current_jobs_marks = (1 / (settings.MAX_CURRENT_JOBS - current_jobs) / settings.MAX_CURRENT_JOBS) * settings.IN_PROGRESS_JOBS_WEIGHT
         return user_current_jobs_marks
 
-    def user_ranking(self, job, quote_price, standard_price):
-        """Returns a dictionary of users ranked starting with the highest ranked."""
-        ranked_users = []
-        interested_users = job.artisans_interested
-        for user in interested_users:
-            rank = self.price_marks(quote_price, standard_price) + self.qualified_for_profession_marks(job.job_type, user) + self.satisfaction_marks(user) + self.user_current_jobs_marks(user) + self.user_jobs_completed_marks(user)
-            ranked_users.append([user, rank])
-        ranked_users.sort(key=itemgetter(1), reverse=True)
-        return ranked_users
-
     def return_ranked_quotations(self, job):
         """Implement to return Y as a ranked list with best being 1st index and worst being last index"""
-        return []
+        ranked_quotes = []
+        quotes = Quote.objects.filter(job=job)
+        for quote in quotes:
+            artisan = quote.artisan
+            rank = self.job_rate_marks(quote.rate_per_hour, job.job_type.rate_per_hour) + self.qualified_for_profession_marks(job, artisan) + self.satisfaction_marks(artisan) + self.user_current_jobs_marks(artisan) + self.user_jobs_completed_marks(artisan)
+            ranked_quotes.append([quote, rank])
+        ranked_quotes.sort(key=itemgetter(1), reverse=True)
+        return ranked_quotes
