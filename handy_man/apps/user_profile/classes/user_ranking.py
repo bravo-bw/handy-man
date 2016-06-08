@@ -51,3 +51,7 @@ class UserRanking:
             ranked_users.append([user, rank])
         ranked_users.sort(key=itemgetter(1), reverse=True)
         return ranked_users
+
+    def return_ranked_quotations(self, job):
+        """Implement to return Y as a ranked list with best being 1st index and worst being last index"""
+        return []

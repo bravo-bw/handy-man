@@ -33,6 +33,7 @@ class JobInterestView(BaseDashboard):
         return super(JobInterestView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self._job_identifier = request.GET.get('job_identifier')
         self._user = request.user
         job_interest = JobInterest(self.job, self.user_profile)
@@ -57,6 +58,7 @@ class JobInterestView(BaseDashboard):
         else:
             self._user = request.user
             self.context.update({
+                'loggedin_user_profile': loggedin_user_profile,
                 'latest_jobs': job_interest.latest_jobs,
                 'new_jobs': job_interest.jobs_with_job_interest_status,
                 'job_identifier': 1,

@@ -32,6 +32,7 @@ class JobAllocationView(BaseDashboard):
         return super(JobAllocationView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self._job_identifier = request.GET.get('job_identifier')
         print ("self._job_identifier", self._job_identifier)
         self._user = request.user
@@ -65,6 +66,7 @@ class JobAllocationView(BaseDashboard):
             page = 1
             self.context.update({
 #                 'job_interests': job_allocation.new_jobs_with_job_interest,
+                'loggedin_user_profile': loggedin_user_profile,
                 'job_interests': Job.objects.all(),
                 'task': "job_allocate",
                 'artisans': self.paginate_interested_artisans(job_allocation.artisans, page),
