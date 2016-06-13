@@ -48,7 +48,7 @@ class UserRanking:
         quotes = Quote.objects.filter(job=job)
         for quote in quotes:
             artisan = quote.artisan
-            rank = self.job_rate_marks(quote.rate_per_hour, job.job_type.rate_per_hour) + self.qualified_for_profession_marks(job, artisan) + self.satisfaction_marks(artisan) + self.user_current_jobs_marks(artisan) + self.user_jobs_completed_marks(artisan)
+            rank = self.job_rate_marks(quote.rate_per_hour, job.job_type.rate_per_hour) + self.qualified_for_profession_marks(artisan, job) + self.satisfaction_marks(artisan) + self.user_current_jobs_marks(artisan) + self.user_jobs_completed_marks(artisan)
             ranked_quotes.append([quote, rank])
         ranked_quotes.sort(key=itemgetter(1), reverse=True)
         return ranked_quotes

@@ -1,6 +1,7 @@
 import os
 import sys
 from unipath import Path
+from decimal import Decimal
 
 DEBUG = True
 
@@ -49,20 +50,20 @@ else:
 SITE_ID = 1
 
 #  Maximum number of jobs that can be completed by an artisan, for ranking purposes.
-MAX_COMPLETED_JOBS = 1000
+MAX_COMPLETED_JOBS = Decimal(1000)
 
 #  Maximum number of jobs that an artisan can do at a time.
-MAX_CURRENT_JOBS = 5
+MAX_CURRENT_JOBS = Decimal(5)
 
 #  Maximum number of 𝑚𝑎𝑥𝑖𝑚𝑢𝑚 𝑡h𝑢𝑚𝑏𝑠 𝑢𝑝 that can be accumulated.
-MAXIMUM_THUMBS_UP = 1000
+MAXIMUM_THUMBS_UP = Decimal(1000)
 
 #  Job ranking Weights
-PRICE_WEIGHT = 0.25
-COMPLETED_JOBS_WEIGHT = 0.20
-SATISFACTION_WEIGHT = 0.25
-IN_PROGRESS_JOBS_WEIGHT = 0.15
-QUALIFICATION_WEIGHT = 0.15
+PRICE_WEIGHT = Decimal(0.25)
+COMPLETED_JOBS_WEIGHT = Decimal(0.20)
+SATISFACTION_WEIGHT = Decimal(0.25)
+IN_PROGRESS_JOBS_WEIGHT = Decimal(0.15)
+QUALIFICATION_WEIGHT = Decimal(0.15)
 
 # If ,you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
