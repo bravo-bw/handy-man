@@ -15,6 +15,7 @@
 				                <th>Posted By</th>
 				                <th>Job Type</th>
 				                <th>Description</th>
+				                <th>Location</th>
 				                {% if loggedin_user_profile.account_type == 'artisan' %}
 				                	<th>Add Another Quote</th>
 				                {% endif %}
@@ -31,12 +32,15 @@
 			      				<td>
 			      					{{job.description}}
 			      				</td>
+			      				<td>
+			      					<a href="#">{{job.street.street_name}} @ {{job.town_village.town_village_name}}</a>
+			      				</td>
 			      				{% if loggedin_user_profile.account_type == 'artisan' %}
 				      				<td>
 				      					<form action="{% url 'quote_url' job.pk %}" method="get">
 					        				{% csrf_token %}
 					        				<input name="hidden_job_id" type="hidden" value="{{job.pk}}">
-					        				{% if job.allow_add_quote %}
+					        				{% if can_add_quote %}
 					        					<button type="submit" class="btn btn-primary">Add New Quote</button>
 					        				{% else %}
 					        					<button type="submit" class="btn btn-primary" disabled>Add New Quote</button>
@@ -130,13 +134,13 @@
                 		<input name="amount" type="hidden" value={{quote.amount}}>
                 		<input name="estimate_hours" type="hidden" value={{quote.estimate_hours}}>
                 		<input name="rate_per_hour" type="hidden" value={{quote.rate_per_hour}}>
-                		{% for qt in ranked_quotes %}
+                		{% for qt in ranked_quotes|slice:":1" %}
                 			<tr>
                 				<td>
-                				{{qt.artisan.user.username}} @ {{qt.currency}}{{qt.amount}}
+                				{{qt.0.artisan.user.username}} @ {{qt.0.currency}}{{qt.0.amount}}
                 				</td>
                 				<td>
-				                	{% if qt.accepted %}
+				                	{% if qt.0.accepted %}
 				                		<input id='accept_box' name="accepted" type="checkbox" checked>
 				                	{% else %}
 				                		<input id='accept_box' name="accepted" type="checkbox">

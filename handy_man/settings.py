@@ -49,6 +49,9 @@ else:
 
 SITE_ID = 1
 
+#  Max number of quotations that are allowed per job
+MAX_QUOTE_NUMBER = 20
+
 #  Maximum number of jobs that can be completed by an artisan, for ranking purposes.
 MAX_COMPLETED_JOBS = Decimal(1000)
 

@@ -13,27 +13,25 @@
 		        	<table class="table table-user-information">
 				        <tbody>
 				        	<input id="job_id" type="text" name="job" value={{job.pk}} hidden>
+				        	<input id="artisan" type="text" name="artisan" value={{loggedin_user_profile.pk}} hidden>
 				        	<tr>
 				        		<td>
 			                       <label for="job_type">Job Type:</label>
 			                       <input id="job_type" type="text" name="job_type" value={{job.job_type.name}}>
 			                    </td>
-			                    <td>
+			                    <!--<td>
 			                       <label for="rate_per_hour">Rate/hr:</label>
 			                       <input id="rate_per_hour" type="text" name="rate_per_hour" value={{job.job_type.rate_per_hour}}>
-			                    </td>
-				        	</tr>
-				        	<tr>
+			                    </td>-->
 				        		<td>
 			                       <label for="estimate_hours">Est. Hrs:</label>
 			                       <input id="estimate_hours" type="text" name="estimate_hours" value="">
 			                    </td>
+			                <tr>
 			                    <td>
 			                       <label for="currency">Currency:</label>
 			                       <input id="currency" type="text" name="currency" value="">
 			                    </td>
-				        	</tr>
-				        	<tr>
 				        		<td>
 			                       <label for="amount">Amount:</label>
 			                       <input id="amount" type="text" name="amount" value="">
