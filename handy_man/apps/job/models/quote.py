@@ -31,6 +31,7 @@ class Quote(models.Model):
     accepted = models.NullBooleanField(default=None)
 
     def save(self, *args, **kwargs):
+        self.rate_per_hour = self.amount / self.estimate_hours
         quote_helper = QuoteHelper(self)
         quote_helper.process()
         super(Quote, self).save(*args, **kwargs)

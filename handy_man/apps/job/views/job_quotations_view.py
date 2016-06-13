@@ -7,7 +7,7 @@ from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes import MenuConfiguration, UserRanking
 
 from ..models import Quote, Job
-from ..classes import QuoteHelper
+from ..classes import QuoteHelper, JobHelper
 from ..forms import QuotationForm
 
 
@@ -24,7 +24,7 @@ class JobQuotationsView(BaseDashboard):
             form = QuotationForm(request.GET)
             self.template_name = 'submit_quotation.html'
             self.context.update({
-                'ranked_quotes': Quote.objects.filter(job=form.cleaned_data.get('job')),
+                #'ranked_quotes': UserRanking().return_ranked_quotations(form.cleaned_data.get('job')),
                 'form': form,
                 'loggedin_user_profile': loggedin_user_profile,
                 'job': Job.objects.get(pk=request.GET.get('hidden_job_id')),
@@ -33,7 +33,8 @@ class JobQuotationsView(BaseDashboard):
         else:
             job = Job.objects.get(pk=kwargs.get('job'))
             self.context.update({
-                'ranked_quotes': Quote.objects.filter(job=job),
+                'can_add_quote': JobHelper(job=job).allow_add_quote(loggedin_user_profile),
+                'ranked_quotes': UserRanking().return_ranked_quotations(job),
                 'loggedin_user_profile': loggedin_user_profile,
                 'job': job,
                 'quotes': Quote.objects.filter(job=job),
@@ -54,8 +55,9 @@ class JobQuotationsView(BaseDashboard):
             else:
                 form.save()
             self.context.update({
-                #'ranked_quotes': UserRanking().return_ranked_quotations(form.cleaned_data.get('job')),
-                'ranked_quotes': Quote.objects.filter(job=form.cleaned_data.get('job')), # For testing purposes
+                'can_add_quote': JobHelper(job=form.cleaned_data.get('job')).allow_add_quote(loggedin_user_profile),
+                'ranked_quotes': UserRanking().return_ranked_quotations(form.cleaned_data.get('job')),
+#                 'ranked_quotes': Quote.objects.filter(job=form.cleaned_data.get('job')), # For testing purposes
                 'loggedin_user_profile': loggedin_user_profile,
                 'job': form.cleaned_data.get('job'),
                 'quotes': Quote.objects.filter(job=form.cleaned_data.get('job')),

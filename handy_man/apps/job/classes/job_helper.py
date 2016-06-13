@@ -1,4 +1,9 @@
+from django.conf import settings
+from django.apps import apps
+
 from handy_man.apps.user_profile.models.profile import UserProfile
+
+# from ..models import Quote
 
 
 class JobHelper(object):
@@ -42,3 +47,15 @@ class JobHelper(object):
             return UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:
             return False
+
+    def allow_add_quote(self, attempting_artisan):
+        """Return False if i am an artisan that already has an open Quote for the Job,
+        or if the open quote maximum number is reached for the job, else return True"""
+        Quote = apps.get_model('job', 'Quote')
+        if not attempting_artisan.profession:
+            return False
+        if (Quote.objects.filter(artisan=attempting_artisan, job=self.job, closed_requoted=False).exists() or
+                Quote.objects.filter(job=self.job, closed_requoted=False).count() >= settings.MAX_QUOTE_NUMBER):
+            return False
+        return True
+

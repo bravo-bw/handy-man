@@ -9,7 +9,7 @@ from ..models import Quote, Job
 class QuotationForm(forms.ModelForm):
 
     currency = forms.ChoiceField(widget=forms.Select, choices=CURRENCY)
-    rate_per_hour = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Rate Per Hour'}))
+#     rate_per_hour = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Rate Per Hour'}))
     estimate_hours = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Estimate Hours'}))
     amount = forms.DecimalField(widget=forms.widgets.NumberInput(attrs={'placeholder': 'Amount'}))
     accepted = forms.CheckboxInput()
@@ -20,4 +20,4 @@ class QuotationForm(forms.ModelForm):
 
     class Meta:
         model = Quote
-        fields = ['currency', 'estimate_hours', 'rate_per_hour', 'amount', 'job', 'accepted', 'artisan']
+        fields = ['currency', 'estimate_hours', 'amount', 'job', 'accepted', 'artisan']
