@@ -2,6 +2,7 @@ from django.db import models
 from django.apps import apps
 from django.contrib.auth.models import User
 from django.conf import settings
+from datetime import timedelta, datetime
 
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.choices import JOB_STATUS, JOB_TYPE
@@ -12,6 +13,8 @@ from handy_man.apps.job.managers import JobManager
 from updown.fields import RatingField
 
 from .job_type import JobType
+
+estimated_closing_date = datetime.today().now() + timedelta(days=10)
 
 
 class Job(ItemGeolocationMixin):
@@ -46,6 +49,7 @@ class Job(ItemGeolocationMixin):
         verbose_name='Estimated Closing Date',
         null=True,
         blank=True,
+        default=estimated_closing_date
     )
 
     identifier = models.AutoField(
