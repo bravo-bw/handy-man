@@ -36,6 +36,9 @@ class Quote(models.Model):
         quote_helper.process()
         super(Quote, self).save(*args, **kwargs)
 
+    def one_ingroup_accepted(self):
+        return self.__class__.objects.filter(job=self.job, accepted=True).exists()
+
     class Meta:
         app_label = 'job'
 #         unique_together = ('job', 'artisan', 'amount')
