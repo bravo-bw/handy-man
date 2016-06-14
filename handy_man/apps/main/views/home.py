@@ -14,12 +14,14 @@ class Home(BaseDashboard):
         super(Home, self).__init__()
 
     def get(self, request, *args, **kwargs):
+        notifications = 'Notifications.objects.all()'
         if request.user.is_authenticated():
             loggedin_user_profile = UserProfile.objects.get(user=request.user)
             user = request.user
             model = ''
             self.context.update({
                 'title': self.title,
+                'notifications': notifications,
                 'user': user,
                 'model': model,
                 'registration': [],
@@ -37,6 +39,7 @@ class Home(BaseDashboard):
             user_form = UserCreateForm()
             self.context.update({
                 'title': self.title,
+                'notifications': notifications,
                 'auth_form': auth_form,
                 'user_form': user_form,
             })

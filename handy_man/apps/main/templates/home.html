@@ -1,5 +1,34 @@
 {% extends "base.html" %}
  
+<<<<<<< HEAD
+=======
+ <div class="login">
+{% block login %}
+	{% if not user.is_authenticated %}
+	<table>
+    <form action="/login" method="post">{% csrf_token %}
+    	<tr>
+        {% for field in auth_form %}
+        <td style="margin:5px; background-color:red;">{{ field }} </td>
+        {% endfor %}
+        <td><input type="submit" id="btnLogIn" value="Log In"></td>
+        </tr>
+    </form>
+    </table>
+    <h4><b>New to BW Handy Man?</b></h4>
+    <table>
+        <form action="/signup" method="post">{% csrf_token %}
+            {% for field in user_form %}
+            <tr><td>{{ field }}</td></tr>
+            {% endfor %}
+            <tr><td><input type="submit" value="Create Account"></td></tr>
+        </form>
+      </table>
+      {% endif %}
+{% endblock %}
+</div>
+ 
+>>>>>>> 13cb60542f84e50a45662ddca15aeba982aea898
 {% block content %}
     <!-- Header -->
     <header>
