@@ -5,16 +5,16 @@
 <div class="jumbotron">
 	<div class="row" style="background-color:white;">
 		<div class="col-md-7" style="background-color:white;">
-		<h4>Golf Full Set - Adams, GolfSmith{{job.title}}</h4>
+		<h4>{% if job.title %} {{job.title}} {% else %} Job Title {% endif %} </h4>
 		<hr>
-		<img src="{{ STATIC_URL }}/img/camera.JPG" id="job_img_main" width="100%" height="300" alt="..." class="img-rounded">
+		<img src="{{ STATIC_URL }}/img/job_default.jpg" id="job_img_main" width="100%" height="300" alt="..." class="img-rounded">
 		<hr>
 		<div class="row" style="padding:10px;">
-			<img src="{{ STATIC_URL }}/img/team.jpg" id="job_img1" alt="Pulpit Rock" style="width:150px;height:150px">
-			<img src="{{ STATIC_URL }}/img/camera.JPG" id="job_img2" alt="Pulpit Rock" style="width:150px;height:150px">
-			<img src="{{ STATIC_URL }}/img/camera.JPG" id="job_img3" alt="Pulpit Rock" style="width:150px;height:150px">
+			<img src="{{job.image_urls.0}}" id="job_img1" alt="job image 1" style="width:150px;height:150px">
+			<img src="{{job.image_urls.1}}" id="job_img2" alt="job image 2" style="width:150px;height:150px">
+			<img src="{{job.image_urls.2}}" id="job_img3" alt="job image 3" style="width:150px;height:150px">
 		</div>
-		<p><small>{{job.description}}Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</small></p>
+		<p><small>{{job.description}}</small></p>
 		</div>
 		<div class="col-md-5" style="background-color:white;">
 	 		<h4>.</h4>
@@ -24,15 +24,15 @@
                     <div class="panel-body text-center">
                         <h4>Address</h4>
 						<address>
-						  <strong>Twitter, Inc.</strong><br>
-						  1355 Market Street, Suite 900<br>
-						  San Francisco, CA 94103<br>
-						  <abbr title="Phone">P:</abbr> (267) 75-700-544
+						  <strong>{{job.posted_by.street.town_village.town_village_name}}</strong><br>
+						  	{{job.posted_by.street.street_name}}<br>
+						  Botswana<br>
+						  <abbr title="Phone">P:</abbr> (267)-{{job.posted_by.mobile}}
 						</address>
 						
 						<address>
-						  <strong>Ian Wright</strong><br>
-						  <a href="mailto:#">ian.wright@handy-man.com</a>
+						  <strong>{{job.posted_by.user.first_name}} {{job.posted_by.user.last_name}}</strong><br>
+						  <a href="mailto:#">{{job.posted_by.user.email}}</a>
 						</address>
                         <hr />
                         <div id="map1" class="map">
@@ -62,7 +62,7 @@
                 mapOptions);
             marker.setMap(map);
         }
-        init_map1(-24.6294244, 25.8811672);
+        init_map1({{job.latitude}}, {{job.longitude}});
     });
     $( "#job_img1" ).mouseover(function() {
     	$( "#job_img_main" ).attr('src', $( "#job_img1" ).attr('src'));

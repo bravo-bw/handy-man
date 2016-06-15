@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 
 from handy_man.apps.job.models.job import Job
+from handy_man.apps.job.models.quote import Quote
+from datetime import datetime
 
 
 class JobTimelineView(TemplateView):
@@ -58,11 +60,17 @@ class JobTimelineView(TemplateView):
     def posted_by(self, job_identifier):
         posted_by = {}
         job = self.job(job_identifier)
+        job_has_completed = True if job.status == 'completed' else False
+        quote = self.job_quotations(job)
         posted_by.update({
             'posted_by_avatar': '/static/{}'.format(str(job.posted_by.avatar_image).split('/')[-1]),
             'posted_by_fullname': '{} - {}'.format(job.posted_by.user.first_name, job.posted_by.user.last_name),
             'posted_by_profession': job.posted_by.profession if job.posted_by.profession else 'Profession Not Specified',
-            'posted_by_about': "Work on cutting edge technology >>Do what everyone is doing. Must be a team player >> Must not question authority."
+            'posted_by_about': "N/A",
+            'job_completed_by_fullname': self.job_completed_by_fullname(quote),
+            'job_has_completed': job_has_completed,
+            'quote': quote,
+            'today_date': datetime.today()
         })
         return posted_by
 
@@ -71,3 +79,16 @@ class JobTimelineView(TemplateView):
             return Job.objects.get(identifier=job_identifier)
         except Job.DoesNotExist:
             return False
+
+    def job_quotations(self, job):
+        try:
+            quote = Quote.objects.get(accepted=True, job=job)
+        except Quote.DoesNotExist:
+            return False
+        return quote
+
+    def job_completed_by_fullname(self, quote):
+        if quote:
+            return '{} - {}'.format(quote.artisan.user.first_name, quote.artisan.user.last_name)
+        else:
+            return ''

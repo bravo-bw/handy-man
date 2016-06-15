@@ -11,12 +11,12 @@
 	<link rel="stylesheet" href="{{ STATIC_URL }}/css/timeline_reset.css"> <!-- CSS reset -->
 	<link rel="stylesheet" href="{{ STATIC_URL }}/css/timeline_style.css"> <!-- Resource style -->
 	<script src="{{ STATIC_URL }}/js/timeline_modernizr.js"></script> <!-- Modernizr -->
-<div class="row" style="padding:10px; width:99%; background:#ccf2ff; margin-left:5px; margin-bottom:20px;border-radius: 10px; min-height: 100px;" class="container">
+<!-- <div class="row" style="padding:10px; width:99%; background:#ccf2ff; margin-left:5px; margin-bottom:20px;border-radius: 10px; min-height: 100px;" class="container">
 <div class="container-fluid">
   <div class="row">
  </div>
  </div>
-</div>
+</div> -->
 
 	<section id="cd-timeline" class="cd-container">
 
@@ -52,10 +52,11 @@
 </div> <!-- cd-timeline-content -->
 </div> <!-- cd-timeline-block -->
 
+		<!--
 		<div class="cd-timeline-block">
 			<div class="cd-timeline-img cd-movie">
 				<img src="{{ STATIC_URL }}/img/process1.png"" alt="Movie">
-			</div> <!-- cd-timeline-img -->
+			</div>
 
 			<div class="cd-timeline-content">
 				<h2>Artisans Interested</h2>
@@ -71,8 +72,8 @@
 				  		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
 			  		</div>
 				</div>
-			</div> <!-- cd-timeline-content -->
-		</div> <!-- cd-timeline-block -->
+			</div> 
+		</div>  cd-timeline-block -->
 
 		 <!--<div class="cd-timeline-block">
 			<div class="cd-timeline-img cd-picture">
@@ -98,13 +99,17 @@
 
 		<div class="cd-timeline-block">
 			<div class="cd-timeline-img cd-location">
-				<img src="img/cd-icon-location.svg" alt="Location">
+				<img src="{{ STATIC_URL }}/img/start-here.png" alt="Location">
 			</div> <!-- cd-timeline-img -->
 
 			<div class="cd-timeline-content">
 				<h2>Accepted Quatation</h2>
 				<hr>
-				<p><a>Quotation</a> by <a>Tlotlang Shaka</a> on 2016/06/10.</p>
+				{% if quote %}
+					<p><a>Quotation</a> by <a>{{job_completed_by_fullname}}</a> on {{job.allocation_date}}.</p>
+				{% else %}
+					<p>Pending.</p>
+				{% endif %}
 				<hr>
 				<a href="#0" class="cd-read-more">Read more</a>
 				<span class="cd-date">Feb 14</span>
@@ -113,7 +118,7 @@
 
 		<div class="cd-timeline-block">
 			<div class="cd-timeline-img cd-location">
-				<img src="img/cd-icon-location.svg" alt="Location">
+				<img src="{{ STATIC_URL }}/img/start-here.png" alt="Location">
 			</div> <!-- cd-timeline-img -->
 
 			<div class="cd-timeline-content">
@@ -121,20 +126,33 @@
 				<hr>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum.</p>
 				<a href="#0" class="cd-read-more">Read more</a>
-				<span class="cd-date">Feb 18</span>
+				<span class="cd-date">{% if job.allocation_date %} {{job.allocation_date}} {% else %}
+				  {{today_date}}
+				  {% endif %}
+				</span>
 			</div> <!-- cd-timeline-content -->
 		</div> <!-- cd-timeline-block -->
 
 		<div class="cd-timeline-block">
 			<div class="cd-timeline-img cd-movie">
-				<img src="img/cd-icon-movie.svg" alt="Movie">
+				<img src="{{ STATIC_URL }}/img/start-here.png" alt="Movie">
 			</div> <!-- cd-timeline-img -->
 
 			<div class="cd-timeline-content">
 				<h2>Job Completion</h2>
 				<hr>
-				<p>This is the content of the last section</p>
-				<span class="cd-date">Feb 26</span>
+				<p>
+				{% if job_has_completed %} 
+					Completed on {{job.completion_date}} by {{job_completed_by_fullname}}. 
+				{% else %} 
+					{% if job.status == 'new' %}
+						New job.
+					{% endif %}
+				{% endif %}
+				</p>
+				<span class="cd-date">{% if job.completion_date %} {{job.completion_date}} {% else %}
+				  {{today_date}}
+				  {% endif %}</span>
 			</div> <!-- cd-timeline-content -->
 		</div> <!-- cd-timeline-block -->
 	</section> <!-- cd-timeline -->
