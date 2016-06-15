@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http.response import HttpResponse
 
+from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
 from handy_man.apps.job.models.job import Job
 from handy_man.apps.user_profile.models.profile import UserProfile
@@ -60,7 +61,7 @@ class JobInterestView(BaseDashboard):
             self.context.update({
                 'loggedin_user_profile': loggedin_user_profile,
                 'latest_jobs': job_interest.latest_jobs,
-                'new_jobs': job_interest.jobs_with_job_interest_status,
+                'new_jobs': Job.objects.filter(status=NEW),#job_interest.jobs_with_job_interest_status,
                 'job_identifier': 1,
                 'quotation_form': QuotationForm(),
                 'menus': MenuConfiguration().user_menu_list(self.user_profile)
