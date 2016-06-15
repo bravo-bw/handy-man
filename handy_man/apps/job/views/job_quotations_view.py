@@ -27,11 +27,11 @@ class JobQuotationsView(BaseDashboard):
                 #'ranked_quotes': UserRanking().return_ranked_quotations(form.cleaned_data.get('job')),
                 'form': form,
                 'loggedin_user_profile': loggedin_user_profile,
-                'job': Job.objects.get(pk=request.GET.get('hidden_job_id')),
+                'job': Job.objects.get(identifier=request.GET.get('hidden_job_id')),
                 'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
             })
         else:
-            job = Job.objects.get(pk=kwargs.get('job'))
+            job = Job.objects.get(identifier=kwargs.get('job'))
             self.context.update({
                 'can_add_quote': JobHelper(job=job).allow_add_quote(loggedin_user_profile),
                 'ranked_quotes': UserRanking().return_ranked_quotations(job),

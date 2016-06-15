@@ -340,7 +340,7 @@
 									</td>
 					                <td>{{job.allocated_to.user.username}}</td>
 					                <td>
-					                	<form action="{% url 'quote_url' job.pk %}" method="get">
+					                	<form action="{% url 'quote_url' job.identifier %}" method="get">
 					        				{% csrf_token %}
 					        				{% if job.has_quote %}
 					        					<button type="submit" class="btn btn-primary">View Quote(s)</button>
