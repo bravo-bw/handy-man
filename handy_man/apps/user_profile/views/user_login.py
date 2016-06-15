@@ -47,13 +47,13 @@ def user_profile(request, username):
     user_current_jobs = user_jobs.filter(status__in=[IN_PROGRESS, NEW])
     like = request.GET.get('score_type', '')
     job_identifier = request.GET.get('job_identifier', '')
-#     job = None
-#     if job_identifier:
-#         try:
-#             job = Job.objects.get(identifier=job_identifier)
-#             job.rating.add(SCORE_TYPES[like], loggedin_user_profile.user, request.META['REMOTE_ADDR'])
-#         except Job.DoesNotExist:
-#             pass
+    job = None
+    if job_identifier:
+        try:
+            job = Job.objects.get(identifier=job_identifier)
+            job.rating.add(SCORE_TYPES[like], loggedin_user_profile.user, request.META['REMOTE_ADDR'])
+        except Job.DoesNotExist:
+            pass
     user_completed_jobs = user_jobs.filter(status=COMPLETED)
     geolocation = Geolocation()
     district_name = request.GET.get('district_name', '')
