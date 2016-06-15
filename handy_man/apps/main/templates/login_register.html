@@ -144,6 +144,15 @@
 				                        	<label class="sr-only" for="form-password2">Password</label>
 				                        	<input type="password" name="form-password2" placeholder=" Re-enter Password..." class="form-password2 form-control" id="form-password2">
 				                        </div>
+				                        <div class="form-group">
+				                        	<label class="sr-only" for="form-account_type">Account type</label>
+				                        	<select name="form-account_type"  id="form-account_type">
+				                        	<option value="">Chose account type</option>
+				                        	{% for acc_Type in accont_type_options %}
+											  <option value="{{ acc_Type.0 }}">{{ acc_Type.1 }}</option>
+											{% endfor %}
+											</select>
+				                        </div>
 				                        <button type="submit" class="btn">Sign me up!</button>
 				                    </form>
 			                    </div>

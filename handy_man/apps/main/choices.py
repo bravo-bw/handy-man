@@ -5,8 +5,7 @@ SENDING_METHODS = (
 
 ACCOUNT_TYPE = (('artisan', 'Artisan'),
                 ('sme', 'SME'),
-                ('customer', 'Customer'),
-                ('handyman_admin', 'Handy Man Admin'))
+                ('customer', 'Customer'))
 
 JOB_STATUS = (('new', 'New'),
               ('in_progess', 'In Progress'),

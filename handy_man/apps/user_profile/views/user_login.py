@@ -233,6 +233,7 @@ def signup(request):
         username = request.POST.get('form-username', '')
         password1 = request.POST.get('form-password1', '')
         password2 = request.POST.get('form-password2', '')
+        account_type = request.POST.get('form-account_type', '')
         data = {
             'email': email,
             'first_name': first_name,
@@ -240,7 +241,8 @@ def signup(request):
             'mobile': mobile,
             'username': username,
             'password1': password1,
-            'password2': password2}
+            'password2': password2,
+            'account_type': account_type}
         user_form = UserCreateForm(data=data)
         if user_form.is_valid():
             with transaction.atomic():

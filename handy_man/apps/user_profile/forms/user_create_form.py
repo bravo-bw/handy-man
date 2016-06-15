@@ -14,6 +14,7 @@ class UserCreateForm(UserCreationForm):
     username = forms.CharField(widget=forms.widgets.TextInput(attrs={'placeholder': 'Username'}))
     password1 = forms.CharField(widget=forms.widgets.PasswordInput(attrs={'placeholder': 'Password'}))
     password2 = forms.CharField(widget=forms.widgets.PasswordInput(attrs={'placeholder': 'Password Confirmation'}))
+    account_type = forms.CharField(widget=forms.widgets.TextInput(attrs={'placeholder': 'Account Type'}))
 
     def is_valid(self):
         form = super(UserCreateForm, self)
@@ -25,5 +26,5 @@ class UserCreateForm(UserCreationForm):
 
     class Meta:
         fields = ['email', 'username', 'first_name', 'last_name', 'password1', 'password2']
-        profile_fields = ['mobile']
+        profile_fields = ['mobile', 'account_type']
         model = User

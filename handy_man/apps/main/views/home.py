@@ -4,6 +4,7 @@ from handy_man.apps.main.views import BaseDashboard
 from handy_man.apps.user_profile.forms import AuthenticateForm, UserCreateForm
 from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes import MenuConfiguration
+from handy_man.apps.main.choices import ACCOUNT_TYPE
 
 
 class Home(BaseDashboard):
@@ -35,10 +36,12 @@ class Home(BaseDashboard):
             self.template_name = 'login_register.html'
             auth_form = AuthenticateForm()
             user_form = UserCreateForm()
+            accont_type_options = ACCOUNT_TYPE
             self.context.update({
                 'title': self.title,
                 'auth_form': auth_form,
                 'user_form': user_form,
+                'accont_type_options': accont_type_options
             })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
