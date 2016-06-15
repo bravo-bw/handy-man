@@ -8,11 +8,11 @@
 	             <h3 class="panel-title">Attach New Quote</h3>
 	           </div>
 	           <div class="panel-body">
-	           <form action="{% url 'quote_url' job.pk %}" method="post">
+	           <form action="{% url 'quote_url' job.identifier %}" method="post">
 	           		{% csrf_token %}
 		        	<table class="table table-user-information">
 				        <tbody>
-				        	<input id="job_id" type="text" name="job" value={{job.pk}} hidden>
+				        	<input id="job_id" type="text" name="job" value={{job.identifier}} hidden>
 				        	<input id="artisan" type="text" name="artisan" value={{loggedin_user_profile.pk}} hidden>
 				        	<tr>
 				        		<td>
