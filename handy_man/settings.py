@@ -1,7 +1,7 @@
 import os
 import sys
 from unipath import Path
-from decimal import Decimal
+from decimal import getcontext, Decimal
 
 DEBUG = True
 
@@ -25,32 +25,35 @@ MANAGERS = ADMINS
 PATH = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(2).child('etc')
 print(PATH)
 
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        },
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'OPTIONS': {
-                'init_command': 'SET storage_engine=INNODB',
-            },
-            'OPTIONS': {
-                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
-            },
-            'HOST': '',
-            'PORT': '',
-        },
-    }
+# if 'test' in sys.argv:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+}
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'OPTIONS': {
+#                 'init_command': 'SET default_storage_engine=INNODB',
+#             },
+#             'OPTIONS': {
+#                 'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
+#             },
+#             'HOST': '',
+#             'PORT': '',
+#         },
+#     }
 
 SITE_ID = 1
 
 #  Max number of quotations that are allowed per job
 MAX_QUOTE_NUMBER = 20
+
+# Set the precision.
+getcontext().prec = 3
 
 #  Maximum number of jobs that can be completed by an artisan, for ranking purposes.
 MAX_COMPLETED_JOBS = Decimal(1000)
