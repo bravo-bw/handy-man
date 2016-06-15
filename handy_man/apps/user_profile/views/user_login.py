@@ -54,8 +54,6 @@ def user_profile(request, username):
 #             job.rating.add(SCORE_TYPES[like], loggedin_user_profile.user, request.META['REMOTE_ADDR'])
 #         except Job.DoesNotExist:
 #             pass
-#     print("**********", user_current_jobs[0].rating_likes, "***********here is the rating")
-#     print("**********", user_current_jobs[0].rating_dislikes, "***********here is the rating")
     user_completed_jobs = user_jobs.filter(status=COMPLETED)
     geolocation = Geolocation()
     district_name = request.GET.get('district_name', '')
