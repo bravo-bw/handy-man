@@ -358,6 +358,7 @@
 			      	<table id="user_completed_jobs" class="table table-striped table-bordered" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
+				            	<th></th>
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
@@ -368,6 +369,7 @@
 				        <tbody>
 				        	{% for job in user_completed_jobs %}
 					            <tr>
+					                <td><a href="{% url 'job_timeline_url' job.identifier %}">..<span class="glyphicon glyphicon-ok"></span></a></td>
 					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
 					                <td><a href="{% url 'job_posting_url' %}">{{job.user.identifier}}</a></td>
 					                <td>{{job.job_type.name}}</td>

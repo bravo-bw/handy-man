@@ -1,5 +1,7 @@
 from operator import itemgetter
 
+from decimal import getcontext, Decimal
+
 from django.conf import settings
 
 from handy_man.apps.job.models import Job, Quote
@@ -16,7 +18,13 @@ class UserRanking:
 
     def job_rate_marks(self, quote_job_rate, standard_job_rate):
         """Returns the marks awarded for pricing."""
-        price_marks = (1 / (quote_job_rate - standard_job_rate) / standard_job_rate) * settings.PRICE_WEIGHT
+        # Set the precision.
+        getcontext().prec = 3
+        price_difference = Decimal(quote_job_rate) - Decimal(standard_job_rate)
+        if price_difference == Decimal(0):
+            price_marks = settings.PRICE_WEIGHT
+        else:
+            price_marks = (Decimal(1) / price_difference / Decimal(standard_job_rate)) * settings.PRICE_WEIGHT
         return price_marks
 
     def satisfaction_marks(self, user):
@@ -33,13 +41,19 @@ class UserRanking:
     def user_jobs_completed_marks(self, user):
         """Returns the marks for the user's jobs that are completed successfully."""
         completed_jobs_count = Job.objects.filter(allocated_to=user, status='completed').count()
-        user_jobs_completed_marks = (completed_jobs_count / settings.MAX_COMPLETED_JOBS) * settings.COMPLETED_JOBS_WEIGHT
+        if completed_jobs_count == 0:
+            user_jobs_completed_marks = 0
+        else:
+            user_jobs_completed_marks = (completed_jobs_count / settings.MAX_COMPLETED_JOBS) * settings.COMPLETED_JOBS_WEIGHT
         return user_jobs_completed_marks
 
     def user_current_jobs_marks(self, user):
         """Return the marks for the current jobs that are not yet completed."""
-        current_jobs = Job.objects.filter(allocated_to=user, status__in=['assigned', 'in_progess']).count()
-        user_current_jobs_marks = (1 / (settings.MAX_CURRENT_JOBS - current_jobs) / settings.MAX_CURRENT_JOBS) * settings.IN_PROGRESS_JOBS_WEIGHT
+        current_jobs = Job.objects.filter(allocated_to=user, status='in_progess').count()
+        if current_jobs == 0:
+            user_current_jobs_marks = 0
+        else:
+            user_current_jobs_marks = (1 / (settings.MAX_CURRENT_JOBS - current_jobs) / settings.MAX_CURRENT_JOBS) * settings.IN_PROGRESS_JOBS_WEIGHT
         return user_current_jobs_marks
 
     def return_ranked_quotations(self, job):

@@ -88,23 +88,39 @@ class Job(ItemGeolocationMixin):
 
     job_image_1 = models.ImageField(
         upload_to=settings.STATIC_ROOT + '/gfx/',
-        default=None,
+        default=settings.MEDIA_ROOT + '/job_default1.png',
         null=True,
         blank=True
     )
 
     job_image_2 = models.ImageField(
         upload_to=settings.STATIC_ROOT + '/gfx/',
-        default=None,
+        default=settings.MEDIA_ROOT + '/job_default1.png',
         null=True,
         blank=True
     )
     job_image_3 = models.ImageField(
         upload_to=settings.STATIC_ROOT + '/gfx/',
-        default=None,
+        default=settings.MEDIA_ROOT + '/job_default1.png',
         null=True,
         blank=True
     )
+
+    def job_image(self, image):
+        if image:
+            return '{}{}'.format(settings.STATIC_URL, image.name.split('/')[-1:][0])
+        return ''
+
+    @property
+    def image_urls(self):
+        return (self.job_image(self.job_image_1), self.job_image(self.job_image_2), self.job_image(self.job_image_3))
+
+    @property
+    def job_image_default(self):
+        # Last element in the list is the file name
+        if self.job_image(self.job_image) == '':
+            return '{}{}'.format(settings.STATIC_URL, 'job_default1.png')
+        return self.job_image(self.job_image_1)
 
     objects = JobManager()
 

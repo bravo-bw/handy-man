@@ -1,11 +1,13 @@
 Django==1.9.5
 Unipath==1.1
-django-extensions==1.6.1
+django-extensions
 Pillow
 django-updown
 mysqlclient==1.3.7
 factory-boy==2.6.1
 geopy
-factory-boy==2.6.1
 fake-factory==0.5.7
 django-star-ratings
+django-braces==1.9.0
+django-model-utils==2.5
+python-dateutil==2.5.3
