@@ -301,7 +301,9 @@
 				        <thead>
 				            <tr>
 				            	<th>Id</th>
-				            	<th></th>
+				            	{% if user_profile.account_type == 'customer' %}
+				            		<th></th>
+				            	{% endif %}
 				                <th>Posted By</th>
 				                <th>Job Type</th>
 				                <th>Status</th>
@@ -325,7 +327,9 @@
 				        	{% for job in user_current_jobs %}
 					            <tr><!-- <a href="{% url 'quote_url' job.pk %}">-->
 					            	<td>{{job.identifier}}</td>
-					            	<td><a value="{{job.identifier}}" id="mjob_identifier">..<span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-pencil"></span></a></td>
+					            	{% if user_profile.account_type == 'customer' %}
+					            		<td><a value="{{job.identifier}}" id="mjob_identifier">..<span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-pencil"></span></a></td>
+					                {% endif %}
 					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
 					                <td>{{job.job_type.name}}</td>
 					                <td>{{job.status}}</td>
