@@ -62,7 +62,7 @@
                 mapOptions);
             marker.setMap(map);
         }
-        init_map1({{job.latitude}}, {{job.longitude}});
+        init_map1({{job.latitude|default_if_none:-24.6321302 }}, {{job.longitude|default_if_none:25.9321138}});
     });
     $( "#job_img1" ).mouseover(function() {
     	$( "#job_img_main" ).attr('src', $( "#job_img1" ).attr('src'));

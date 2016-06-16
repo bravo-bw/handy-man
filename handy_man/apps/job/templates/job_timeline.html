@@ -51,52 +51,6 @@
 				</div>
 </div> <!-- cd-timeline-content -->
 </div> <!-- cd-timeline-block -->
-
-		<!--
-		<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-movie">
-				<img src="{{ STATIC_URL }}/img/process1.png"" alt="Movie">
-			</div>
-
-			<div class="cd-timeline-content">
-				<h2>Artisans Interested</h2>
-				<hr>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
-				
-				<a href="#0" class="cd-read-more">Read more</a>
-				<span class="cd-date">Jan 18</span>
-				<div class="cd-date" style="margin-top:-40px;">
-					<div class="container_timeline" style="width:100%; background:white;">
-				  		<span style="color:black; float:left;margin:10px;">Administrative Box</span><br>
-				  		<hr>
-				  		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
-			  		</div>
-				</div>
-			</div> 
-		</div>  cd-timeline-block -->
-
-		 <!--<div class="cd-timeline-block">
-			<div class="cd-timeline-img cd-picture">
-				<img src="img/cd-icon-picture.svg" alt="Picture">
-			</div>
-
-			<div class="cd-timeline-content">
-				<h2>Assigned Artisan</h2>
-				<hr>
-				<div class="container_timeline">
-					<div class="avatar-flip">
-				    	<img src="{{assigned_artisan_avatar}}" height="150" width="150">
-				    	<img src="{{assigned_artisan_avatar}}" height="150" width="150">
-				 	 </div>
-				 	 <h2>{{assigned_artisan_fullname}}</h2>
-				  	<h4>{{profession}}</h4>
-				  	<p>{{about}}</p>
-			  	</div>
-				<a href="#0" class="cd-read-more">Read more</a>
-				<span class="cd-date">{{job.modified}}</span>
-			</div> cd-timeline-content 
-		</div> -->
-
 		<div class="cd-timeline-block">
 			<div class="cd-timeline-img cd-location">
 				<img src="{{ STATIC_URL }}/img/start-here.png" alt="Location">
@@ -106,7 +60,7 @@
 				<h2>Accepted Quatation</h2>
 				<hr>
 				{% if quote %}
-					<p><a>Quotation</a> by <a>{{job_completed_by_fullname}}</a> on {{job.allocation_date}}.</p>
+					<p><a>Quotation</a> by <a>{{job_completed_by_fullname}}</a> on {{ job.allocation_date|date:"D d M Y" }}.</p>
 				{% else %}
 					<p>Pending.</p>
 				{% endif %}
@@ -150,8 +104,8 @@
 					{% endif %}
 				{% endif %}
 				</p>
-				<span class="cd-date">{% if job.completion_date %} {{job.completion_date}} {% else %}
-				  {{today_date}}
+				<span class="cd-date">{% if job.completion_date %} {{ job.completion_date|date:"D d M Y" }} {% else %}
+				  {{today_date|date:"D d M Y" }}
 				  {% endif %}</span>
 			</div> <!-- cd-timeline-content -->
 		</div> <!-- cd-timeline-block -->
