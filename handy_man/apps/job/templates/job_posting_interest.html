@@ -160,7 +160,7 @@
 			    <tbody>
 			{% for job, job_quotation_status in new_jobs %}
 			    <tr>
-			        <td><a href="{% url 'job_display_url' job.identifier %}"><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></a></td>
+			        <td><a data-toggle="tooltip" title="View Job" href="{% url 'job_display_url' job.identifier %}"><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></a></td>
 			        <td>{{job.job_type.name}}</td>
 			        <td>{{job.description}}</td>
 			        <td>{{job.street}}</td>
