@@ -9,10 +9,15 @@ class QuoteHelper(object):
     def __init__(self, quote):
         self.quote = quote
 
-    def accept_cancel_qoute(self, accepted):
+    def accept_cancel_qoute(self, accepted, allocated_to):
         # This method is only called from the view. 'accepted' can only be set to False by the helper when quote
         # is getting rejected.
         self.quote.accepted = True if accepted == 'on' else None
+        if self.quote.accepted:
+            self.quote.job.allocated_to = allocated_to
+        else:
+            self.quote.job.allocated_to = None
+        self.quote.job.save()
         return self.quote
 
     def reject_all_other_quotes(self):

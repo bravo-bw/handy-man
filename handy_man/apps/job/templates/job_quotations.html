@@ -66,6 +66,11 @@
 			            <tr>
 			            	<th>artisan</th>
 			                <th>currency</th>
+			                {% if loggedin_user_profile.account_type == 'customer' %}
+			                	<th>rate/hr</th>
+			                	<th>est. hrs</th>
+			                	<th>standard/hr</th>
+			                {% endif %}
 			                <th>amount</th>
 			                {% if loggedin_user_profile.account_type == 'customer' %}
 			                	<th>accept</th>
@@ -85,7 +90,12 @@
 			        	{% for quote in quotes %}
 				            <tr>
 				            	<td><a href="{% url 'user_profile' quote.artisan.user.username %}">{{quote.artisan.user.username}}</a></td>
-				                <td>{{quote.currency}}</td>
+				                <td>{{quote.currency}}</td> 
+				                {% if loggedin_user_profile.account_type == 'customer' %}
+				                	<td>{{quote.rate_per_hour}}</td>
+				                	<td>{{quote.estimate_hours}}</td>
+				                	<td>{{quote.job.job_type.rate_per_hour}}</td>
+				                {% endif %}
 				                <td>{{quote.amount}}</td>
 				                <td>
 				                	<form id="accept_quote_form_{{forloop.counter}}" action="{% url 'quote_url' job.identifier %}" method="post">
