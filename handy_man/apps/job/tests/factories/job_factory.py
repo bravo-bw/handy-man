@@ -15,3 +15,9 @@ class JobFactory(factory.DjangoModelFactory):
     job_type = factory.SubFactory(JobTypeFactory)
     allocated_to = None
     status = 'new'
+jobs = Job.objects.all()
+for j in jobs:
+    j.job_image_1 = '/Users/tsetsiba/source/handy-man/handy_man/media/default_avatar_male.jpg'
+    j.job_image_2 = '/Users/tsetsiba/source/handy-man/handy_man/media/default_avatar_male.jpg'
+    j.job_image_3 = '/Users/tsetsiba/source/handy-man/handy_man/media/default_avatar_male.jpg'
+    j.save()

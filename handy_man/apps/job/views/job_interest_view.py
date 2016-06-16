@@ -1,10 +1,7 @@
-import json
-
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.http.response import HttpResponse
 
 from handy_man.apps.main.constants import NEW
 from handy_man.apps.main.views.base_dashboard import BaseDashboard
@@ -13,7 +10,6 @@ from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes import MenuConfiguration
 
 from ..classes import JobInterest
-from ..forms import QuotationForm
 
 
 class JobInterestView(BaseDashboard):
@@ -37,35 +33,15 @@ class JobInterestView(BaseDashboard):
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
         self._job_identifier = request.GET.get('job_identifier')
         self._user = request.user
-        job_interest = JobInterest(self.job, self.user_profile)
-        if request.is_ajax():
-            if request.GET.get('action') == 'add_job_interest':
-                if job_interest.add_job_interest():
-                    message = {'message': "Job request has been submitted.", "status": "success"}
-                    data = json.dumps([message])
-                else:
-                    message = {'message': "Failed to submit job request.", "status": "failed"}
-                    data = json.dumps([message])
-                return HttpResponse(data, content_type='application/json')
-            elif request.GET.get('action') == 'cancel_job_interest':
-                data = None
-                if job_interest.cancel_job_interests():
-                    message = {'message': "Job request for has been cancelled.", "status": "success"}
-                    data = json.dumps([message])
-                else:
-                    message = {'message': "Failed to cancel job request.", "status": "failed"}
-                    data = json.dumps([message])
-                return HttpResponse(data, content_type='application/json')
-        else:
-            self._user = request.user
-            self.context.update({
-                'loggedin_user_profile': loggedin_user_profile,
-                'latest_jobs': job_interest.latest_jobs,
-                'new_jobs': Job.objects.filter(status=NEW),#job_interest.jobs_with_job_interest_status,
-                'job_identifier': 1,
-                'quotation_form': QuotationForm(),
-                'menus': MenuConfiguration().user_menu_list(self.user_profile)
-            })
+        job_interest = JobInterest(user_profile=loggedin_user_profile)
+        self._user = request.user
+        self.context.update({
+            'loggedin_user_profile': loggedin_user_profile,
+            'latest_jobs': job_interest.latest_jobs,
+            'new_jobs': job_interest.new_jobs(),
+            'job_identifier': 1,
+            'menus': MenuConfiguration().user_menu_list(self.user_profile)
+        })
         return render_to_response(self.template_name, self.context, context_instance=RequestContext(request))
 
     @property

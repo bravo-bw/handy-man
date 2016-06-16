@@ -1,9 +1,10 @@
 from handy_man.apps.job.models.job import Job
+from handy_man.apps.main.constants import NEW
 
 
 class JobInterest(object):
 
-    def __init__(self, job, user_profile):
+    def __init__(self, job=None, user_profile=None):
         self.job = job
         self.user_profile = user_profile
 
@@ -13,22 +14,6 @@ class JobInterest(object):
         if self.job.status in ['assigned', 'completed'] or has_logged_interest:
             return False
         return True
-
-    def add_job_interest(self):
-        if self.job and self.validate_job_interest:
-            job = self.job
-            job.artisans_interested.add(self.user_profile)
-            job.save()
-            return True
-        return False
-
-    def cancel_job_interests(self):
-        if self.job:
-            job = self.job
-            job.artisans_interested.remove(self.user_profile)
-            job.save()
-            return True
-        return False
 
     @property
     def jobs_with_job_interest_status(self):
@@ -52,22 +37,16 @@ class JobInterest(object):
         except AttributeError:
             return False
 
-    @property
-    def artisan_qualifications(self):
-        artisan_qualifications = []
-        return artisan_qualifications
+    def job_quatation_status(self, job):
+        from handy_man.apps.job.models.quote import Quote
+        try:
+            return True if Quote.objects.filter(job=job) else False
+        except AttributeError:
+            return False
 
-    def job_qualification(self, job):
-        job_qualification = []
-        return job_qualification
+    def new_jobs(self):
+        jobs = []
+        for job in Job.objects.filter(status=NEW):
+            jobs.append([job, self.job_quatation_status(job)])
+        return jobs
 
-    @property
-    def artisan_jobs(self):
-        """ returns a list of jobs artisan qualifies for."""
-        artisan_jobs = []
-        for job in self.all_new_jobs:
-            for qualification in self.artisan_qualifications:
-                if qualification in self.job_qualification(job):
-                    artisan_jobs.append(job)
-                    break
-        return artisan_jobs
