@@ -5,7 +5,7 @@
 <div class="jumbotron">
 	<div class="row" style="background-color:white;">
 		<div class="col-md-7" style="background-color:white;">
-		<h4>{% if job.title %} {{job.title}} {% else %} Job Title {% endif %} </h4>
+		<h4>{% if job.title %} {{job.title |title}} {% else %} Job Title {% endif %} </h4>
 		<hr>
 		<img src="{{job.image_urls.0}}" id="job_img_main" width="100%" height="300" alt="..." class="img-rounded">
 		<hr>
