@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+<style>
+.kv-avatar .file-preview-frame,.kv-avatar .file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+.kv-avatar .file-input {
+    display: table-cell;
+    max-width: 220px;
+}
+</style>
+
+{% block content %}
+<div class="container">
+<div class="jumbotron">
+<form class="form-inline" action="{% url 'modify_job_url' job.identifier %}" method="post">
+        	{% csrf_token %}
+          <div class="panel panel-info">
+          	<table>
+	            <div class="panel-heading">
+	              <h3>Modify a Job</h3><h3 class="panel-title"></h3>
+	            </div>
+            </table>
+            <div class="panel-body">
+              <div class="row"> 
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                    	<tr>
+                    	<td>Job type: {{ job.job_type.name}} <br />
+                    	Job location: <br />{{ job.latitude}}, {{ job.longitude}}<br /> 
+                    	{{job.district.district_name}}, {{job.town_village.town_village_name}}, {{job.street.street_name}}
+                    	</td>
+                    	</tr>
+                      <tr>
+                          <td>
+                          	  <label>Job status</label>
+	                        	<select name="job_status"  id="job_status">
+	                        	<option value="{{ job.status }}">{{ job.status }}</option>
+	                        	{% for status in status_options %}
+	                        		{% if status.0 == job.status %}
+	                        			<option value="{{ status.0 }}" selected>{{ status.1 }}</option>
+                           			{% else %}
+                           				<option value="{{ status.0 }}">{{ status.1 }}</option>
+                           			{% endif %}
+								{% endfor %}
+							  </select>
+                          </tr>
+                      <tr>
+                      <td>
+                      <p>Re Upload images of the Job</p>
+                      <input id="id_image1" type="file" class="" name="image1">
+                      <input id="id_image2" type="file" class="" name="image2">
+                      <input id="id_image3" type="file" class="" name="image3"></td>
+                      </tr>
+                  <tr><td>
+                  <label for="description">Job Closing Date:</label>
+                  <div class='input-group date' id="datetimepicker1" style="width:50%;">
+                    <input id="new_estimated_job_closing_date" type="date" class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div></td><td></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="form-group">
+                  	<button class="btn btn-primary" type="submit" value="submit" name="job" id="job">Submit Job</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+	 <script>
+	 function getDistrict(district_select) {
+		    var d = district_select.value;
+		    window.location="{% url 'job_posting_url' %}?district_name="+d;
+		}
+	 function getTownVillage(town_village_select) {
+		 var dist = document.getElementById("district_select").value;
+		 var tv = town_village_select.value;
+		 window.location="{% url 'job_posting_url' %}?town_village_name="+tv+"&district_name="+dist;
+		}
+	 function getStreet(street_select) {
+		 var dist = document.getElementById("district_select").value;
+		 var tv = document.getElementById("town_village_select").value;
+		 var st = street_select.value;
+		 window.location="{% url 'job_posting_url' %}?street_name="+st+"&town_village_name="+tv+"&district_name="+dist;
+		}
+	 </script>
+	</div>
+	</div>
+{% endblock %}

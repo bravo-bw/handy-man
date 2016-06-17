@@ -301,14 +301,11 @@
 				        <thead>
 				            <tr>
 				            	<th>Id</th>
-				            	{% if user_profile.account_type == 'customer' %}
-				            		<th></th>
-				            	{% endif %}
+				            	<th>Edit Job</th>
 				                <th>Posted By</th>
 				                <th>Job Type</th>
 				                <th>Status</th>
 				                <th>description</th>
-				                <th>rating</th>
 				                <th>Allocated To</th>
 				                <td>Quote</td>
 				            </tr>
@@ -327,21 +324,11 @@
 				        	{% for job in user_current_jobs %}
 					            <tr><!-- <a href="{% url 'quote_url' job.pk %}">-->
 					            	<td>{{job.identifier}}</td>
-					            	{% if user_profile.account_type == 'customer' %}
-					            		<td><a value="{{job.identifier}}" id="mjob_identifier">..<span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-pencil"></span></a></td>
-					                {% endif %}
+					            	<td><a href="{% url 'modify_job_url' job.identifier %}"><span class="glyphicon glyphicon-wrench"></span></a></td>
 					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
 					                <td>{{job.job_type.name}}</td>
 					                <td>{{job.status}}</td>
 					                <td>{{job.description}}</td>
-					                <td>
-					                	<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=LIKE&job_identifier={{job.identifier}}'">
-								          <span class="glyphicon glyphicon-thumbs-up"></span> Like {{ job.rating.likes }}
-								        </button>
-								        <button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=DISLIKE&job_identifier={{job.identifier}}'">
-          									<span class="glyphicon glyphicon-thumbs-down"></span> Unlike {{ job.rating.dislikes }}
-								        </button>
-									</td>
 					                <td>{{job.allocated_to.user.username}}</td>
 					                <td>
 					                	<form action="{% url 'quote_url' job.identifier %}" method="get">
@@ -362,11 +349,13 @@
 			      	<table id="user_completed_jobs" class="table table-striped table-bordered" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
-				            	<th></th>
+				            	<th>Job Life</th>
+				            	<th>Edit Job</th>
 				                <th>Posted By</th>
 				                <th>Job Identifier</th>
 				                <th>Job Type</th>
 				                <th>Status</th>
+				                <th>Rate Job</th>
 				                <th>description</th>
 				            </tr>
 				        </thead>
@@ -374,10 +363,19 @@
 				        	{% for job in user_completed_jobs %}
 					            <tr>
 					                <td><a href="{% url 'job_timeline_url' job.identifier %}">..<span class="glyphicon glyphicon-ok"></span></a></td>
+					                <td><a href="{% url 'modify_job_url' job.identifier %}"><span class="glyphicon glyphicon-wrench"></span></a></td>
 					                <td><a href="{% url 'user_profile' job.posted_by.user.username %}">{{job.posted_by.user.username}}</a></td>
 					                <td><a href="{% url 'job_posting_url' %}">{{job.user.identifier}}</a></td>
 					                <td>{{job.job_type.name}}</td>
 					                <td>{{job.status}}</td>
+					                <td width="20%">
+					                	<button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=LIKE&job_identifier={{job.identifier}}'">
+								          <span class="glyphicon glyphicon-thumbs-up"></span> Like {{ job.rating.likes }}
+								        </button>
+								        <button type="button" class="btn btn-default btn-sm" onclick="location.href='{% url 'user_profile' user.username %}?score_type=DISLIKE&job_identifier={{job.identifier}}'">
+          									<span class="glyphicon glyphicon-thumbs-down"></span> Unlike {{ job.rating.dislikes }}
+								        </button>
+									</td>
 					                <td>{{job.description}}</td>
 					            </tr>
 				            {% endfor %}
