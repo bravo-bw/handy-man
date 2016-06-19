@@ -158,36 +158,20 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			{% for job in new_jobs %}
+			{% for job, job_quotation_status in new_jobs %}
 			    <tr>
-			        <td><a href="{% url 'job_display_url' job.identifier %}"><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></a></td>
+			        <td><a data-toggle="tooltip" title="View Job" href="{% url 'job_display_url' job.identifier %}"><img src="{{ STATIC_URL }}img/job.png" class="img-rounded" alt="Cinque Terre" width="40px" height="40px"></a></td>
 			        <td>{{job.job_type.name}}</td>
 			        <td>{{job.description}}</td>
 			        <td>{{job.street}}</td>
-					<!-- <td>
-						<form action="{% url 'jobs_url' %}" method="post">
-		               		{% csrf_token %}
-		               		    <input name="artisan" id="artisan" type="hidden" value="sets">
-		               	 		<input name="job_identifier" type="hidden" value="{{job.identifier}}">
-								<div class="input-group" style="width:100px; margin-left:0px;">
-								  	<div class="input-group-btn" style="float:left;">
-								  		{% if job_interest_status %}									  
-								   			<button type="button" disabled="disabled" class="btn btn-success btn-sm" value="ok-{{job.identifier}}" title="submit job request"><span class="glyphicon glyphicon-ok"></span></button>
-								   		{% else %}
-								   			<button type="button" class="btn btn-default btn-sm" title="submit job request" value="ok-{{job.identifier}}"><span class="glyphicon glyphicon-ok"></span></button>
-								   		{% endif %}
-								  		<button type="button" class="btn btn-default btn-sm" title="cancel job request" value="remove-{{job.identifier}}"><span class="glyphicon glyphicon-remove"></span></button>
-								  	</div>
-								</div>
-		        		</form>
-        			</td> -->
         			<td>
-	        			<form action="{% url 'quote_url' job.identifier %}" method="get">
+	        			<form action="{% url 'quote_url' job.identifier %}?hidden_job_id={{job.identifier}}&&" method="get">
 	        				{% csrf_token %}
-	        				{% if job.has_quote %}
+	        				{% if job_quotation_status %}
 	        					<button type="submit" class="btn btn-primary" value="{{job.identifier}}">View Quote</button>
 	        				{% else %}
-	        					<button data-toggle="modal" data-target="#myModal"  type="button" class="btn btn-primary" value="{{job.identifier}}">Submit Quote</button>
+	        					<input name="hidden_job_id" type="hidden" value="{{job.identifier}}">
+	        					<button type="submit" class="btn btn-primary" value="{{job.identifier}}">Submit Quote</button>
 	        				{% endif %}
 	        			</form>
 	        		</td>
@@ -206,19 +190,11 @@
         <div class="panel-heading">
             <i class="fa fa-bell fa-fw"></i> Latest Jobs
         </div>
-        <!-- /.panel-heading -->
         <div class="panel-body">
         	{% for job in latest_jobs %}
         	<p><h6>{{job.created}}<br>{{job.job_type}} @ {{job.street.street_name}}, {{job.town_village.town_village_name}}, {{job.district.district_name}} <br> Posted By <a href="#">{{job.posted_by.user.first_name}} - {{job.posted_by.user.last_name}}</a></h6></p>
 			<hr>
 			{% endfor %}
-			<!--
-        	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
-			<hr>
-        	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
-			<hr>
-        	<p><h6>14:30 9 May 2016<br>Plumbing @ G-West, Gaborone, South-East <br> Posted By <a href="#">Tshepiso Setsiba</a></h6></p>
-			<hr> -->
             <a href="#" class="btn btn-default btn-block">View All</a>
         </div>
         <!-- /.panel-body -->
@@ -233,55 +209,6 @@
 
 </div>
 </div>
-
-		<div class="modal fade" id="myModal" role="dialog" style="padding:10px;">
-		  <div class="modal-dialog" role="document" style="padding:10px;">
-		  	<div class="modal-content" style="padding:10px;"> 
-			<div class="modal-header" id="mmodal-header">
-				<h4 class="modal-title" id="myModalLabel">Add New Quotation <em id="mjob_status"></em></h4>
-				<span id="mjob_identifier"></span>
-				<div class="label label-success" style="padding:3px; margin:5px;" id="message_box"></div>
-			</div>       
-			<form id="new_quote_form" action="{% url 'quote_url' job_identifier %}" method="post">
-				{% csrf_token %}
-				  <div class="form-group">
-				    <label for="job_identifier" id="mjob_identifier_lbl">Job Identifier:<em id="mjob_id"></em></label>
-				    <input id="job_id" type="hidden" name="job" value={{job.identifier}}>
-				    <input id="artisan_id" type="hidden" name="artisan" value={{loggedin_user_profile.pk}}>
-				</div>
-				<hr>			
-				  <div class="form-group">
-				    {{ quotation_form.currency.errors }}
-				    <label for="{{ form.subject.id_for_label }}">Currency:</label>
-				    {{ quotation_form.currency }}
-				</div>
-				<hr>
-				<div class="form-group">
-				    {{ quotation_form.estimate_hours.errors }}
-				    <label for="{{ form.subject.id_for_label }}">Estimate hours:</label>
-				    {{ quotation_form.estimate_hours }}
-				</div>
-				<hr>
-				<div class="form-group">
-				    {{ quotation_form.rate_per_hour.errors }}
-				    <label for="{{ form.subject.id_for_label }}">Rate per hour:</label>
-				    {{ quotation_form.rate_per_hour }}
-				</div>
-				<hr>
-				<div class="form-group">
-				    {{ quotation_form.amount.errors }}
-				    <label for="{{ form.subject.id_for_label }}">Amount:</label>
-				    {{ quotation_form.amount }}
-				</div>
-			<div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        		<button id="btn_m_changes" type="submit" class="btn btn-primary">Save</button>
-     	 	</div>
-			</form>
-			</div>
-			</div>
-<script type="text/javascript" charset="utf8" src="{{ STATIC_URL }}js/datatableview.js"></script>
-<!-- /.row -->
 </div>
 </div>
 {% endblock %}

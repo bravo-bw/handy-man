@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 
 from handy_man.apps.job.models.job import Job
+from handy_man.apps.user_profile.classes.menu_configuration import MenuConfiguration
+from handy_man.apps.user_profile.models.profile import UserProfile
 
 
 class JobDisplayView(TemplateView):
@@ -40,9 +42,10 @@ class JobDisplayView(TemplateView):
         job_identifier = context.get('job_identifier')
         job_identifier = int(job_identifier.split('/')[0])
         job = self.job(job_identifier)
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         context.update({
             'job': job,
-            #'job_images': self.job_images()
+            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render(request, self.template_name, context)
 

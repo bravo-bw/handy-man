@@ -5,9 +5,9 @@
 <div class="jumbotron">
 	<div class="row" style="background-color:white;">
 		<div class="col-md-7" style="background-color:white;">
-		<h4>{% if job.title %} {{job.title}} {% else %} Job Title {% endif %} </h4>
+		<h4>{% if job.title %} {{job.title |title}} {% else %} Job Title {% endif %} </h4>
 		<hr>
-		<img src="{{ STATIC_URL }}/img/job_default.jpg" id="job_img_main" width="100%" height="300" alt="..." class="img-rounded">
+		<img src="{{job.image_urls.0}}" id="job_img_main" width="100%" height="300" alt="..." class="img-rounded">
 		<hr>
 		<div class="row" style="padding:10px;">
 			<img src="{{job.image_urls.0}}" id="job_img1" alt="job image 1" style="width:150px;height:150px">
@@ -62,7 +62,7 @@
                 mapOptions);
             marker.setMap(map);
         }
-        init_map1({{job.latitude}}, {{job.longitude}});
+        init_map1({{job.latitude|default_if_none:-24.6321302 }}, {{job.longitude|default_if_none:25.9321138}});
     });
     $( "#job_img1" ).mouseover(function() {
     	$( "#job_img_main" ).attr('src', $( "#job_img1" ).attr('src'));
