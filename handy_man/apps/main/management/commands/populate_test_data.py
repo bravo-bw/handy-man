@@ -6,8 +6,7 @@ from handy_man.apps.user_profile.models import Profession
 from handy_man.apps.job.models import JobType
 from handy_man.apps.user_profile.tests.factories import UserProfileFactory, UserFactory
 
-from ...constants import SHIPPER, INDIVIDUAL, NEW
-from ...choices import CARGO_TYPE
+from ...main.choices import ACCOUNT_TYPE
 
 
 class Command(BaseCommand):
@@ -19,18 +18,22 @@ class Command(BaseCommand):
         user1 = User.objects.create_user('user1', 'user1@thebeatles.com', 'user1')
         user1.first_name = 'user1'
         user1.last_name = 'user1'
+        user1.account_type = 'customer'
         user1.save()
         user2 = User.objects.create_user('user2', 'user2@thebeatles.com', 'user2')
         user2.first_name = 'user2'
         user2.last_name = 'user2'
+        user2.account_type = 'artisan'
         user2.save()
         user3 = User.objects.create_user('user3', 'user3@thebeatles.com', 'user3')
         user3.first_name = 'user3'
         user3.last_name = 'user3'
+        user3.account_type = 'customer'
         user3.save()
         user4 = User.objects.create_user('user4', 'user4@thebeatles.com', 'user4')
         user4.first_name = 'user4'
         user4.last_name = 'user4'
+        user4.account_type = 'artisan'
         user4.save()
         user1 = User.objects.get(first_name='user1')
         user2 = User.objects.get(first_name='user2')
