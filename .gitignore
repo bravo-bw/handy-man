@@ -67,4 +67,4 @@ target/
 *.pem
 *.key
 *keys
-
+handy_man/db.sqlite3
