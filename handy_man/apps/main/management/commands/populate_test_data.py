@@ -3,10 +3,7 @@ from django.contrib.auth.models import User
 
 from handy_man.apps.job.tests.factories import JobFactory
 from handy_man.apps.user_profile.models import Profession
-from handy_man.apps.job.models import JobType
-from handy_man.apps.user_profile.tests.factories import UserProfileFactory, UserFactory
-
-from ...main.choices import ACCOUNT_TYPE
+from handy_man.apps.user_profile.tests.factories import UserProfileFactory
 
 
 class Command(BaseCommand):
