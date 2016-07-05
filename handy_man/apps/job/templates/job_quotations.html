@@ -55,7 +55,11 @@
         </div>
         </div>
         <div class="row">
-		<div class="col-md-9">
+        {% if loggedin_user_profile.account_type == 'customer' %}
+			<div class="col-md-9">
+		{% else %}
+			<div class="col-md-14">
+		{% endif %}
 		<div class="panel panel-info">
             <div class="panel-heading">
               <h3 class="panel-title">Quotations Against Job</h3>
@@ -129,6 +133,7 @@
 		   </div>
 		</div>
 	</div>
+	{% if loggedin_user_profile.account_type == 'customer' %}
 	<div class="col-md-3">
 			<div class="panel panel-info">
 	            <div class="panel-heading">
@@ -172,12 +177,13 @@
 		                {% endfor %}
 	                	</table>
 	                </form>
-	 {% else %}
-	 <div>No records</div>
-	{% endif %}
+					 {% else %}
+					 <div>No records</div>
+					{% endif %}
 	         </div>
 	        </div>
 			</div>
+		{% endif %}
 		</div>
     </div> <!-- end of jumbotron -->
  </div>   <!-- end of main container -->
@@ -196,7 +202,7 @@
 	            }
 	        }
 	    	if(!$(this).is(":checked")) {
-	            var returnVal = confirm("You are about to CANCELL a quotation, are you sure?");
+	            var returnVal = confirm("You are about to CANCELL a quotation. This will incurr some charges, are you sure?");
 	            if(returnVal){
 	            	ind = $(this).attr("id").split('_')[2];
 	            	$("#accept_quote_form_"+ind).submit();
