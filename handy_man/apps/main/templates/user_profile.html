@@ -68,7 +68,7 @@
 						 </div>
 				      </div>
 				      <div class="row">
-						    <div class="col-md-12 col-md-offset-0">
+						    <div class="col-md-8 col-md-offset-2">
 						      <!--<form class="form-horizontal" role="form">-->
 						        <fieldset>
 						
@@ -100,24 +100,32 @@
 						          </div>
 									
 								  <div class="form-group">
-						            <label class="col-sm-2 control-label" for="email">Contact Email:</label>
-						            <div class="col-sm-10">
-						              <input type="text" class="form-control" id="id_email" name="email" value="{{user_profile.user.email}}" placeholder="Contact Email" readonly="readonly" style="background-color: #D8D8D8">
-						            </div>
+								  	<div class="row">
+						    			<div class="col-md-12 col-md-offset-0">
+								  			<fieldset>
+									            <label class="col-sm-2 control-label" for="email">Contact Email:</label>
+									            <div class="col-sm-10">
+									              <input type="text" class="form-control" id="id_email" name="email" value="{{user_profile.user.email}}" placeholder="Contact Email" readonly="readonly" style="background-color: #D8D8D8">
+						            			</div>
+						            		</fieldset>
+								        </div>
+								     </div>
 						          </div>
 						          
 						          <!-- Text input-->
 						          <div class="form-group">
 						          	<div class="row">
-						    			<div class="col-md-12">
-								            <label class="col-sm-2 control-label" for="contact_number">Mobile Number:</label>
-								            <div class="col-sm-4">
-								              <input type="text" class="form-control" id="id_mobile" name="mobile" value="{{user_profile.mobile}}" placeholder="Mobile Number" readonly="readonly" style="background-color: #D8D8D8">
-								            </div>
-								            <label class="col-sm-2 control-label" for="alter_contact">Alternative Number:</label>
-								            <div class="col-sm-4">
-								              <input type="text" class="form-control" id="id_alter_contact" name="alter_contact" value="{{user_profile.alter_contact}}" placeholder="Alternative Number" readonly="readonly" style="background-color: #D8D8D8">
-								            </div>
+						    			<div class="col-md-12 col-md-offset-0">
+						    				 <fieldset>
+									            <label class="col-sm-2 control-label" for="contact_number">Mobile Number:</label>
+									            <div class="col-sm-4">
+									              <input type="text" class="form-control" id="id_mobile" name="mobile" value="{{user_profile.mobile}}" placeholder="Mobile Number" readonly="readonly" style="background-color: #D8D8D8">
+									            </div>
+									            <label class="col-sm-2 control-label" for="alter_contact">Alternative Number:</label>
+									            <div class="col-sm-4">
+									              <input type="text" class="form-control" id="id_alter_contact" name="alter_contact" value="{{user_profile.alter_contact}}" placeholder="Alternative Number" readonly="readonly" style="background-color: #D8D8D8">
+									            </div>
+								             </fieldset>
 								        </div>
 								     </div>
 						          </div>				
@@ -153,18 +161,23 @@
 						          
 						          <!-- Text input-->
 						          <div class="form-group">
-						            <label class="col-sm-2 control-label" for="profession" id="profession_label" hidden>Profession:</label>
-						            <div class="col-sm-10" id="profession_div" hidden>
-						              <select name="profession" class="form-control" id="profession" disabled style="background-color: #D8D8D8" hidden>
-			                      		  <option value="-------">-------</option>
-			                      		  {% for profession in professions %}
-			                      		  	{% if user_profile.profession.profession_type == profession.profession_type %}
-			                      		  		<option value={{profession.profession_type}} selected>{{profession.profession_type}}</option>
-			                      		  	{% else %}
-			                      		  		<option value={{profession.profession_type}} >{{profession.profession_type}}</option>
-			                      		  	{% endif %}
-			                      		  {% endfor %}
-										</select>
+						          	<div class="row">
+						    			<div class="col-md-12 col-md-offset-0">
+						    				 <fieldset>
+									            <label class="col-sm-2 control-label" for="profession" id="profession_label" hidden>Profession:</label>
+									            <div class="col-sm-10" id="profession_div" hidden>
+									              <select name="profession" class="form-control" id="profession" disabled style="background-color: #D8D8D8" hidden>
+						                      		  <option value="-------">-------</option>
+						                      		  {% for profession in professions %}
+						                      		  	{% if user_profile.profession.profession_type == profession.profession_type %}
+						                      		  		<option value={{profession.profession_type}} selected>{{profession.profession_type}}</option>
+						                      		  	{% else %}
+						                      		  		<option value={{profession.profession_type}} >{{profession.profession_type}}</option>
+						                      		  	{% endif %}
+						                      		  {% endfor %}
+												</select>
+											</fieldset>
+								     	</div>
 						            </div>
 						          </div>
 						          
