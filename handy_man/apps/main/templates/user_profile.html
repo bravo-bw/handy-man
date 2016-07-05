@@ -188,7 +188,7 @@
 				            	<div class=" col-md-6 col-lg-6 " align="left"> 
 				                  <div class="form-group">
 				                  	<button class="btn btn-primary" value="submit" name="edit" id="edit_profile">Edit</button>
-				                  	<button class="btn btn-primary" value="submit" name="cancel" id="edit_profile">Cancel</button>
+				                  	<button class="btn btn-primary" name="cancel" id="cancell_edit">Cancel</button>
 				                  </div>
 		                		</div>
 				            	<div class=" col-md-6 col-lg-6 " align="right"> 
@@ -538,6 +538,23 @@
 					profession.removeAttr("style");
 					return false;
 				});
+				//When Cancell button is clicked, take fields back to readonly.
+				$("#cancell_edit").click(function(event) {
+					$("input[id^=id_]").each(function(index) {
+						$(this).attr('readonly', 'readonly');
+						$(this).attr('style', 'background-color: #D8D8D8');
+					});
+					account_type = $("#account_type");
+					account_type.attr('readonly', 'readonly');
+					account_type.attr('disabled', 'disabled');
+					account_type.attr('style', 'background-color: #D8D8D8');
+					
+					profession = $("#profession");
+					profession.attr('readonly', 'readonly');
+					account_type.attr('disabled', 'disabled');
+					profession.attr('style', 'background-color: #D8D8D8');
+					return false;
+				});
 				//Remove all uploaded documents
 				$("#remove_document").click(function(event) {
 					$("iframe[id^=document_display]").each(function(index) {
@@ -548,7 +565,6 @@
 				//Open document in new tab on click
 				$("div[id^=preview-]").each(function(index) {
 					$(this).click(function() {
-						alert('INSIDE');
 						//window.open("http://www.google.com", "_blank");
 					});
 					//return false;
