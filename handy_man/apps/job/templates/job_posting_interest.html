@@ -168,7 +168,7 @@
 	        			<form action="{% url 'quote_url' job.identifier %}?hidden_job_id={{job.identifier}}&&" method="get">
 	        				{% csrf_token %}
 	        				{% if job_quotation_status %}
-	        					<button type="submit" class="btn btn-primary" value="{{job.identifier}}">View Quote</button>
+	        					<button type="submit" class="btn btn-primary" value="{{job.identifier}}">View Quotes</button>
 	        				{% else %}
 	        					<input name="hidden_job_id" type="hidden" value="{{job.identifier}}">
 	        					<button type="submit" class="btn btn-primary" value="{{job.identifier}}">Submit Quote</button>

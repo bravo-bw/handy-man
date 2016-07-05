@@ -40,7 +40,7 @@ class JobInterest(object):
     def job_quatation_status(self, job):
         from handy_man.apps.job.models.quote import Quote
         try:
-            return True if Quote.objects.filter(job=job) else False
+            return True if Quote.objects.filter(job=job, artisan=self.user_profile).exists() else False
         except AttributeError:
             return False
 
