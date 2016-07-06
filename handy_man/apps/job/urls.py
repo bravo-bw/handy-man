@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from .views import (
-    JobAllocationView, JobPostingView, JobInterestView, JobQuotationsView, JobTimelineView, JobDisplayView)
+    JobAllocationView, JobPostingView, JobInterestView, JobQuotationsView, JobTimelineView, JobDisplayView,
+    UserDashboardView)
 
 
 urlpatterns = [

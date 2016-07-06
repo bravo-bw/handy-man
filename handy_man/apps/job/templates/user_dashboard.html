@@ -8,6 +8,7 @@
     <script src="/static/vendors/nprogress/nprogress.js"></script>
     <script src="/static/vendors/echarts/dist/echarts.min.js"></script>
   </head>
+<div class="container">
 <div class="jumbotron">
 <div class="row">
 	<div class="col-md-4" style="height:400px;">
@@ -95,6 +96,7 @@
 
                   </div>
   </div>	 
+  </div>
   </div>
   </div>
   </div>
@@ -339,7 +341,7 @@
         series: [{
           name: 'completed',
           type: 'bar',
-          data: [10],
+          data: [{{completed_jobs|default:0}}],
           markPoint: {
             data: [{
               type: 'max',
@@ -358,7 +360,7 @@
         }, {
           name: 'current',
           type: 'bar',
-          data: [5],
+          data: [{{current_jobs|default:0}}],
           markPoint: {
             data: [{
               name: 'completed',
@@ -424,10 +426,10 @@
           radius: '55%',
           center: ['50%', '48%'],
           data: [{
-            value: 10,
+            value: {{completed_jobs|default:0}},
             name: 'Completed'
           }, {
-            value: 5,
+            value: {{current_jobs|default:0}},
             name: 'Current'
           }]
         }]
