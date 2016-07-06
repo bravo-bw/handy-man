@@ -34,8 +34,8 @@
                   </div>
        		<div class="x_content" style="min-height:300px;">
        		<ul>
-            <li role="presentation"><a id="link-contacted-today" href="#">Completed Jobs<span id="bdg-contacted-today" class="badge pull-right">{{completed_jobs|default:0}}</span></a></li>
-            <li role="presentation"><a id="link-consented-today" href="#">Current Jobs<span id="bdg-consented-today" class="badge pull-right">{{current_jobs|default:0}}</span></a></li>
+            <li role="presentation"><a id="link-contacted-today" href="{%  url 'user_profile' user.username %}">Completed Jobs<span id="bdg-contacted-today" class="badge pull-right">{{completed_jobs|default:0}}</span></a></li>
+            <li role="presentation"><a id="link-consented-today" href="{%  url 'user_profile' user.username %}">Current Jobs<span id="bdg-consented-today" class="badge pull-right">{{current_jobs|default:0}}</span></a></li>
             <li role="presentation"><a id="link-idi-complete-today" href="#">Quotation<span id="bdg-idi-complete-today" class="badge pull-right">{{quotations|default:0}}</span></a></li>
             </ul>
             </div>

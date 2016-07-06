@@ -3,6 +3,7 @@ from django.contrib import admin
 # from django.contrib.auth.decorators import login_required
 from handy_man.apps.user_profile.views import (user_profile, login_view, signup, logout_view, verify_account,
                                                user_profile_documents, RegisteredUsersView, user_profile_geolocation)
+from handy_man.apps.job.views.user_dashboard_view import UserDashboardView
 
 
 urlpatterns = [
@@ -13,7 +14,8 @@ urlpatterns = [
     url(r'^user_profile_doc/(?P<username>\w{0,30})/$', user_profile_documents, name='user_profile_documents'),
     url(r'^geo_user_profile/(?P<username>\w{0,30})/$', user_profile_geolocation, name='user_profile_geolocation'),
 #     url(r'^user_profile/$', user_profile),
-    url(r'^registered_users/$', RegisteredUsersView.as_view(), name='registered_users_url')
+    url(r'^registered_users/$', RegisteredUsersView.as_view(), name='registered_users_url'),
+    url(r'^user_dashboard/(?P<username>\w{0,30})/$', UserDashboardView.as_view(), name='user_dashboard_url'),
 ]
 
 admin.site.site_header = 'Handy Man Administration'
