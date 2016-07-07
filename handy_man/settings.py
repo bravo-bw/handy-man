@@ -160,12 +160,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'handy_man.apps.main',
+    'handy_man.main_apps.main',
     'star_ratings',
     'updown',
-    'handy_man.apps.job',
-    'handy_man.apps.geo_location',
-    'handy_man.apps.user_profile',
+    'handy_man.main_apps.job',
+    'handy_man.main_apps.geo_location',
+    'handy_man.main_apps.user_profile',
+    "pinax.notifications",
+#     'handy_man.apps.HandyManAppConfig',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
