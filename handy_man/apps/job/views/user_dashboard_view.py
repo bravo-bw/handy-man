@@ -7,7 +7,7 @@ from handy_man.apps.job.models.job import Job
 from datetime import datetime
 from handy_man.apps.user_profile.models.profile import UserProfile
 from handy_man.apps.user_profile.classes.menu_configuration import MenuConfiguration
-from handy_man.apps.main.constants import COMPLETED, ASSIGNED, PENDING, IN_PROGRESS
+from handy_man.apps.main.constants import COMPLETED, ASSIGNED, PENDING, IN_PROGRESS, NEW
 
 
 class UserDashboardView(TemplateView):
@@ -31,6 +31,7 @@ class UserDashboardView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
         loggedin_user_profile = UserProfile.objects.get(user=request.user)
+        print("<><><><><><><><:self.current_jobs(loggedin_user_profile),", self.current_jobs(loggedin_user_profile),)
         context.update({
             'menus': MenuConfiguration().user_menu_list(loggedin_user_profile),
             'completed_jobs': self.completed_jobs(loggedin_user_profile),
@@ -42,4 +43,4 @@ class UserDashboardView(TemplateView):
         return Job.objects.filter(posted_by=user_profile, status=COMPLETED).count()
 
     def current_jobs(self, user_profile):
-        return Job.objects.filter(posted_by=user_profile, status__in=[ASSIGNED, PENDING, IN_PROGRESS]).count()
+        return Job.objects.filter(posted_by=user_profile, status__in=[ASSIGNED, PENDING, IN_PROGRESS, NEW]).count()

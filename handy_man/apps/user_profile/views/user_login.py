@@ -196,11 +196,14 @@ def login_view(request):
         if form.is_valid() and user_profile:
             login(request, form.get_user())
 
-#             if user_profile[0].account == SHIPPER:
-#                 return redirect('/shipper?job_type=my_jobs')
+            if user_profile.first().account_type == CUSTOMER:
+                user_profile = user_profile.first()
+                print (user_profile.__dict__)
+                return HttpResponseRedirect('/profile/user_dashboard/{}/'.format(user_profile.user.username))
 #             else:
 #                 return redirect('/goods_owner/1')
         else:
+            print ("not authenticated")
             return index(request, auth_form=form)
     return redirect('/')
 
