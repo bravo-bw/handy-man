@@ -162,7 +162,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'handy_man.apps.main',
+    'handy_man.main_apps.main',
     'star_ratings',
     'updown',
     'handy_man.apps.job',
