@@ -35,6 +35,7 @@ class JobInterestView(BaseDashboard):
         self._user = request.user
         job_interest = JobInterest(user_profile=loggedin_user_profile)
         self._user = request.user
+        print("__________________________", MenuConfiguration().user_menu_list(self.user_profile))
         self.context.update({
             'loggedin_user_profile': loggedin_user_profile,
             'latest_jobs': job_interest.latest_jobs,
