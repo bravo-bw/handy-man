@@ -5,3 +5,4 @@ from .job_quotations_view import JobQuotationsView
 from .job_timeline_view import JobTimelineView
 from .job_display_view import JobDisplayView
 from .user_dashboard_view import UserDashboardView
+from .modify_job import ModifyJob
