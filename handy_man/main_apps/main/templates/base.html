@@ -134,7 +134,6 @@
     // Onload handler to fire off the app.
     google.maps.event.addDomListener(window, 'load', initialize);   
    </script>
-   
 </head>
 <body id="page-top" class="index">
 	{% block navigation %}
@@ -155,11 +154,31 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+	  			   <li>
+				   <a href="{% url 'user_profile' user.username %}">
+						<img class="img-rounded" height="20" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" />
+						<span>{{user.first_name}}</span>
+			        </a>
+				   </li>
                     {% for item in menus %}
-              	{% if item|length == 2 %}
-              		<li><a href="{% url item.1 %}">{{item.0}}</a></li>
-              	{% elif item|length == 3 %}
-              	    <li><a href="{% url item.1 user.username %}">{{item.0}}</a></li>
+              	{% if item.0|length == 2 %}
+              		<li>
+              		<a href="{% url item.0.1 %}" {% if item|length == 2 %} class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {% endif %}>{{item.0.0}} {% if item|length == 2 %}<span class="caret"></span>{%endif%}</a>
+              			{% if item|length == 2 %}
+	              			<ul class="dropdown-menu">
+	              					{% for sub_item in item.1 %}
+	              					<li><a href="{% url sub_item.1 %}">{{sub_item.0}}</a></li>
+	              					{% endfor %}
+	              			</ul>
+	              		{% endif %}
+              		</li>
+              	{% elif item.0|length == 3 %}
+              	    <li>
+              	    <a href="#">{{item.0.0}}</a>
+              	        <ul class="dropdown-menu">
+              	        <li><a href="#">Action</a></li>
+              			</ul>
+              	    </li>
               	{% else %}
               		BAD MENU CONFIGURATION
               	{% endif %}
@@ -251,18 +270,18 @@
                             <h2>Project Title</h2>
                             <hr class="star-primary">
                             <img src="{{ STATIC_URL }}/home/img/portfolio/cabin.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="#">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
                             <ul class="list-inline item-details">
                                 <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    <strong><a href="#">Start Bootstrap</a>
                                     </strong>
                                 </li>
                                 <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    <strong><a href="#">April 2014</a>
                                     </strong>
                                 </li>
                                 <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    <strong><a href="#">Web Development</a>
                                     </strong>
                                 </li>
                             </ul>
@@ -402,15 +421,15 @@
                             <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
                             <ul class="list-inline item-details">
                                 <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    <strong><a href="#">Start Bootstrap</a>
                                     </strong>
                                 </li>
                                 <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    <strong><a href="#">April 2014</a>
                                     </strong>
                                 </li>
                                 <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    <strong><a href="#">Web Development</a>
                                     </strong>
                                 </li>
                             </ul>
@@ -439,15 +458,15 @@
                             <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
                             <ul class="list-inline item-details">
                                 <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    <strong><a href="#">Start Bootstrap</a>
                                     </strong>
                                 </li>
                                 <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    <strong><a href="#">April 2014</a>
                                     </strong>
                                 </li>
                                 <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                    <strong><a href="#">Web Development</a>
                                     </strong>
                                 </li>
                             </ul>

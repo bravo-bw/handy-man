@@ -6,6 +6,8 @@ from django.shortcuts import render
 from handy_man.main_apps.job.models.job import Job
 from handy_man.main_apps.job.models.quote import Quote
 from datetime import datetime
+from handy_man.apps.user_profile.models.profile import UserProfile
+from handy_man.apps.user_profile.classes.menu_configuration import MenuConfiguration
 
 
 class JobTimelineView(TemplateView):
@@ -33,8 +35,10 @@ class JobTimelineView(TemplateView):
         job = self.job(job_identifier)
         context.update(self.assigned_artisan(job_identifier))
         context.update(self.posted_by(job_identifier))
+        loggedin_user_profile = UserProfile.objects.get(user=request.user)
         context.update({
             'job': job,
+            'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)
         })
         return render(request, self.template_name, context)
 
@@ -62,14 +66,17 @@ class JobTimelineView(TemplateView):
         job = self.job(job_identifier)
         job_has_completed = True if job.status == 'completed' else False
         quote = self.job_quotations(job)
+        artisan_full_name = quote.artisan.user.get_full_name() if quote else False
         posted_by.update({
             'posted_by_avatar': '/static/{}'.format(str(job.posted_by.avatar_image).split('/')[-1]),
-            'posted_by_fullname': '{} - {}'.format(job.posted_by.user.first_name, job.posted_by.user.last_name),
+            'posted_by_fullname': '{}'.format(job.posted_by.user.get_full_name()),
             'posted_by_profession': job.posted_by.profession if job.posted_by.profession else 'Profession Not Specified',
             'posted_by_about': "N/A",
             'job_completed_by_fullname': self.job_completed_by_fullname(quote),
             'job_has_completed': job_has_completed,
+            'username': job.posted_by.user.username,
             'quote': quote,
+            'artisan_full_name': artisan_full_name,
             'today_date': datetime.today()
         })
         return posted_by
@@ -89,6 +96,6 @@ class JobTimelineView(TemplateView):
 
     def job_completed_by_fullname(self, quote):
         if quote:
-            return '{} - {}'.format(quote.artisan.user.first_name, quote.artisan.user.last_name)
+            return '{}'.format(quote.artisan.user.first_name, quote.artisan.user.last_name)
         else:
             return ''

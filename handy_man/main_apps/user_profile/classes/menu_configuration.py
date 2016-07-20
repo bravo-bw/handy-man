@@ -1,4 +1,6 @@
-from ...main.constants import MY_PROFILE, HOME, ARTISAN, CUSTOMER, SME, POST_JOB, USERS, HANDYMAN_ADMIN, AVAILABLE_JOBS
+from ...main.constants import (
+    MY_PROFILE, ARTISAN, CUSTOMER, SME, POST_JOB, USERS, HANDYMAN_ADMIN, AVAILABLE_JOBS, 
+    DASHBOARD, JOBS_COMPLETED, JOBS_IN_PROGRESS, SERVICE, CONTACT_US)
 
 
 class MenuConfiguration:
@@ -7,12 +9,16 @@ class MenuConfiguration:
     # to query DB for menus at every request to server
     def user_menu_list(self, user_profile):
         if not user_profile.account_type:
-            return [HOME, MY_PROFILE]
+            return [MY_PROFILE]
         elif user_profile.account_type == ARTISAN:
-            return [HOME, MY_PROFILE, AVAILABLE_JOBS, USERS]
+            return [self.jobs, [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == CUSTOMER:
-            return [HOME, MY_PROFILE, USERS, POST_JOB]
+            return [[DASHBOARD], [USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == SME:
-            return [HOME, MY_PROFILE, USERS, POST_JOB]
+            return [[USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == HANDYMAN_ADMIN:
-            return [HOME, MY_PROFILE, AVAILABLE_JOBS, USERS]
+            return [[MY_PROFILE], [AVAILABLE_JOBS], [USERS], [SERVICE], [CONTACT_US]]
+
+    @property
+    def jobs(self):
+        return [('Jobs', 'available_url'), [JOBS_IN_PROGRESS, AVAILABLE_JOBS, JOBS_COMPLETED]]

@@ -25,27 +25,27 @@ MANAGERS = ADMINS
 PATH = Path(os.path.dirname(os.path.realpath(__file__))).ancestor(2).child('etc')
 print(PATH)
 
-# if 'test' in sys.argv:
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-}
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'OPTIONS': {
-#                 'init_command': 'SET default_storage_engine=INNODB',
-#             },
-#             'OPTIONS': {
-#                 'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
-#             },
-#             'HOST': '',
-#             'PORT': '',
-#         },
-#     }
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS': {
+                'init_command': 'SET storage_engine=INNODB',
+            },
+            'OPTIONS': {
+                'read_default_file': os.path.join(BASE_DIR, 'handy_man.conf'),
+            },
+            'HOST': '',
+            'PORT': '',
+        },
+    }
 
 SITE_ID = 1
 
@@ -61,7 +61,7 @@ MAX_COMPLETED_JOBS = Decimal(1000)
 #  Maximum number of jobs that an artisan can do at a time.
 MAX_CURRENT_JOBS = Decimal(5)
 
-#  Maximum number of 𝑚𝑎𝑥𝑖𝑚𝑢𝑚 𝑡h𝑢𝑚𝑏𝑠 𝑢𝑝 that can be accumulated.
+# .
 MAXIMUM_THUMBS_UP = Decimal(1000)
 
 #  Job ranking Weights
@@ -118,7 +118,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request,'
+    'django.core.context_processors.request'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -128,6 +128,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.static',
     'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.request',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -138,6 +139,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'handy_man.urls'
@@ -163,15 +165,16 @@ INSTALLED_APPS = (
     'handy_man.main_apps.main',
     'star_ratings',
     'updown',
-    'handy_man.main_apps.job',
-    'handy_man.main_apps.geo_location',
-    'handy_man.main_apps.user_profile',
-    "pinax.notifications",
-#     'handy_man.apps.HandyManAppConfig',
+    'handy_man.apps.job',
+    'handy_man.apps.geo_location',
+    'handy_man.apps.user_profile',
+    'django_bootstrap_breadcrumbs',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'tastypie',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'sitetree',
 )
 
 if 'test' in sys.argv:

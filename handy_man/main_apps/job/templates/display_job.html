@@ -14,7 +14,7 @@
 			<img src="{{job.image_urls.1}}" id="job_img2" alt="job image 2" style="width:150px;height:150px">
 			<img src="{{job.image_urls.2}}" id="job_img3" alt="job image 3" style="width:150px;height:150px">
 		</div>
-		<p><small>{{job.description}}</small></p>
+		<p><small>{{job.description |truncatechars:600}}</small></p>
 		</div>
 		<div class="col-md-5" style="background-color:white;">
 	 		<h4>.</h4>
