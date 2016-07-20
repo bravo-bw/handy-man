@@ -17,6 +17,7 @@ getresults_receive/.DS_Store
 .Python
 env/
 build/
+static/
 develop-eggs/
 dist/
 downloads/

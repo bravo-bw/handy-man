@@ -17,3 +17,4 @@ six==1.10.0
 smmap==0.9.0
 Unipath==1.1
 pinax-notifications
+django-treenav==1.0.0
