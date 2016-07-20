@@ -1,7 +1,28 @@
 {% extends "base.html" %}
 
+{% load sitetree %}
+
+
 {% block content %}
+{% comment " site tree menu" %}
+{% sitetree_menu from "handyman" include "trunk, this-children, this-siblings, level3" %}
+{% endcomment %}
+<style>
+ul.breadcrumb {
+    padding: 1px 1px;
+    list-style: none;
+    background-color:#eee;
+}
+ul.breadcrumb li {display: inline;}
+/*ul.breadcrumb li a {color: green;} */
+</style>
+
 <div class="container">
+	<div style="margin">
+	<ul class="breadcrumb">
+ 		{% sitetree_breadcrumbs from "handyman" %}
+	</ul>
+	</div>
 <div class="jumbotron">
 	<div class="row" style="background-color:white;">
 		<div class="col-md-7" style="background-color:white;">
