@@ -38,7 +38,7 @@ class JobInterest(object):
             return False
 
     def job_quatation_status(self, job):
-        from handy_man.apps.job.models.quote import Quote
+        from handy_man.main_apps.job.models.quote import Quote
         try:
             return True if Quote.objects.filter(job=job, artisan=self.user_profile).exists() else False
         except AttributeError:

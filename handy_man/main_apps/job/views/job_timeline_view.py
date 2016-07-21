@@ -6,8 +6,8 @@ from django.shortcuts import render
 from handy_man.main_apps.job.models.job import Job
 from handy_man.main_apps.job.models.quote import Quote
 from datetime import datetime
-from handy_man.apps.user_profile.models.profile import UserProfile
-from handy_man.apps.user_profile.classes.menu_configuration import MenuConfiguration
+from handy_man.main_apps.user_profile.models.profile import UserProfile
+from handy_man.main_apps.user_profile.classes.menu_configuration import MenuConfiguration
 
 
 class JobTimelineView(TemplateView):

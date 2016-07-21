@@ -165,10 +165,9 @@ INSTALLED_APPS = (
     'handy_man.main_apps.main',
     'star_ratings',
     'updown',
-    'handy_man.apps.job',
-    'handy_man.apps.geo_location',
-    'handy_man.apps.user_profile',
-    'django_bootstrap_breadcrumbs',
+    'handy_man.main_apps.job',
+    'handy_man.main_apps.geo_location',
+    'handy_man.main_apps.user_profile',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'tastypie',
