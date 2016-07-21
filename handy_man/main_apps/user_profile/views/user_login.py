@@ -64,7 +64,6 @@ def user_profile(request, username):
             job_closing_date = request.GET.get('job_closing_date') or None
             if job_closing_date:
                 job_closing_date = datetime.datetime.strptime(job_closing_date, '%d/%m/%Y').date()
-            print ("Job closing date:", job_closing_date)
             job_type = request.GET.get('job_type')
             status, message = save_job_changes(job_id, description, job_type, job_closing_date)
             data = None
@@ -187,7 +186,6 @@ def login_view(request):
         username = request.POST.get('form-username', '')
         password = request.POST.get('form-password', '')
         data = {'username': username, 'password': password}
-        print(data, "**&&login dict")
         form = AuthenticateForm(data=data)
         user_profile = UserProfile.objects.filter(user__username=username, email_validated=True)
         if form.is_valid() and user_profile:
@@ -195,12 +193,10 @@ def login_view(request):
 
             if user_profile.first().account_type == CUSTOMER:
                 user_profile = user_profile.first()
-                print (user_profile.__dict__)
                 return HttpResponseRedirect('/profile/user_dashboard/{}/'.format(user_profile.user.username))
 #             else:
 #                 return redirect('/goods_owner/1')
         else:
-            print ("not authenticated")
             return index(request, auth_form=form)
     return redirect('/')
 
