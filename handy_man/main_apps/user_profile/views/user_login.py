@@ -2,15 +2,15 @@ import json
 import datetime
 
 from django.conf import settings
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.utils.datastructures import MultiValueDictKeyError
-from django.http.response import HttpResponse
 
 from updown.models import SCORE_TYPES
 
@@ -22,7 +22,6 @@ from handy_man.main_apps.geo_location.classes import Geolocation
 
 from handy_man.main_apps.user_profile.classes import MenuConfiguration
 from handy_man.main_apps.job.models.job_type import JobType
-from handy_man.main_apps.job.classes.job_helper import JobHelper
 
 
 def get_latest(user):
@@ -57,24 +56,7 @@ def user_profile(request, username):
     district_name = request.GET.get('district_name', '')
     town_village_name = request.GET.get('town_village_name', '')
     street_name = request.GET.get('street_name', '')
-    if request.is_ajax():
-        if request.GET.get('action') == 'save_job_changes':
-            job_id = request.GET.get('job_identifier')
-            description = request.GET.get('description')
-            job_closing_date = request.GET.get('job_closing_date') or None
-            if job_closing_date:
-                job_closing_date = datetime.datetime.strptime(job_closing_date, '%d/%m/%Y').date()
-            job_type = request.GET.get('job_type')
-            status, message = save_job_changes(job_id, description, job_type, job_closing_date)
-            data = None
-            if status:
-                msg = {'message': message}
-                data = json.dumps(msg)
-            else:
-                msg = {'message': message}
-                data = json.dumps(msg)
-            return HttpResponse(data, content_type='application/json')
-    elif request.method == 'POST':
+    if request.method == 'POST':
         form = UserProfileForm(request.POST)
         if form.is_valid():
             try:
@@ -93,7 +75,8 @@ def user_profile(request, username):
                 updated_profile_values[fld] = form.cleaned_data.get(fld)
             User.objects.filter(id=request.user.id).update(**updated_user_values)
             UserProfile.objects.filter(user=request.user).update(**updated_profile_values)
-            return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
+            user_profile_url = reverse('user_profile', kwargs={'username': user_profile.user.username})
+            return HttpResponseRedirect(user_profile_url)
     else:
         # If requet is a get, then do just display profile values.
         pass
@@ -142,7 +125,8 @@ def user_profile_documents(request, username):
             pass
         except Exception as e:
             raise e
-        return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
+        user_profile_url = reverse('user_profile', kwargs={'username': user_profile.user.username})
+        return HttpResponseRedirect(user_profile_url)
     else:
         # If requet is a get, then do just display profile values.
         pass
@@ -171,7 +155,7 @@ def index(request, auth_form=None, user_form=None):
                        'notifications': [],
                        'public_notifications': [],
                        'next_url': '/',
-                       'username': request.user.username,  })
+                       'username': request.user.username})
     else:
         auth_form = auth_form or AuthenticateForm()
         user_form = user_form or UserCreateForm()
@@ -190,10 +174,10 @@ def login_view(request):
         user_profile = UserProfile.objects.filter(user__username=username, email_validated=True)
         if form.is_valid() and user_profile:
             login(request, form.get_user())
-
             if user_profile.first().account_type == CUSTOMER:
                 user_profile = user_profile.first()
-                return HttpResponseRedirect('/profile/user_dashboard/{}/'.format(user_profile.user.username))
+                dashboard_url = reverse('dashboard_url', kwargs={'username': user_profile.user.username})
+                return HttpResponseRedirect(dashboard_url)
 #             else:
 #                 return redirect('/goods_owner/1')
         else:
@@ -215,10 +199,7 @@ def verify_account(request, username):
         message = "Congratulations '{}', your EMAIL has been verified.".format(user_profile.user.first_name)
     except UserProfile.DoesNotExist:
         message = "The username '{}' does not exist in the system. Please register first.".format(username)
-    return render(request,
-                    'verify.html',
-                    {'message': message
-                     })
+    return render(request, 'verify.html', {'message': message})
 
 
 def signup(request):
@@ -296,7 +277,8 @@ def user_profile_geolocation(request, username):
             User.objects.filter(id=request.user.id).update(**updated_user_values)
             #updated_profile_values['avatar_image'] = avatar_image
             UserProfile.objects.filter(user=request.user).update(**updated_profile_values)
-            return HttpResponseRedirect('/profile/user_profile/{}/'.format(user_profile.user.username))
+            user_profile_url = reverse('user_profile', kwargs={'username': user_profile.user.username})
+            return HttpResponseRedirect(user_profile_url)
     else:
         # If requet is a get, then do just display profile values.
         pass
@@ -323,32 +305,3 @@ def user_profile_geolocation(request, username):
                    'user_current_jobs': user_current_jobs,
                    'user_completed_jobs': user_completed_jobs,
                    'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
-
-
-def save_job_changes(job_id, description, jotype, est):
-    """
-        1. check whether the job can be changed.
-        2. if job can be changed then save
-        3. On post save then notify artisans who have logged interest for the job.
-    """
-    try:
-        job = Job.objects.get(identifier=job_id)
-        jtype = job_type(jotype) if job_type(jotype) else None
-        job_helper = JobHelper(job=job, job_type=jtype, estimated_job_closing_date=est)
-        if job_helper.save_job():
-            return (True, "Job has been updated successfully.")
-        else:
-            if job_helper.validate_job_change:
-                return (False, "Assigned job or completed cannot be modified.")
-    except Job.DoesNotExist:
-        return (False, "Cannot find job record, failed to update.")
-    return (False, "Failed to update job")
-
-
-def job_type(job_type):
-    try:
-        joype = JobType.objects.get(id=job_type)
-    except JobType.DoesNotExist:
-        return False
-    return joype
-

@@ -13,7 +13,9 @@ class MenuConfiguration:
         elif user_profile.account_type == ARTISAN:
             return [self.jobs, [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == CUSTOMER:
-            return [[DASHBOARD], [USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
+            title, url_name, para = DASHBOARD
+            DASHBOARD_DATA = (title, url_name, user_profile.user.username)
+            return [[DASHBOARD_DATA], [USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == SME:
             return [[USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == HANDYMAN_ADMIN:
