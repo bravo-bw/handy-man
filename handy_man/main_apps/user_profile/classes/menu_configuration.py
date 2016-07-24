@@ -1,6 +1,6 @@
 from ...main.constants import (
-    MY_PROFILE, ARTISAN, CUSTOMER, SME, POST_JOB, USERS, HANDYMAN_ADMIN, AVAILABLE_JOBS, 
-    DASHBOARD, JOBS_COMPLETED, JOBS_IN_PROGRESS, SERVICE, CONTACT_US)
+    MY_PROFILE, ARTISAN, CUSTOMER, SME, POST_JOB, USERS, HANDYMAN_ADMIN, AVAILABLE_JOBS,
+    DASHBOARD, JOBS_COMPLETED, JOBS_IN_PROGRESS, SERVICE, CONTACT_US, ADD_JOB)
 
 
 class MenuConfiguration:
@@ -8,14 +8,14 @@ class MenuConfiguration:
     # TODO: Consider making these configurable as database records, but be carefull of performance penalty of having
     # to query DB for menus at every request to server
     def user_menu_list(self, user_profile):
+        title, url_name, para = DASHBOARD
+        DASHBOARD_DATA = (title, url_name, user_profile.user.username)
         if not user_profile.account_type:
             return [MY_PROFILE]
         elif user_profile.account_type == ARTISAN:
-            return [self.jobs, [SERVICE], [CONTACT_US]]
+            return [[DASHBOARD_DATA], self.jobs, [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == CUSTOMER:
-            title, url_name, para = DASHBOARD
-            DASHBOARD_DATA = (title, url_name, user_profile.user.username)
-            return [[DASHBOARD_DATA], [USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
+            return [[DASHBOARD_DATA], self.customer_jobs, [USERS], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == SME:
             return [[USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == HANDYMAN_ADMIN:
@@ -24,3 +24,7 @@ class MenuConfiguration:
     @property
     def jobs(self):
         return [('Jobs', 'available_url'), [JOBS_IN_PROGRESS, AVAILABLE_JOBS, JOBS_COMPLETED]]
+
+    @property
+    def customer_jobs(self):
+        return [('Jobs', 'available_url'), [ADD_JOB, JOBS_IN_PROGRESS, JOBS_COMPLETED]]
