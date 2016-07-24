@@ -167,7 +167,11 @@
               			{% if item|length == 2 %}
 	              			<ul class="dropdown-menu">
 	              					{% for sub_item in item.1 %}
-	              					<li><a href="{% url sub_item.1 %}">{{sub_item.0}}</a></li>
+	              						{% if sub_item.1 == 'user_profile' %}
+	              							<li><a href="{% url sub_item.1 user.username sub_item.2 %}">{{sub_item.0}}</a></li>
+	              						{% else %}
+	              							<li><a href="{% url sub_item.1 %}">{{sub_item.0}}</a></li>
+	              						{% endif %}
 	              					{% endfor %}
 	              			</ul>
 	              		{% endif %}

@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^verify/(?P<username>\w{0,30})$', verify_account),
 #     url(r'^users/(?P<username>\w{0,30})/$', users),
     url(r'^user_profile/(?P<username>\w{0,30})/$', user_profile, name='user_profile'),
+    url(r'^user_profile/(?P<username>\w{0,30})/(?P<tab>\w{0,30})/$', user_profile, name='user_profile'),
     url(r'^user_profile_doc/(?P<username>\w{0,30})/$', user_profile_documents, name='user_profile_documents'),
     url(r'^geo_user_profile/(?P<username>\w{0,30})/$', user_profile_geolocation, name='user_profile_geolocation'),
 #     url(r'^user_profile/$', user_profile),

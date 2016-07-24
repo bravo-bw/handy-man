@@ -32,7 +32,8 @@ def get_latest(user):
 
 
 @login_required
-def user_profile(request, username):
+def user_profile(request, username, tab=None):
+    jump_to_tab = tab or 'None'
     loggedin_user_profile = UserProfile.objects.get(user=request.user)
     user_profile = UserProfile.objects.get(user__username=username)
     if user_profile.account_type == ARTISAN:
@@ -104,6 +105,7 @@ def user_profile(request, username):
                    'user_current_jobs': user_current_jobs,
                    'user_completed_jobs': user_completed_jobs,
                    'job_types': JobType.objects.all(),
+                   'jump_to_tab': jump_to_tab,
                    'menus': MenuConfiguration().user_menu_list(loggedin_user_profile)})
 
 

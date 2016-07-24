@@ -23,4 +23,4 @@ class MenuConfiguration:
 
     @property
     def jobs(self):
-        return [('Jobs', 'available_url'), [JOBS_IN_PROGRESS, AVAILABLE_JOBS, JOBS_COMPLETED]]
+        return [('Jobs', 'available_url'), [AVAILABLE_JOBS, JOBS_IN_PROGRESS, JOBS_COMPLETED]]
