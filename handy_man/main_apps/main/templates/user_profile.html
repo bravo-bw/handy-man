@@ -33,16 +33,17 @@
             </div>
             <div class="panel-body">
               	  <!--<div align="center"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" class="img-circle img-responsive"> </div>-->
+				  <input type="hidden" value={{jump_to_tab}} id="jump_to_tab">
 				  <ul class="nav nav-pills">
-				    <li class="active"><a data-toggle="tab" href="#personal">Personal Data</a></li>
-				    <li><a data-toggle="tab" href="#documents">Documentation</a></li>
-				    <li><a data-toggle="tab" href="#geolocation">GeoLocation</a></li>
-				    <li><a data-toggle="tab" href="#current_jobs">Current Jobs</a></li>
-				    <li><a data-toggle="tab" href="#completed_jobs">Completed Jobs</a></li>
+				    <li><a data-toggle="tab" href="#personal" id='personal_tab'>Personal Data</a></li>
+				    <li><a data-toggle="tab" href="#documents" id='documents_tab'>Documentation</a></li>
+				    <li><a data-toggle="tab" href="#geolocation" id='geolocation_tab'>GeoLocation</a></li>
+				    <li><a data-toggle="tab" href="#current_jobs" id='current_jobs_tab'>Current Jobs</a></li>
+				    <li><a data-toggle="tab" href="#completed_jobs" id='completed_jobs_tab'>Completed Jobs</a></li>
 				  </ul>
 				  <div class="tab-content">
 				    <div id="personal" class="tab-pane fade in active">
-				     <form action="{% url 'user_profile' user_profile.user.username%}" method="post" enctype="multipart/form-data" >
+				     <form action="{% url 'user_profile' user_profile.user.username %}" method="post" enctype="multipart/form-data" >
 				       {% csrf_token %}
 				       <div class="row" style="height:25%;">
 				      	  <!--<div align="left"> <img alt="User Pic" src="{{ STATIC_URL}}gfx/default_avatar_male.jpg" class="img-circle img-responsive" style="width:150px;height:150px"> </div>-->
@@ -468,6 +469,10 @@
       <script>
       		//Changes user profile photo
       		$(document).ready( function() {
+      			var jump_to_tab = $('#jump_to_tab').val();
+      			if (jump_to_tab != 'None'){
+      			  $("#"+jump_to_tab).tab('show');
+      			}
 				$("#avatar_image").change(function(event) {
 					var selectedFile = event.target.files[0];
 					var reader = new FileReader();

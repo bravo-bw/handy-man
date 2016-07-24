@@ -1,9 +1,9 @@
 import factory
 
-from handy_man.apps.user_profile.tests.factories import UserProfileFactory
-from handy_man.apps.job.tests.factories import JobTypeFactory
+from handy_man.main_apps.user_profile.tests.factories import UserProfileFactory
+from handy_man.main_apps.job.tests.factories import JobTypeFactory
 
-from handy_man.main_apps import Job, JobRequest
+from handy_man.main_apps.job.models import Job, JobRequest
 
 
 class JobFactory(factory.DjangoModelFactory):

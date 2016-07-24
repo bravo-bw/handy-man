@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from handy_man.main_apps.user_profile.tests.factories import UserProfileFactory, ProfessionFactory
+from handy_man.main_apps.user_profile.tests.factories import UserProfileFactory
 
 from handy_man.main_apps.job.models import Quote
 from handy_man.main_apps.job.tests.factories import JobFactory, QuoteFactory, JobTypeFactory
@@ -10,6 +10,7 @@ from handy_man.main_apps.job.tests.factories import JobFactory, QuoteFactory, Jo
 class TestQuote(TestCase):
 
     def setUp(self):
+        from handy_man.main_apps.user_profile.tests.factories import ProfessionFactory
         self.carpenter = ProfessionFactory(code='CP', profession_type='carpenter')
         self.plumber = ProfessionFactory(code='PL', profession_type='plumber')
         self.elec = ProfessionFactory(code='EL', profession_type='electrician')
