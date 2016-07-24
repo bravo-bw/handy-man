@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 
+{% load sitetree %}
+
 {% block content %}
+
+<style>
+ul.breadcrumb {
+    padding: 1px 1px;
+    list-style: none;
+    background-color:#eee;
+}
+ul.breadcrumb li {display: inline;}
+/*ul.breadcrumb li a {color: green;} */
+</style>
 	<div class="container">
+	<div>
+	<ul class="breadcrumb">
+ 		{% sitetree_breadcrumbs from "Jobs" %}
+	</ul>
+	</div>
 	<div class="jumbotron">
 		<div class="panel panel-info">
 	           <div class="panel-heading">

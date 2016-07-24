@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^geo_user_profile/(?P<username>\w{0,30})/$', user_profile_geolocation, name='user_profile_geolocation'),
 #     url(r'^user_profile/$', user_profile),
     url(r'^registered_users/$', RegisteredUsersView.as_view(), name='registered_users_url'),
-    url(r'^user_dashboard/(?P<username>\w{0,30})/$', UserDashboardView.as_view(), name='user_dashboard_url'),
+    url(r'^dashboard/(?P<username>\w{0,30})/$', UserDashboardView.as_view(), name='dashboard_url'),
 ]
 
 admin.site.site_header = 'Handy Man Administration'

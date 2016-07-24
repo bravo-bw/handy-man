@@ -174,7 +174,7 @@
               		</li>
               	{% elif item.0|length == 3 %}
               	    <li>
-              	    <a href="#">{{item.0.0}}</a>
+              	    <a href="{% url item.0.1 item.0.2 %}">{{item.0.0}}</a>
               	        <ul class="dropdown-menu">
               	        <li><a href="#">Action</a></li>
               			</ul>
