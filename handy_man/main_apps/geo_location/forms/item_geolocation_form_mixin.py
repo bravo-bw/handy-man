@@ -1,24 +1,22 @@
 from django import forms
 
-from handy_man.main_apps.job.models import Job
+from ..choices.district_polygons import districts_polygons
+from ..choices.town_village_polygons import town_village_polygons
+from ..choices.street_polygons import street_polygons
 
-from handy_man.main_apps.geo_location.choices import districts_polygons, town_village_polygons, street_polygons
 
-
-class JobForm(forms.ModelForm):
-
+class ItemGeolocationMixinForm(object):
     def __init__(self, *args, **kwargs):
-        super(JobForm, self).__init__(*args, **kwargs)
+        super(ItemGeolocationMixinForm, self).__init__(*args, **kwargs)
 
     def clean(self):
-        from handy_man.main_apps.geo_location.models import TownVillage, Street
-        from handy_man.main_apps.geo_location.classes import Geolocation
+        from ..models import TownVillage, Street
+        from ..classes import Geolocation
         print("I got in here %%######################")
-        cleaned_data = super(JobForm, self).clean()
 
-        district_name = cleaned_data.get('district', '')
-        town_village_name = cleaned_data.get('town_village', '')
-        street_name = cleaned_data.get('street', '')
+        district_name = self.cleaned_data.get('district', '')
+        town_village_name = self.cleaned_data.get('town_village_name', '')
+        street_name = self.cleaned_data.get('street_name', '')
         print(district_name, town_village_name, street_name)
         geolocation = Geolocation()
         district_polygon = None
@@ -57,26 +55,24 @@ class JobForm(forms.ModelForm):
             pass
 
         for key, value in districts_polygons.items():
-            if str(key) == str(district_name):
-                print(key, "key value", district_name, 'matching form value')
+            if key == district_name:
                 district_polygon = value
-                print(district_polygon)
                 break
 
         for key, value in town_village_polygons.items():
-            if str(key) == str(town_village_name):
+            if key == town_village_name:
                 town_village_polygon = value
                 break
 
         for key, value in street_polygons.items():
-            if str(key) == str(street_name):
+            if key == street_name:
                 street_polygon = value
                 break
 
         town_in_district = geolocation.point_inside_polygon(town_village_lat, town_village_lon, district_polygon)
         street_in_town = geolocation.point_inside_polygon(street_lat, street_lon, town_village_polygon)
-        item_latitude = cleaned_data.get('latitude', '')
-        item_longitude = cleaned_data.get('longitude', '')
+        item_latitude = self.cleaned_data.get('latitude', '')
+        item_longitude = self.cleaned_data.get('longitude', '')
         item_in_street = geolocation.point_inside_polygon(item_latitude, item_longitude, street_polygon)
 
         if not town_in_district:
@@ -85,7 +81,3 @@ class JobForm(forms.ModelForm):
             raise forms.ValidationError("The street you selected is not in the town choosen.")
         if not item_in_street:
             raise forms.ValidationError("The location you selected is not in the street choosen.")
-
-    class Meta:
-        model = Job
-        fields = '__all__'

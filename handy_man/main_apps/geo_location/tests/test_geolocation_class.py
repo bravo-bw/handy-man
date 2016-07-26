@@ -17,8 +17,16 @@ class TestGeolocationMethods(TestCase):
             'kgatleng': [-24.198013, 26.354423]}
         self.create_districts(district_centers)
         south_east_district = District.objects.get(district_name='south-east')
-        self.gaborone_town_village = TownVillage.objects.create(district=south_east_district, town_village_name='gaborone', center_latitude=-24.606059, center_longitude=25.936671){}
-        self.street = Street.objects.create(town_village=self.gaborone_town_village, street_name='phase-2', center_latitude=-24.644422, center_longitude=25.896777)
+        self.gaborone_town_village = TownVillage.objects.create(
+            district=south_east_district,
+            town_village_name='gaborone',
+            center_latitude=-24.606059,
+            center_longitude=25.936671)
+        self.street = Street.objects.create(
+            town_village=self.gaborone_town_village,
+            street_name='phase-2',
+            center_latitude=-24.644422,
+            center_longitude=25.896777)
 
     def create_districts(self, district_centers):
         """Create districts from a dictionary of district centers."""
@@ -84,14 +92,15 @@ class TestGeolocationMethods(TestCase):
         """Test if coordinates of a town are returned given a town_village name and a district name."""
         district_name = 'south-east'
         town_village_name = 'gaborone'
-        self.assertEqual(self.geolocation.cernter_coordinates(district_name, town_village_name), [-24.605983, 25.933971])
+        self.assertEqual(self.geolocation.cernter_coordinates(district_name, town_village_name), [-24.606059, 25.936671])
 
     def test_center_coordinates_street(self):
         """Test if coordinates return are for a street, given, town/village, district, street."""
         district_name = 'south-east'
         town_village_name = 'gaborone'
         street_name = 'phase-2'
-        self.assertEqual(self.geolocation.cernter_coordinates(district_name, town_village_name, street_name), [-24.644085, 25.896659])
+        self.assertEqual(
+            self.geolocation.cernter_coordinates(district_name, town_village_name, street_name), [-24.644422, 25.896777])
 
     def test_distance_between_points(self):
         """Test if the correct distance between poits is calculated."""

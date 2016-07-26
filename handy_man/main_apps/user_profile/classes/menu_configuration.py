@@ -1,6 +1,6 @@
 from ...main.constants import (
     MY_PROFILE, ARTISAN, CUSTOMER, SME, POST_JOB, USERS, HANDYMAN_ADMIN, AVAILABLE_JOBS,
-    DASHBOARD, JOBS_COMPLETED, JOBS_IN_PROGRESS, SERVICE, CONTACT_US, ADD_JOB)
+    DASHBOARD, JOBS_COMPLETED, JOBS_IN_PROGRESS, SERVICE, CONTACT_US, ADD_JOB, NOTIFICATIONS)
 
 
 class MenuConfiguration:
@@ -13,13 +13,13 @@ class MenuConfiguration:
         if not user_profile.account_type:
             return [MY_PROFILE]
         elif user_profile.account_type == ARTISAN:
-            return [[DASHBOARD_DATA], self.jobs, [SERVICE], [CONTACT_US]]
+            return [[DASHBOARD_DATA], self.jobs, [NOTIFICATIONS], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == CUSTOMER:
-            return [[DASHBOARD_DATA], self.customer_jobs, [USERS], [SERVICE], [CONTACT_US]]
+            return [[DASHBOARD_DATA], self.customer_jobs, [NOTIFICATIONS], [USERS], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == SME:
-            return [[USERS], [POST_JOB], [SERVICE], [CONTACT_US]]
+            return [[USERS], [POST_JOB], [NOTIFICATIONS], [SERVICE], [CONTACT_US]]
         elif user_profile.account_type == HANDYMAN_ADMIN:
-            return [[MY_PROFILE], [AVAILABLE_JOBS], [USERS], [SERVICE], [CONTACT_US]]
+            return [[MY_PROFILE], [AVAILABLE_JOBS], [NOTIFICATIONS], [USERS], [SERVICE], [CONTACT_US]]
 
     @property
     def jobs(self):

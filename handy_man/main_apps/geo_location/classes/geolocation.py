@@ -1,7 +1,9 @@
 from geopy import Point
 from geopy import distance
 
-from ..models import Street, TownVillage, District
+from ..models import TownVillage
+from ..models import District
+from ..models import Street
 
 
 class Geolocation:

@@ -22,6 +22,7 @@ POST_JOB = ('Post Job', 'job_posting_url')
 USERS = ('Members', 'registered_users_url')
 SERVICE = ('Services', 'services_url')
 CONTACT_US = ('Contact Us', 'contact_us_url')
+NOTIFICATIONS = ('Message Notifications', 'notifications_url')
 ARTISAN = 'artisan'
 CUSTOMER = 'customer'
 HANDYMAN_ADMIN = 'handyman_admin'

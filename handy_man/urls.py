@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^signup$', signup),
     url(r'^profile/', include('handy_man.main_apps.user_profile.urls')),
     url(r'^jobs/', include('handy_man.main_apps.job.urls')),
-    #url(r"^notifications/", include("pinax.notifications.urls")),
+    url(r'^jobs/', include('handy_man.main_apps.local_notifications.urls')),
     url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
 ]
 

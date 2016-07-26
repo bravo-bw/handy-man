@@ -3,10 +3,11 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
 from ..models import Job
+from ..forms import JobForm
 
 
 class JobAdmin(ModelAdmin):
-    pass
+    form = JobForm
 
 #     list_filter = ['posted_by', 'allocated_to', 'status', 'job_type']
 # 

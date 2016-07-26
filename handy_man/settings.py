@@ -164,10 +164,12 @@ INSTALLED_APPS = (
     'django_extensions',
     'handy_man.main_apps.main',
     'star_ratings',
+    'notifications',
     'updown',
     'handy_man.main_apps.job',
     'handy_man.main_apps.geo_location',
     'handy_man.main_apps.user_profile',
+    'handy_man.main_apps.local_notifications',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'tastypie',
