@@ -58,9 +58,7 @@ class JobForm(forms.ModelForm):
 
         for key, value in districts_polygons.items():
             if str(key) == str(district_name):
-                print(key, "key value", district_name, 'matching form value')
                 district_polygon = value
-                print(district_polygon)
                 break
 
         for key, value in town_village_polygons.items():
@@ -69,10 +67,19 @@ class JobForm(forms.ModelForm):
                 break
 
         for key, value in street_polygons.items():
+            print(street_name, "the street name")
             if str(key) == str(street_name):
+                print(key, "the key and its value is:", value, "passed street name is: ", street_name)
                 street_polygon = value
                 break
 
+        print("__________________________________________________________________________")
+        print(district_polygon)
+        print("__________________________________________________________________________")
+        print(town_village_polygon)
+        print("__________________________________________________________________________")
+        print(street_polygon)
+        print("__________________________________________________________________________")
         town_in_district = geolocation.point_inside_polygon(town_village_lat, town_village_lon, district_polygon)
         street_in_town = geolocation.point_inside_polygon(street_lat, street_lon, town_village_polygon)
         item_latitude = cleaned_data.get('latitude', '')

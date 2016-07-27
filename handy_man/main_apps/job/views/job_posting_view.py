@@ -7,6 +7,7 @@ from django.http.response import HttpResponse
 
 from handy_man.main_apps.main.views.base_dashboard import BaseDashboard
 from handy_man.main_apps.user_profile.models import UserProfile
+from handy_man.main_apps.user_profile.views.user_login import user_profile
 from handy_man.main_apps.user_profile.classes import MenuConfiguration
 from handy_man.main_apps.geo_location.models import TownVillage, District, Street
 
@@ -67,6 +68,8 @@ class JobPostingView(BaseDashboard):
                     job_type = JobType.objects.get(pk=request.POST.get('job_type'))
                 except JobType.DoesNotExist:
                     job_type = None
+                except:
+                    print(request.POST.get('job_type'))
                 street = None
                 district = None
                 town_village = None
@@ -86,12 +89,10 @@ class JobPostingView(BaseDashboard):
                         'posted_by': posted_by.id, 'street': street.id, 'description': description, 'job_image_1': job_image_1,
                         'job_image_2': job_image_2, 'job_image_3': job_image_3, 'job_type': job_type.id}
                 job_form = JobForm(data)
-                print("***form dictionary*****\ln", data)
-                print(job_form.errors)
                 if job_form.is_valid():
                     job_form.save()
                 else:
-                    print("Not valid********************")
+                    pass
 #                     Job.objects.create(
 #                         posted_by=posted_by, latitude=latitude, longitude=longitude, district=district, street=street, job_type=job_type,
 #                         town_village=town_village, status=NEW, description=description,

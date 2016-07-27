@@ -1,7 +1,11 @@
-from django.db import models
+from datetime import timedelta, datetime
+
 from django.apps import apps
 from django.conf import settings
-from datetime import timedelta, datetime
+from django.contrib.auth.models import Group
+from django.db import models
+from django.db.models.signals import post_save
+from notifications.signals import notify
 
 from handy_man.main_apps.main.constants import NEW
 from handy_man.main_apps.main.choices import JOB_STATUS
@@ -14,6 +18,11 @@ from updown.fields import RatingField
 from .job_type import JobType
 
 estimated_closing_date = datetime.today().now() + timedelta(days=10)
+
+
+def my_handler(sender, instance, created, **kwargs):
+    g = Group.objects.get(name='artisan')
+    notify.send(instance.posted_by.user, recipient=g, verb='new Job avaliable', action_object=instance.posted_by.user, description=instance.description)
 
 
 class Job(ItemGeolocationMixin):
@@ -137,3 +146,5 @@ class Job(ItemGeolocationMixin):
 
     class Meta:
         app_label = 'job'
+
+post_save.connect(my_handler, sender=Job)

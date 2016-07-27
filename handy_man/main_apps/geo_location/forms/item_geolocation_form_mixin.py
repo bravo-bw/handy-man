@@ -5,7 +5,7 @@ from ..choices.town_village_polygons import town_village_polygons
 from ..choices.street_polygons import street_polygons
 
 
-class ItemGeolocationMixinForm(object):
+class ItemGeolocationMixinForm(froms.):
     def __init__(self, *args, **kwargs):
         super(ItemGeolocationMixinForm, self).__init__(*args, **kwargs)
 

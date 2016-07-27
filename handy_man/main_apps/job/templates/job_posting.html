@@ -16,6 +16,16 @@
 {% block content %}
 <div class="container">
 <div class="jumbotron">
+{% if form.errors %}
+<div id="form-error">
+	<p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+	<ul>
+	{% for field in job_form %}
+	<li>{{ field.errors|striptags }}</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}
 <form class="form-inline" action="{% url 'job_posting_url' %}" method="post">
         	{% csrf_token %}
           <div class="panel panel-info">
