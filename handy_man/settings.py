@@ -40,7 +40,7 @@ else:
                 'init_command': 'SET storage_engine=INNODB',
             },
             'OPTIONS': {
-                'read_default_file': os.path.join(BASE_DIR, 'handy_man.conf'),
+                'read_default_file': os.path.join(PATH, 'handy_man.conf'),
             },
             'HOST': '',
             'PORT': '',
@@ -172,7 +172,7 @@ INSTALLED_APPS = (
     'handy_man.main_apps.local_notifications',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    'tastypie',
+#     'tastypie',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'sitetree',
