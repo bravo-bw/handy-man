@@ -40,7 +40,7 @@ else:
                 'init_command': 'SET storage_engine=INNODB',
             },
             'OPTIONS': {
-                'read_default_file': os.path.join(PATH, 'handy_man.conf'),
+                'read_default_file': os.path.join(PATH, 'handy_man.cnf'),
             },
             'HOST': '',
             'PORT': '',
