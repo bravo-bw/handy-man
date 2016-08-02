@@ -71,12 +71,13 @@
       var latLng = new google.maps.LatLng(-22.323764, 23.793962);
       var zoom_level = 6;
       {% endif %}
-      
-      var map = new google.maps.Map(document.getElementById('mapCanvas'), {
-        zoom: zoom_level,
-        center: latLng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
+      setTimeout(function(){
+	      var map = new google.maps.Map(document.getElementById('mapCanvas'), {
+	        zoom: zoom_level,
+	        center: latLng,
+	        mapTypeId: google.maps.MapTypeId.ROADMAP
+	      });
+      }, 500);
       var marker = new google.maps.Marker({
         position: latLng,
         title: 'Job Location',

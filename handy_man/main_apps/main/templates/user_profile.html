@@ -603,6 +603,9 @@
 					    $("#mdescription").text(description);
 					    $("#mjob_identifier").val(job_id);
 					} );
+					$('#geolocation_tab').click(function(event) {
+						initialize();
+					});
 				});
 				// User's completed jobs data table
 				$(document).ready(function() {
